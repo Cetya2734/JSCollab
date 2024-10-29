@@ -1,5 +1,6 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -22,5 +23,7 @@ public class Projectile : MonoBehaviour
     {
         // Implement collision logic (e.g., damage, destroy)
         Destroy(gameObject); // Destroy projectile on hit
+
     }
 }
+
