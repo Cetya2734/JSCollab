@@ -128,6 +128,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2841028916077139941, guid: 6e9a44e6d2663f24eb7c7440e12ed30c, type: 3}
   m_PrefabInstance: {fileID: 1464700063363042174}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1226984944
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1226984945}
+  m_Layer: 0
+  m_Name: SpawnLocation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1226984945
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1226984944}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.42, y: -0.025395356, z: -0.03532246}
+  m_LocalScale: {x: 0.5882535, y: 1.2720835, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 454101311}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1408511134
 GameObject:
   m_ObjectHideFlags: 0
@@ -138,7 +169,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1408511135}
   - component: {fileID: 1408511137}
-  - component: {fileID: 1408511136}
   m_Layer: 0
   m_Name: Turret (1)
   m_TagString: Untagged
@@ -161,23 +191,6 @@ Transform:
   m_Father: {fileID: 454101311}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1408511136
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1408511134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e737b08409020b74388e31b7c8617c67, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  minAngle: -90
-  maxAngle: 90
-  projectilePrefab: {fileID: 4366290968861757508, guid: edcf7b39ee92dfe408103c26a9ae79f7, type: 3}
-  projectileSpeed: 10
 --- !u!212 &1408511137
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -394,11 +407,22 @@ PrefabInstance:
       propertyPath: minAngle
       value: -90
       objectReference: {fileID: 0}
+    - target: {fileID: 6935877711407366818, guid: 6e9a44e6d2663f24eb7c7440e12ed30c, type: 3}
+      propertyPath: rotationSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6935877711407366818, guid: 6e9a44e6d2663f24eb7c7440e12ed30c, type: 3}
+      propertyPath: _spawnLocation
+      value: 
+      objectReference: {fileID: 1226984944}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 2841028916077139941, guid: 6e9a44e6d2663f24eb7c7440e12ed30c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1408511135}
+    - targetCorrespondingSourceObject: {fileID: 2841028916077139941, guid: 6e9a44e6d2663f24eb7c7440e12ed30c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1226984945}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6e9a44e6d2663f24eb7c7440e12ed30c, type: 3}
