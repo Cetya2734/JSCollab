@@ -59,7 +59,7 @@ public class Sonar : MonoBehaviour
                 // For example: print the hit object name
                 Debug.Log("Hit: " + hit.collider.name);
 
-                Instantiate(redDot, hit.collider.transform);
+                Instantiate(redDot, hit.point, Quaternion.identity);
             }
         }
 
