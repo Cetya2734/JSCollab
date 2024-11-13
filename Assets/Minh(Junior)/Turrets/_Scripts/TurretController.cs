@@ -76,9 +76,10 @@ public class TurretController : MonoBehaviour
         mousePosition.z = 0;
 
         Vector3 direction = mousePosition - transform.position;
+        Debug.Log(transform.position);
         float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         targetAngle = Mathf.Clamp(targetAngle, minAngle, maxAngle);
-
+        Debug.Log(mousePosition + " | " + targetAngle);
         Quaternion targetRotation = Quaternion.Euler(0, 0, targetAngle);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
