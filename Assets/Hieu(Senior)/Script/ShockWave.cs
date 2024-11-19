@@ -27,7 +27,7 @@ public class ShockWave : MonoBehaviour
         foreach (Collider2D enemy in enemies)
         {
             // Apply damage
-            Health enemyHealth = enemy.GetComponent<Health>();  // Assuming your enemies have a Health script
+            Health enemyHealth = enemy.GetComponent<Health>();
             if (enemyHealth != null)
             {
                 enemyHealth.TakeDamage(damage);
