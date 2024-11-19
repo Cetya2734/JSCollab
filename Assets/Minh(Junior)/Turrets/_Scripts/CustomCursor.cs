@@ -8,7 +8,7 @@ public class CustomCursor : MonoBehaviour
     private Vector2 targetPos;
     void Start()
     {
-        Cursor.visible = false;
+        Cursor.visible = true;
     }
 
     // Update is called once per frame

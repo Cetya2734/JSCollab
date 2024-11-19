@@ -531,8 +531,31 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1980629064870052560, guid: ac4c97779083e0842b866fac261c6165, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 531333824}
   m_SourcePrefab: {fileID: 100100000, guid: ac4c97779083e0842b866fac261c6165, type: 3}
+--- !u!1 &531333823 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1980629064870052560, guid: ac4c97779083e0842b866fac261c6165, type: 3}
+  m_PrefabInstance: {fileID: 531333822}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &531333824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 531333823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d765daff590e7d34f8230d66dc3507a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  camera2D: {fileID: 2049598605}
+  camera3D: {fileID: 1857197373}
+  meshRenderer: {fileID: 1617681054}
 --- !u!1 &555515453
 GameObject:
   m_ObjectHideFlags: 0
@@ -1202,6 +1225,14 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 4.2121696
       objectReference: {fileID: 0}
+    - target: {fileID: 2576994000658528954, guid: 0a48f68bec2a1424095d7c335a76f30c, type: 3}
+      propertyPath: maxAmmo
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 2576994000658528954, guid: 0a48f68bec2a1424095d7c335a76f30c, type: 3}
+      propertyPath: maxShotsBeforeOverheat
+      value: 10000
+      objectReference: {fileID: 0}
     - target: {fileID: 3103188277657551198, guid: 0a48f68bec2a1424095d7c335a76f30c, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -1555,8 +1586,8 @@ Transform:
   m_GameObject: {fileID: 1617681052}
   m_LocalRotation: {x: 0.0063991603, y: -0.70707667, z: -0.006399786, w: -0.707079}
   m_LocalPosition: {x: 1.5623398, y: 3.165534, z: -2.7562885}
-  m_LocalScale: {x: 324.768, y: 182.68199, z: 3.4739056}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 332, y: 186.75, z: 0}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1409463957}
   m_RootOrder: -1
