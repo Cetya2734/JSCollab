@@ -33,4 +33,14 @@ public class FishMovement : MonoBehaviour
         float y = Random.Range(spawnArea.position.y - spawnArea.localScale.y / 2, spawnArea.position.y + spawnArea.localScale.y / 2);
         targetPosition = new Vector2(x, y);
     }
+
+    private void OnDrawGizmos()
+    {
+        if (spawnArea != null)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireCube(spawnArea.position, spawnArea.localScale);
+        }
+    }
+
 }
