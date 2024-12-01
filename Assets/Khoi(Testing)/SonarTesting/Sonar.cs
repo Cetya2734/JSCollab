@@ -29,14 +29,11 @@ public class Sonar : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
-
-            ShootRays();
-
-
+            StartCoroutine(UseSonar());
 
         }
     }
-    void ShootRays()
+    IEnumerator UseSonar()
     {
         // Calculate the angle between each ray
         float angleStep = 360f / numberOfRays;
@@ -60,8 +57,11 @@ public class Sonar : MonoBehaviour
                 Debug.Log("Hit: " + hit.collider.name);
 
                 Instantiate(redDot, hit.point, Quaternion.identity);
+                
             }
         }
-
+        yield return new WaitForSeconds(2f);
+        Destroy(redDot);
     }
+
 }
