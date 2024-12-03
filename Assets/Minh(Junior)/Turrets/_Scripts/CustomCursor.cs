@@ -15,7 +15,7 @@ public class CustomCursor : MonoBehaviour
     void Update()
     {
         targetPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Debug.Log(targetPos);
+        
         transform.position = targetPos;
     }
 }
