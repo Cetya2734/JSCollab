@@ -33,9 +33,18 @@ public class TurretController : MonoBehaviour
     private int shotCount = 0;
     private bool isOverheated = false;
 
+
+    
+
+
+    public Test cursorScript;
     private void Start()
     {
         currentAmmo = maxAmmo;
+
+        
+
+
     }
 
     private void Update()
@@ -72,15 +81,18 @@ public class TurretController : MonoBehaviour
 
     private void RotateTurret()
     {
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 mousePosition = cursorScript.worldPos2D;
         mousePosition.z = 0;
 
         Vector3 direction = mousePosition - transform.position;
         Debug.Log(transform.position);
+
         float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         targetAngle = Mathf.Clamp(targetAngle, minAngle, maxAngle);
         Debug.Log(mousePosition + " | " + targetAngle);
+
         Quaternion targetRotation = Quaternion.Euler(0, 0, targetAngle);
+
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 

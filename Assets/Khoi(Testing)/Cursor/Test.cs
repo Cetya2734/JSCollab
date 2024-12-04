@@ -12,6 +12,7 @@ public class Test : MonoBehaviour
     // meshrenderer de display cai camera 2D
     public MeshRenderer meshRenderer;
 
+    public Vector3 worldPos2D;
     /// <summary>
     /// solution o day kha phuc tap, co ma t gioi
     /// convert screen solution cua cai meshrenderer thanh kich thuoc cua 2D camera
@@ -19,6 +20,8 @@ public class Test : MonoBehaviour
     /// vi minh dung de quy doi he tham so tu meshrenderer sang camera, nen anh recommend dung convert sang screen space
     /// check xem chuot co nam trong thang meshrenderer khong
     /// </summary>
+    /// 
+    public bool mouseInBound = true;
     void Update()
     {
         if (camera2D == null || camera3D == null || meshRenderer == null)
@@ -52,7 +55,7 @@ public class Test : MonoBehaviour
                 0f
             );
 
-            Vector3 worldPos2D = camera2D.ScreenToWorldPoint(screenPos2D);
+            worldPos2D = camera2D.ScreenToWorldPoint(screenPos2D);
             // 2D nen cho z = 0 cmnl
             worldPos2D.z = 0;
 
@@ -60,10 +63,13 @@ public class Test : MonoBehaviour
 
             // set cursor position
             transform.position = worldPos2D;
+            mouseInBound = true;
         }
         else
         {
             Debug.Log("Mouse is outside of the MeshRenderer bounds.");
+            mouseInBound = false;
+
         }
     }
 }
