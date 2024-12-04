@@ -21,6 +21,7 @@ public class ControllerSwitcher : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))  // Switch control on pressing "E"
         {
             SwitchControl();
+            Debug.Log("pressE");
         }
     }
 

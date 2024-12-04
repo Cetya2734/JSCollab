@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Sonar : MonoBehaviour
 {
-    public Texture Texture;
-    public Camera Camera;
+    
+    
     public GameObject redDot;
 
     // Number of raycasts to shoot
@@ -29,15 +29,13 @@ public class Sonar : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
-
-            ShootRays();
-
-
+            UseSonar();
 
         }
     }
-    void ShootRays()
+    private void UseSonar()
     {
+        Debug.Log("Sonar");
         // Calculate the angle between each ray
         float angleStep = 360f / numberOfRays;
 
@@ -59,9 +57,12 @@ public class Sonar : MonoBehaviour
                 // For example: print the hit object name
                 Debug.Log("Hit: " + hit.collider.name);
 
-                Instantiate(redDot, hit.point, Quaternion.identity);
+                GameObject redDots = Instantiate(redDot, hit.point, Quaternion.identity);
+                Destroy(redDots, 1f);
+                
             }
         }
-
+        
     }
+
 }
