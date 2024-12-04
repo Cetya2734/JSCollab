@@ -7,6 +7,10 @@ public class Test : MonoBehaviour
 {
     // 2D camera
     public Camera camera2D;
+    public Camera sonarCamera;
+
+    public static Test instance;
+
     // 3D camera
     public Camera camera3D;
     // meshrenderer de display cai camera 2D
@@ -22,6 +26,15 @@ public class Test : MonoBehaviour
     /// </summary>
     /// 
     public bool mouseInBound = true;
+
+    public void ChangeCamera(Camera targetCamera)
+    {
+        camera2D = targetCamera;
+    }
+    private void Awake()
+    {
+        instance = this;
+    }
     void Update()
     {
         if (camera2D == null || camera3D == null || meshRenderer == null)
@@ -60,7 +73,7 @@ public class Test : MonoBehaviour
             worldPos2D.z = 0;
 
             //Debug.Log($"World Position: {worldPos2D}");
-
+            Debug.Log(worldPos2D);
             // set cursor position
             transform.position = worldPos2D;
             mouseInBound = true;

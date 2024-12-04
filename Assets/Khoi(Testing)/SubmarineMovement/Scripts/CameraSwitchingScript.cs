@@ -9,7 +9,9 @@ public class CameraSwitchingScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        turretCamera.depth = 1;
+        sonarCamera.depth = 0;
+        Test.instance.ChangeCamera(turretCamera);
     }
 
     // Update is called once per frame
@@ -19,11 +21,13 @@ public class CameraSwitchingScript : MonoBehaviour
         {
             turretCamera.depth = 1;
             sonarCamera.depth = 0;
+            Test.instance.ChangeCamera(turretCamera);
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
             turretCamera.depth = 0;
             sonarCamera.depth = 1;
+            Test.instance.ChangeCamera(sonarCamera);
         }
     }
 }

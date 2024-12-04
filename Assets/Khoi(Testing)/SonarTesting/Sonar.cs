@@ -17,6 +17,7 @@ public class Sonar : MonoBehaviour
     // Optional Layer Mask to filter the rays to hit only specific layers
     public LayerMask raycastLayerMask;
 
+    public Transform submarine;
 
     // Start is called before the first frame update
     void Start()
@@ -57,7 +58,7 @@ public class Sonar : MonoBehaviour
                 // For example: print the hit object name
                 Debug.Log("Hit: " + hit.collider.name);
 
-                GameObject redDots = Instantiate(redDot, hit.point, Quaternion.identity);
+                GameObject redDots = Instantiate(redDot, hit.point, Quaternion.identity, submarine);
                 Destroy(redDots, 1f);
                 
             }

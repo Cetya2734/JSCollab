@@ -89,7 +89,7 @@ public class TurretController : MonoBehaviour
 
         float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         targetAngle = Mathf.Clamp(targetAngle, minAngle, maxAngle);
-        Debug.Log(mousePosition + " | " + targetAngle);
+        //Debug.Log(mousePosition + " | " + targetAngle);
 
         Quaternion targetRotation = Quaternion.Euler(0, 0, targetAngle);
 
