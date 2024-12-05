@@ -3,7 +3,142 @@ guid: 3aaeaf0eb62ec3f408c6c8d217d84bcf
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: AbilityBasePanel
+    second: {fileID: 2100000, guid: 1d29ba605f110994999c058d45e5bd30, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: AbilityScreen
+    second: {fileID: 2100000, guid: b28be50edb423ea408b2b23eac0d80e1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Bolt
+    second: {fileID: 2100000, guid: a1aa0c63e615f09449ca30a270122fe2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BottleMaterial
+    second: {fileID: 2100000, guid: e47e61cca1130c947a7ebd84ade6d786, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ButtonMaterial
+    second: {fileID: 2100000, guid: 283bdad8c4a4ba540829f0dc67968d6c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CableConnector
+    second: {fileID: 2100000, guid: fa984e2574fb4d04a9267f3fbe5c57d7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Clock
+    second: {fileID: 2100000, guid: def015e14e4aba2489c5226126a670b0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ClockBase
+    second: {fileID: 2100000, guid: a9be0f0f2837785428ef323c9b26a142, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ConditionBar
+    second: {fileID: 2100000, guid: 9575d3dda690d42498b5f4893fcec6ab, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ControlPanel
+    second: {fileID: 2100000, guid: a415956972f4ab343b73a179bb1ffc96, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: DockingButton
+    second: {fileID: 2100000, guid: 3cd58a9929ab9b1498aa18fdcfaa4208, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: FuelScreen
+    second: {fileID: 2100000, guid: 73f678e33f3fbb54bbfb33e39aa2a496, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GreenEmission
+    second: {fileID: 2100000, guid: 76193548a66368e4a99d689df2b5c73d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: HandleBase
+    second: {fileID: 2100000, guid: 37ed47a8d56d71243acd7db803971488, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: HandleMaterial
+    second: {fileID: 2100000, guid: ed98a02ea1ca2d841b501f7be7a03a69, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.002
+    second: {fileID: 2100000, guid: 97fd5a5e7f3035740aab2c3f1de03c8e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.003
+    second: {fileID: 2100000, guid: 751e0805ee22ea046bdc215ea432be4c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MetalPipes
+    second: {fileID: 2100000, guid: ff2b175e746a3db439e4fbfe62df91af, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MetalTexture2
+    second: {fileID: 2100000, guid: 49a95eefbbfcb2845a275109903114f1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MovingPanel
+    second: {fileID: 2100000, guid: 1f7c6e9b69a547a4d8821a8d767f8b51, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Phone
+    second: {fileID: 2100000, guid: 4839f44a50bde9741a0d8350366a692b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: PhoneBase
+    second: {fileID: 2100000, guid: 15923aa35595be144b10ed7089171366, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: PointerTexture
+    second: {fileID: 2100000, guid: bd0a623463586ba43a4cddf1d1a064f3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Red
+    second: {fileID: 2100000, guid: ed783dd8e7f81a64bba9d90721dd11a5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ScreenMain
+    second: {fileID: 2100000, guid: 528e8001079456649a73ae635de3f5d4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Vent
+    second: {fileID: 2100000, guid: b86ac1f43077a16488028d4b807881b8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: YellowEmission.001
+    second: {fileID: 2100000, guid: 4d13a1a017c88314cac38663a59fa9e8, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
