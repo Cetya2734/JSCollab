@@ -17,13 +17,14 @@ public class TurretController : MonoBehaviour
     [SerializeField] private GameObject chargeProjectile;
     [SerializeField] private GameObject spawnLocation;
     [SerializeField] private float projectileSpeed = 20f;
-    [SerializeField] private int maxAmmo = 10;
+    [SerializeField] private int maxAmmo = 100;
     [SerializeField] private float fireRate = 0.5f; 
     
     [SerializeField] private bool isCharging;
     [SerializeField] private float chargeTime;
     [SerializeField] private GameObject chargeVFX;
 
+    [SerializeField] private Animator smallTurret;
     private int currentAmmo;
     private float nextFireTime;
 
@@ -33,49 +34,60 @@ public class TurretController : MonoBehaviour
     private int shotCount = 0;
     private bool isOverheated = false;
 
-
-    
-
-
     public Test cursorScript;
+    public ShootingManager shootingEventManager;
+    public AudioEventManager audioEventManager; // Reference to AudioEventManager
+
     private void Start()
     {
         currentAmmo = maxAmmo;
-
-        
-
-
     }
 
     private void Update()
     {
         RotateTurret();
 
-        if (Input.GetMouseButtonDown(0) && !isCharging && Time.time >= nextFireTime && currentAmmo > 0 && !isOverheated)
-        {
-            Shoot();
-        }
-        
-        // Charging Logic
+        // Charging logic
         if (Input.GetMouseButton(0) && currentAmmo > 0 && !isOverheated)
         {
-            isCharging = true;
+            // isCharging = true;
+            // chargeTime += Time.deltaTime;
+
+            if (!isCharging) // Ensure isCharging is set only once when starting the charge
+            {
+                isCharging = true;
+                chargeTime = 0f; // Reset charge time at the start of charging
+                smallTurret.SetBool("IsCharging", true);
+            }
+
             chargeTime += Time.deltaTime;
             
             if (chargeTime > 0.1f)
             {
-                chargeVFX.SetActive(true);
+                chargeVFX.SetActive(true); // Enable charge effect
             }
         }
-        if (Input.GetMouseButtonUp(0))
+
+        // Fire logic on release
+        if (Input.GetMouseButtonUp(0) && Time.time >= nextFireTime && currentAmmo > 0 && !isOverheated)
         {
-            if (chargeTime >= 1)
+            if (chargeTime >= 1f) // If the player held long enough for a charged shot
             {
                 ChargeShoot(); 
             }
+            else if (chargeTime < 1f) // Otherwise, fire a regular shot
+            {
+                Shoot();
+                shootingEventManager.TriggerShootEvent();
+                AudioEventManager.TriggerAudioEvent("shoot");
+            }
+
+            // Reset charging state
             isCharging = false;
-            chargeTime = 0;
-            chargeVFX.SetActive(false);
+            chargeTime = 0f;
+            chargeVFX.SetActive(false); // Disable charge effect
+            smallTurret.SetBool("IsCharging", false);
+
         }
     }
 
@@ -85,7 +97,7 @@ public class TurretController : MonoBehaviour
         mousePosition.z = 0;
 
         Vector3 direction = mousePosition - transform.position;
-        Debug.Log(transform.position);
+//        Debug.Log(transform.position);
 
         float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         targetAngle = Mathf.Clamp(targetAngle, minAngle, maxAngle);
@@ -102,18 +114,20 @@ public class TurretController : MonoBehaviour
         GameObject projectileShot = Instantiate(projectile, spawnLocation.transform.position, transform.rotation);
         Rigidbody2D rb = projectileShot.GetComponent<Rigidbody2D>();
         rb.velocity = transform.right * projectileSpeed;
-
+        smallTurret.Play("Knockback", 0, 0f);
+        
         // Update ammo, fire rate, and overheat counters
         currentAmmo--;
         shotCount++;
         nextFireTime = Time.time + fireRate;
-
+        
         // Check if turret should overheat
         if (shotCount >= maxShotsBeforeOverheat)
         {
             isOverheated = true;
             StartCoroutine(OverheatRecovery());
         }
+        smallTurret.SetBool("IsCharging", false); // Explicitly reset the charge animation on normal fire
     }
     
     void ChargeShoot()
@@ -124,6 +138,8 @@ public class TurretController : MonoBehaviour
 
          isCharging = false;
          chargeTime = 0;
+         shootingEventManager.TriggerShootEvent();
+         smallTurret.SetBool("IsCharging", false); // Stop the charging animation after shooting
      }
 
     private IEnumerator OverheatRecovery()

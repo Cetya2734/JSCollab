@@ -59,7 +59,7 @@ public class Test : MonoBehaviour
             float uvX = (mousePosScreen.x - meshMinScreen.x) / (meshMaxScreen.x - meshMinScreen.x);
             float uvY = (mousePosScreen.y - meshMinScreen.y) / (meshMaxScreen.y - meshMinScreen.y);
 
-            Debug.Log($"UV Coordinates: ({uvX}, {uvY})");
+//            Debug.Log($"UV Coordinates: ({uvX}, {uvY})");
 
             // Map UV cho 2D camera world space
             Vector3 screenPos2D = new Vector3(
@@ -73,7 +73,7 @@ public class Test : MonoBehaviour
             worldPos2D.z = 0;
 
             //Debug.Log($"World Position: {worldPos2D}");
-            Debug.Log(worldPos2D);
+//            Debug.Log(worldPos2D);
             // set cursor position
             transform.position = worldPos2D;
             mouseInBound = true;
