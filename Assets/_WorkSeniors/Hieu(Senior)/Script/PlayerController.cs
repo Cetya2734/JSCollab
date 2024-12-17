@@ -6,24 +6,33 @@ public class PlayerController : MonoBehaviour
 {
     public GameObject shockwavePrefab; // The shockwave prefab
     public Transform shockwaveSpawnPoint; // Point where shockwave will spawn
+    [SerializeField] private float cooldownDuration = 3f; // Cooldown time after triggering the shockwave
+    private bool isOnCooldown = false; // Cooldown flag
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && !isOnCooldown)
         {
-            TriggerShockwave();
+            TriggerShockwave(); // Trigger the shockwave if not on cooldown
         }
     }
 
     void TriggerShockwave()
     {
-        Instantiate(shockwavePrefab, shockwaveSpawnPoint.position, Quaternion.identity); //Spawn the shockwave prefab
+        // Start cooldown
+        StartCoroutine(ShockwaveCooldown());
+
+        // Instantiate the shockwave prefab at the spawn point
+        GameObject shockwave = Instantiate(shockwavePrefab, shockwaveSpawnPoint.position, Quaternion.identity);
+
+        // If the shockwave prefab has a particle system, destroy it after a certain duration (or let the prefab handle it)
+        Destroy(shockwave, 1f); // Adjust the duration as needed
+    }
+
+    private IEnumerator ShockwaveCooldown()
+    {
+        isOnCooldown = true; // Set cooldown flag to true
+        yield return new WaitForSeconds(cooldownDuration); // Wait for the cooldown duration
+        isOnCooldown = false; // Cooldown is over
     }
 }

@@ -5,41 +5,54 @@ using UnityEngine;
 
 public class ShockWave : MonoBehaviour
 {
-    public float radius = 5f;         // Radius of the shockwave
-    public float damage = 10f;        // Amount of damage dealt
-    public float pushForce = 5f;      // How much force to apply to push enemies away
-    public float shockwaveDuration = 0.5f; // Duration of the shockwave effect
+    [SerializeField] private float radius = 5f;            // Radius of the shockwave
+    [SerializeField] private float damage = 10f;           // Damage dealt to enemies
+    [SerializeField] private float pushForce = 5f;         // Push force applied to enemies
+    [SerializeField] private float shockwaveDuration = 0.5f; // Duration of shockwave effect
 
-    public LayerMask enemyLayer;      // Layer for enemy detection
+    [SerializeField] private ParticleSystem shockwaveParticle; // Particle prefab
+    [SerializeField] private LayerMask enemyLayer;         // Enemy detection layer
+
 
     private void Start()
     {
-        // Start the shockwave and destroy it after the duration.
-        Destroy(gameObject, shockwaveDuration);
-        ApplyShockwaveEffect();
+        TriggerShockWave();
     }
 
-    void ApplyShockwaveEffect()
+    private void TriggerShockWave()
     {
-        // Find all colliders in the shockwave radius
+
+        // Spawn the particle effect
+        if (shockwaveParticle != null)
+        {
+            ParticleSystem spawnedParticle = Instantiate(shockwaveParticle, transform.position, Quaternion.identity);
+            Destroy(spawnedParticle.gameObject, shockwaveDuration); // Destroy the particle after its duration
+        }
+
+        // Apply shockwave effect
+        ApplyShockwaveEffect();
+
+    }
+
+    private void ApplyShockwaveEffect()
+    {
+        // Find all enemies within the radius
         Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, radius, enemyLayer);
 
         foreach (Collider2D enemy in enemies)
         {
-            // Apply damage
+            // Damage enemies
             Health enemyHealth = enemy.GetComponent<Health>();
             if (enemyHealth != null)
             {
                 enemyHealth.TakeDamage(damage);
             }
 
-            // Calculate direction to push the enemy (from player to enemy)
-            Vector2 pushDirection = (enemy.transform.position - transform.position).normalized;
+            // Apply push force to enemies
             Rigidbody2D rb = enemy.GetComponent<Rigidbody2D>();
-
             if (rb != null)
             {
-                // Apply the push force to the enemy's rigidbody
+                Vector2 pushDirection = (enemy.transform.position - transform.position).normalized;
                 rb.AddForce(pushDirection * pushForce, ForceMode2D.Impulse);
             }
         }
@@ -47,6 +60,7 @@ public class ShockWave : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        // Debug visual for shockwave radius
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, radius);
     }
