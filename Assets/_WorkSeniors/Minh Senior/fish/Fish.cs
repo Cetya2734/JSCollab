@@ -7,7 +7,7 @@ public class Fish : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Hook") && !isCaught)
+        if (other.CompareTag("projectile") && !isCaught)
         {
             isCaught = true;
             CatchFish();
@@ -28,3 +28,4 @@ public class Fish : MonoBehaviour
         Destroy(gameObject); // Hoặc disable gameObject
     }
 }
+
