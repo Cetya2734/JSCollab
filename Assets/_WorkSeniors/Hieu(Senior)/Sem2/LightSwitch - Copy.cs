@@ -10,13 +10,18 @@ public class LightSwitch : MonoBehaviour
     private bool isOn = false;
     private bool playerNearby = false;
 
+    [Header("Flicker Settings")]
+    public float flickerDuration = 3f; // How long the flicker lasts
+    public float minFlickerTime = 0.05f; // Minimum flicker interval
+    public float maxFlickerTime = 0.3f;  // Maximum flicker interval
+    public float flickerIntensityMin = 0.5f; // Minimum light intensity
+    public float flickerIntensityMax = 2f; // Maximum light intensity
+
     void Start()
     {
-        // Ensure the light is off when the game starts
         if (lightSource != null)
-            lightSource.enabled = false;
+            lightSource.enabled = false; // Start with the light off
 
-        // Hide interaction text at the start
         if (interactionText != null)
             interactionText.gameObject.SetActive(false);
     }
@@ -42,16 +47,17 @@ public class LightSwitch : MonoBehaviour
 
     IEnumerator FlickerLight()
     {
-        float flickerDuration = 3f;
         float endTime = Time.time + flickerDuration;
 
         while (Time.time < endTime)
         {
-            lightSource.enabled = !lightSource.enabled;
-            yield return new WaitForSeconds(Random.Range(0.1f, 0.3f));
+            lightSource.enabled = !lightSource.enabled; // Toggle on/off
+            lightSource.intensity = Random.Range(flickerIntensityMin, flickerIntensityMax); // Change brightness
+            yield return new WaitForSeconds(Random.Range(minFlickerTime, maxFlickerTime)); // Random flicker speed
         }
 
         lightSource.enabled = true;
+        lightSource.intensity = 1f; // Reset intensity to normal after flickering
     }
 
     private void OnTriggerEnter(Collider other)
