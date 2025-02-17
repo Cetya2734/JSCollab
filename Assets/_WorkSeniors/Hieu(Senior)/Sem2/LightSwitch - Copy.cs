@@ -12,8 +12,13 @@ public class LightSwitch : MonoBehaviour
 
     void Start()
     {
+        // Ensure the light is off when the game starts
+        if (lightSource != null)
+            lightSource.enabled = false;
+
+        // Hide interaction text at the start
         if (interactionText != null)
-            interactionText.gameObject.SetActive(false); // Hide text at start
+            interactionText.gameObject.SetActive(false);
     }
 
     void Update()
@@ -55,7 +60,7 @@ public class LightSwitch : MonoBehaviour
         {
             playerNearby = true;
             if (interactionText != null)
-                interactionText.gameObject.SetActive(true); // Show text
+                interactionText.gameObject.SetActive(true);
         }
     }
 
@@ -65,7 +70,7 @@ public class LightSwitch : MonoBehaviour
         {
             playerNearby = false;
             if (interactionText != null)
-                interactionText.gameObject.SetActive(false); // Hide text
+                interactionText.gameObject.SetActive(false);
         }
     }
 }
