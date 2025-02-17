@@ -19,6 +19,7 @@ public class Interactor : MonoBehaviour
     {
         Ray secondaryRay = new Ray(InteractorSource.position, InteractorSource.forward);
 
+        Debug.DrawRay(secondaryRay.origin, secondaryRay.direction * InteractRange, Color.green);
         if (Input.GetButtonDown("Interact"))
         {
             Ray r = new Ray(InteractorSource.position, InteractorSource.forward);

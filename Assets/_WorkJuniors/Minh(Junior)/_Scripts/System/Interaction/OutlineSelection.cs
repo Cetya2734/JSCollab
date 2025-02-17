@@ -20,6 +20,9 @@ public class OutlineSelection : MonoBehaviour
         }
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        
+        Debug.DrawRay(ray.origin, ray.direction * raycastMaxDistance, Color.red);
+
         if (!EventSystem.current.IsPointerOverGameObject() && Physics.Raycast(ray, out raycastHit, raycastMaxDistance)) //Make sure you have EventSystem in the hierarchy before using EventSystem
         {
             highlight = raycastHit.transform;

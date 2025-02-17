@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Flashlight : MonoBehaviour
 {
-    public GameObject flashlight;
+    [SerializeField] private GameObject flashlight;
 
-    public AudioSource turnOn;
-    public AudioSource turnOff;
+    [SerializeField] private  AudioSource turnOn;
+    [SerializeField] private  AudioSource turnOff;
 
-    public bool on;
-    public bool off;
+    private bool on;
+    private bool off;
 
 
     void Start()
