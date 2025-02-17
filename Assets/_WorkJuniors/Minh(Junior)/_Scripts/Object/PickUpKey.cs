@@ -18,27 +18,6 @@ public class PickUpKey : MonoBehaviour
         invOB.SetActive(false);
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "Reach")
-        {
-            inReach = true;
-            pickUpText.SetActive(true);
-
-        }
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.tag == "Reach")
-        {
-            inReach = false;
-            pickUpText.SetActive(false);
-
-        }
-    }
-
-
     void Update()
     {
         if (inReach && Input.GetButtonDown("Interact"))

@@ -6,8 +6,15 @@ public class ItemPickUp : MonoBehaviour, IInteractable
     [SerializeField] private GameObject pickUpText;
 
     public void Interact()
-    {
-        EventBus.Instance.PickUpItem(_itemData, equippedObject);
+    {      
+        if (EventBus.Instance == null)
+        {
+            Debug.LogError("EventBus instance is null!");
+        }
+        else
+        {
+            EventBus.Instance.PickUpItem(_itemData, equippedObject);
+        }
         Destroy(gameObject);
     }
 

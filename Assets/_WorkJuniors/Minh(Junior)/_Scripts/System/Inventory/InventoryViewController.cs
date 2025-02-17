@@ -57,6 +57,116 @@ public class InventoryViewController : MonoBehaviour
 
     private State _state;
 
+       
+    private void Start()
+    {
+        //footStepAudio = footStepAudio.GetComponent<AudioSource>();
+        _inspectMenu.transform.localScale = new Vector3(0, 0, 0);
+    }
+    
+    private void Update()
+    {
+        // Toggle the inventory view on/off when the Tab key is pressed
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            if (_state == State.menuClosed)
+            {
+                EventBus.Instance.PauseGameplay();
+                _fader.FadeToBlack(0.3f, FadeToMenuCallback);
+                _state = State.menuOpen;
+                EventSystem.current.SetSelectedGameObject(_firstInventoryOption);
+            }
+            else if (_state == State.menuOpen)
+            {
+                _fader.FadeToBlack(0.3f, FadeFromMenuCallback);
+                _state = State.menuClosed;
+            }
+            else if (_state == State.contextMenu)
+            {
+                _inspectMenu.transform.localScale = new Vector3(0, 0, 0);
+                _contextMenuObject.SetActive(false);
+                foreach (var button in _contextMenuIgnore)
+                {
+                    button.interactable = true;
+                }
+                EventSystem.current.SetSelectedGameObject(_currentSlot.gameObject);
+                _state = State.menuOpen;
+            }
+        }
+
+        //Open context menu
+        if (Input.GetButtonDown("Interact"))
+        {
+            if (_state == State.menuOpen)
+            {
+                if (EventSystem.current.currentSelectedGameObject.TryGetComponent<ItemSlot>(out var slot))
+                {
+                    //Ensure the slot has an item before opening the menu
+                    if (slot.itemData == null)
+                        return;
+                    
+                    _currentSlot = slot;
+                    _state = State.contextMenu;
+                    _contextMenuObject.SetActive(true);
+                    
+                    foreach (var button in _contextMenuIgnore)
+                    {
+                        button.interactable = false;
+                    }
+
+                    if (_currentSlot.itemData == null)
+                    {
+                        _equipButton.interactable = false;
+                        _useButton.interactable = false;
+                        _inspectButton.interactable = false;
+                        _discardButton.interactable = false;
+                    }
+                    else
+                    {
+                        _equipButton.interactable = _currentSlot.itemData.IsEquippable;
+                        _useButton.interactable = _currentSlot.itemData.IsConsumable;
+                        
+                        if (_equipButton.interactable)
+                        {
+                            EventSystem.current.SetSelectedGameObject(_firstContextMenuOption);
+                        }
+                        
+                        if (_useButton.interactable)
+                        {
+                            EventSystem.current.SetSelectedGameObject(_secondContextMenuOption);
+                        }
+                    
+                        _inspectButton.interactable = true;
+                        _discardButton.interactable = true;
+                    }
+                    
+                    // _equipButton.interactable = _currentSlot.itemData.IsEquippable;
+                    // _useButton.interactable = _currentSlot.itemData.IsConsumable;
+                    // _inspectButton.interactable = true;
+                    // _discardButton.interactable = true;
+                    //
+                    // EventSystem.current.SetSelectedGameObject(_equipButton.interactable ? _firstContextMenuOption : _secondContextMenuOption);
+
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                if (_state == State.contextMenu)
+                {
+                    _contextMenuObject.SetActive(false);
+
+                    Debug.Log(_inspectMenu.transform.localScale);
+                    
+                    foreach (var button in _contextMenuIgnore)
+                    {
+                        button.interactable = true;
+                    }
+                }
+            }
+        }
+    }
+    
     public void UseItem()
     {
         _fader.FadeToBlack(0.5f,FadeToUseItemCallback );
@@ -142,15 +252,17 @@ public class InventoryViewController : MonoBehaviour
     
     public void OnSlotSelected(ItemSlot selectedSlot)
     {
-        _currentSlot = selectedSlot;
+       // _currentSlot = selectedSlot;
         // Check if the selected slot is empty
         if (selectedSlot.itemData == null)
         {
+            _currentSlot = null;
             // Clear the item name and description texts if the slot is empty
             _itemNameText.ClearMesh();
             _itemDescriptionText.ClearMesh();
             return;
         }
+        _currentSlot = selectedSlot;
         // Display the name and first description of the selected item in UI
         _itemNameText.SetText(selectedSlot.itemData.name);
         _itemDescriptionText.SetText(selectedSlot.itemData.Description[0]);
@@ -173,6 +285,12 @@ public class InventoryViewController : MonoBehaviour
         // Find the first empty slot and assign the picked-up item to it
         foreach (var slot in _slots)
         {
+            if (slot == null)
+            {
+                Debug.LogError("Found a null slot in the slots list!");
+                continue;
+            }
+            
             if (slot.IsEmpty())
             {
                 slot.itemData = itemData;
@@ -181,104 +299,7 @@ public class InventoryViewController : MonoBehaviour
             }
         }
     }
-
-    
-    private void Start()
-    {
-        //footStepAudio = footStepAudio.GetComponent<AudioSource>();
-        _inspectMenu.transform.localScale = new Vector3(0, 0, 0);
-    }
-    
-    private void Update()
-    {
-        // Toggle the inventory view on/off when the Tab key is pressed
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            if (_state == State.menuClosed)
-            {
-                EventBus.Instance.PauseGameplay();
-                _fader.FadeToBlack(0.3f, FadeToMenuCallback);
-                _state = State.menuOpen;
-                EventSystem.current.SetSelectedGameObject(_firstInventoryOption);
-            }
-            else if (_state == State.menuOpen)
-            {
-                _fader.FadeToBlack(0.3f, FadeFromMenuCallback);
-                _state = State.menuClosed;
-            }
-            else if (_state == State.contextMenu)
-            {
-                _inspectMenu.transform.localScale = new Vector3(0, 0, 0);
-                _contextMenuObject.SetActive(false);
-                foreach (var button in _contextMenuIgnore)
-                {
-                    button.interactable = true;
-                }
-                EventSystem.current.SetSelectedGameObject(_currentSlot.gameObject);
-                _state = State.menuOpen;
-            }
-        }
-
-        //Open context menu
-        if (Input.GetButtonDown("Interact"))
-        {
-            if (_state == State.menuOpen)
-            {
-                if (EventSystem.current.currentSelectedGameObject.TryGetComponent<ItemSlot>(out var slot))
-                {
-                    _state = State.contextMenu;
-                    _contextMenuObject.SetActive(true);
-                    
-                    foreach (var button in _contextMenuIgnore)
-                    {
-                        button.interactable = false;
-                    }
-
-                    if (_currentSlot.itemData == null)
-                    {
-                        _equipButton.interactable = false;
-                        _useButton.interactable = false;
-                        _inspectButton.interactable = false;
-                        _discardButton.interactable = false;
-                    }
-                    else
-                    {
-                        _equipButton.interactable = _currentSlot.itemData.IsEquippable;
-                        _useButton.interactable = _currentSlot.itemData.IsConsumable;
-                        
-                        if (_equipButton.interactable)
-                        {
-                            EventSystem.current.SetSelectedGameObject(_firstContextMenuOption);
-                        }
-                        
-                        if (_useButton.interactable)
-                        {
-                            EventSystem.current.SetSelectedGameObject(_secondContextMenuOption);
-                        }
-
-                        _inspectButton.interactable = true;
-                        _discardButton.interactable = true;
-                    }
-
-                }
-            }
-
-            if (Input.GetKeyDown(KeyCode.Tab))
-            {
-                if (_state == State.contextMenu)
-                {
-                    _contextMenuObject.SetActive(false);
-
-                    Debug.Log(_inspectMenu.transform.localScale);
-                    
-                    foreach (var button in _contextMenuIgnore)
-                    {
-                        button.interactable = true;
-                    }
-                }
-            }
-        }
-    }
+ 
     private void FadeToMenuCallback()
     {
         _inventoryViewObject.SetActive(true);

@@ -58,5 +58,3 @@ public class EventBus : MonoBehaviour
         onItemUsed?.Invoke(item);
     }
 }
-
-
