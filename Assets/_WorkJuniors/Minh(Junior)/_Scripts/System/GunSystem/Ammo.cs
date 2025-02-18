@@ -22,7 +22,7 @@ public class Ammo : MonoBehaviour, IInteractable
         weaponOB.GetComponent<Revolver>().UpdateAmmoText();
     }
 
-    public GameObject GetGameObject()
+    public GameObject InteractionText()
     {
        return pickUpText;
     }

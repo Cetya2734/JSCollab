@@ -24,7 +24,7 @@ public class Calculator : MonoBehaviour, IInteractable
         cubeRenderer.material.SetColor("_Color", customColor);
     }
 
-    public GameObject GetGameObject()
+    public GameObject InteractionText()
     {
         return null;
     }

@@ -15,7 +15,7 @@ public class OpenKeyPad : MonoBehaviour, IInteractable
     {
         keypadOB.SetActive(true);
     }
-    public GameObject GetGameObject()
+    public GameObject InteractionText()
     {
         return keypadText;
     }

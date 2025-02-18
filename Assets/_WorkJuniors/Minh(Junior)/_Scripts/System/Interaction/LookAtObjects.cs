@@ -20,7 +20,7 @@ public class LookAtObjects : MonoBehaviour,IInteractable
         StartCoroutine(DisableTextAfterDelay());
     }
 
-    public GameObject GetGameObject()
+    public GameObject InteractionText()
     {
         return gameObjects;
     }
@@ -33,8 +33,7 @@ public class LookAtObjects : MonoBehaviour,IInteractable
         // Disable the textOB
         textOB.enabled = false;
     }
-
-
+    
     void Start()
     {
         textOB.enabled = false;

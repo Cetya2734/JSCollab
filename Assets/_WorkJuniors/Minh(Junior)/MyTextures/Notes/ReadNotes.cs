@@ -24,7 +24,7 @@ public class ReadNotes : MonoBehaviour, IInteractable
         Cursor.lockState = CursorLockMode.None;
     }
 
-    public GameObject GetGameObject()
+    public GameObject InteractionText()
     {
         return pickUpText;
     }

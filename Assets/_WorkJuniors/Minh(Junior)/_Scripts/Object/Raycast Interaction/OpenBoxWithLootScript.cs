@@ -79,7 +79,7 @@ public class OpenBoxWithLootScript : MonoBehaviour, IInteractable
         }
     }
 
-    public GameObject GetGameObject()
+    public GameObject InteractionText()
     {
         return openText;
     }

@@ -27,7 +27,7 @@ public class LightCandles : MonoBehaviour, IInteractable
         }
     }
 
-    public GameObject GetGameObject()
+    public GameObject InteractionText()
     {
         return lightText;
     }

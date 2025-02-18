@@ -15,7 +15,7 @@ public class PickUpKeyWithRaycast : MonoBehaviour, IInteractable
         invOB.SetActive(false);
     }
 
-    public GameObject GetGameObject()
+    public GameObject InteractionText()
     {
         return pickUpText;
     }

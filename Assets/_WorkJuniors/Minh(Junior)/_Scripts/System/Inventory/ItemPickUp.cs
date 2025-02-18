@@ -18,7 +18,7 @@ public class ItemPickUp : MonoBehaviour, IInteractable
         Destroy(gameObject);
     }
 
-    public GameObject GetGameObject()
+    public GameObject InteractionText()
     {
         return pickUpText;
     }

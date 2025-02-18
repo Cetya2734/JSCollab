@@ -45,7 +45,7 @@ public class DoorsWithLock : MonoBehaviour, IInteractable
         }
     }
 
-    public GameObject GetGameObject()
+    public GameObject InteractionText()
     {
         return openText;
     }

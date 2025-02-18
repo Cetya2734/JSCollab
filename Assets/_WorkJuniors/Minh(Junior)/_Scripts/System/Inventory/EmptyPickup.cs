@@ -10,7 +10,7 @@ public class EmptyPickup : MonoBehaviour,IInteractable
     {
         
     }
-    public GameObject GetGameObject()
+    public GameObject InteractionText()
     {
         return emptyGameObject;
     }

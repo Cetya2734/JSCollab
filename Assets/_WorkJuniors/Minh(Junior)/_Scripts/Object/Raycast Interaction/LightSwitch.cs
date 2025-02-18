@@ -28,7 +28,7 @@ public class LightSwitch : MonoBehaviour, IInteractable
         ToggleLights();
     }
 
-    public GameObject GetGameObject()
+    public GameObject InteractionText()
     {
         return lightsText;
     }
