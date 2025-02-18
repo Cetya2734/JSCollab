@@ -466,6 +466,10 @@ PrefabInstance:
       value: Medkit Variant (1)
       objectReference: {fileID: 0}
     - target: {fileID: 3092344418299550265, guid: f0b155f4ceac3a44189f13eaab25da8d, type: 3}
+      propertyPath: EPrompt
+      value: 
+      objectReference: {fileID: 5617820676261748584}
+    - target: {fileID: 3092344418299550265, guid: f0b155f4ceac3a44189f13eaab25da8d, type: 3}
       propertyPath: _itemData
       value: 
       objectReference: {fileID: 11400000, guid: bdc0b2c9fa4e4b34083841a5f9150245, type: 2}
@@ -2380,7 +2384,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _itemData: {fileID: 11400000, guid: 893687c2ca3946348bdb71cdd1f76c7a, type: 2}
   equippedObject: {fileID: 3937240304545483339}
-  pickUpText: {fileID: 5617820676261748584}
+  pickUpText: {fileID: 1436916632}
+  EPrompt: {fileID: 5617820676261748584}
 --- !u!54 &1641047068
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -8253,7 +8258,6 @@ MonoBehaviour:
   _inspectMenu: {fileID: 8220634100572563177}
   _itemNameText: {fileID: 1394237692887539101}
   _itemDescriptionText: {fileID: 9130624479645678204}
-  _characterController: {fileID: 552333381996407876}
   _slots:
   - {fileID: 8703387548721115224}
   - {fileID: 1428736404}
@@ -8281,6 +8285,7 @@ MonoBehaviour:
   _inspectButton: {fileID: 6233455156880907865}
   _discardButton: {fileID: 4699060931380488121}
   _dictionary: {fileID: 1198459843682766169}
+  fadeDuration: 0.1
 --- !u!23 &4655904856182927117
 MeshRenderer:
   m_ObjectHideFlags: 0

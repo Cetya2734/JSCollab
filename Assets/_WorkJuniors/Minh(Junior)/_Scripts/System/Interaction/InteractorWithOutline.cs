@@ -105,9 +105,6 @@ public class InteractorWithOutline : MonoBehaviour
                     interactionText.SetActive(false);
                 }
             }
-
-            currentInteractable = null;
         }
     }
-
 }

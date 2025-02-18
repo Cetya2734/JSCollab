@@ -4,6 +4,7 @@ public class ItemPickUp : MonoBehaviour, IInteractable
     [SerializeField] private ItemData _itemData;
     [SerializeField] private GameObject equippedObject;
     [SerializeField] private GameObject pickUpText;
+    [SerializeField] private GameObject EPrompt;
 
     public void Interact()
     {      
@@ -24,6 +25,7 @@ public class ItemPickUp : MonoBehaviour, IInteractable
     }
     void OnDestroy()
     {
+        EPrompt.SetActive(false);
         if (pickUpText != null && pickUpText.activeSelf)
         {
             pickUpText.SetActive(false);

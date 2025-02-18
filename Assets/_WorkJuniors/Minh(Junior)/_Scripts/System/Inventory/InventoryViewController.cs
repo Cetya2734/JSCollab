@@ -22,7 +22,7 @@ public class InventoryViewController : MonoBehaviour
 
     [SerializeField] private TMP_Text _itemDescriptionText;
 
-    [SerializeField] private FPSController _characterController;
+   // [SerializeField] private FPSController _characterController;
 
     [SerializeField] private List<ItemSlot> _slots;
 
@@ -46,6 +46,7 @@ public class InventoryViewController : MonoBehaviour
 
     [SerializeField] private ItemDictionary _dictionary;
 
+    [SerializeField] private float fadeDuration = 0.1f;
     private enum State
     {
         menuClosed,
@@ -71,14 +72,14 @@ public class InventoryViewController : MonoBehaviour
         {
             if (_state == State.menuClosed)
             {
-                EventBus.Instance.PauseGameplay();
-                _fader.FadeToBlack(0.3f, FadeToMenuCallback);
+                //EventBus.Instance.PauseGameplay();
+                _fader.FadeToBlack(fadeDuration, FadeToMenuCallback);
                 _state = State.menuOpen;
                 EventSystem.current.SetSelectedGameObject(_firstInventoryOption);
             }
             else if (_state == State.menuOpen)
             {
-                _fader.FadeToBlack(0.3f, FadeFromMenuCallback);
+                _fader.FadeToBlack(fadeDuration, FadeFromMenuCallback);
                 _state = State.menuClosed;
             }
             else if (_state == State.contextMenu)
@@ -139,14 +140,6 @@ public class InventoryViewController : MonoBehaviour
                         _inspectButton.interactable = true;
                         _discardButton.interactable = true;
                     }
-                    
-                    // _equipButton.interactable = _currentSlot.itemData.IsEquippable;
-                    // _useButton.interactable = _currentSlot.itemData.IsConsumable;
-                    // _inspectButton.interactable = true;
-                    // _discardButton.interactable = true;
-                    //
-                    // EventSystem.current.SetSelectedGameObject(_equipButton.interactable ? _firstContextMenuOption : _secondContextMenuOption);
-
                 }
             }
 
@@ -155,9 +148,6 @@ public class InventoryViewController : MonoBehaviour
                 if (_state == State.contextMenu)
                 {
                     _contextMenuObject.SetActive(false);
-
-                    Debug.Log(_inspectMenu.transform.localScale);
-                    
                     foreach (var button in _contextMenuIgnore)
                     {
                         button.interactable = true;
@@ -169,7 +159,7 @@ public class InventoryViewController : MonoBehaviour
     
     public void UseItem()
     {
-        _fader.FadeToBlack(0.5f,FadeToUseItemCallback );
+        _fader.FadeToBlack(fadeDuration,FadeToUseItemCallback );
     }
     public void FadeToUseItemCallback()
     {
@@ -188,7 +178,7 @@ public class InventoryViewController : MonoBehaviour
         
         EventSystem.current.SetSelectedGameObject(_currentSlot.gameObject);
         
-        _fader.FadeFromBlack(0.5f, () =>
+        _fader.FadeFromBlack(fadeDuration, () =>
         {
             EventBus.Instance.UseItem(_currentSlot.itemData);
             ClearItemData();
@@ -196,12 +186,12 @@ public class InventoryViewController : MonoBehaviour
         
         _state = State.menuClosed;
         
-        EventBus.Instance.ResumeGameplay();
+        //.Instance.ResumeGameplay();
     }
 
     public void EquipItem()
     {
-        _fader.FadeToBlack(0.5f, FadeToEquipItemCallback);
+        _fader.FadeToBlack(fadeDuration, FadeToEquipItemCallback);
     }
 
     public void FadeToEquipItemCallback()
@@ -225,7 +215,7 @@ public class InventoryViewController : MonoBehaviour
 
         if (_currentSlot.itemData.IsEquippable)
         {
-            _fader.FadeFromBlack(0.5f, () =>
+            _fader.FadeFromBlack(fadeDuration, () =>
             {
                 if (equipObject != null)
                 {
@@ -241,8 +231,7 @@ public class InventoryViewController : MonoBehaviour
             
             _state = State.menuClosed;
         }
-        EventBus.Instance.ResumeGameplay();
-        
+        //EventBus.Instance.ResumeGameplay();
     }
 
     public void Inspect()
@@ -252,7 +241,6 @@ public class InventoryViewController : MonoBehaviour
     
     public void OnSlotSelected(ItemSlot selectedSlot)
     {
-       // _currentSlot = selectedSlot;
         // Check if the selected slot is empty
         if (selectedSlot.itemData == null)
         {
@@ -304,13 +292,14 @@ public class InventoryViewController : MonoBehaviour
     {
         _inventoryViewObject.SetActive(true);
         //footStepAudio.volume = 0f;
-        _fader.FadeFromBlack(0.3f,  null);
+        _fader.FadeFromBlack(fadeDuration,  null);
     }
     private void FadeFromMenuCallback()
     {
         _inventoryViewObject.SetActive(false);
        // footStepAudio.volume = 10f;
-        _fader.FadeFromBlack(0.3f, EventBus.Instance.ResumeGameplay);
+        //_fader.FadeFromBlack(0.3f, EventBus.Instance.ResumeGameplay);
+        _fader.FadeFromBlack(fadeDuration, null);
     }
 
     public void ClearItemData()
