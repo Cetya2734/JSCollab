@@ -72,7 +72,7 @@ public class InventoryViewController : MonoBehaviour
         {
             if (_state == State.menuClosed)
             {
-                //EventBus.Instance.PauseGameplay();
+                EventBus.Instance.PauseGameplay();
                 _fader.FadeToBlack(fadeDuration, FadeToMenuCallback);
                 _state = State.menuOpen;
                 EventSystem.current.SetSelectedGameObject(_firstInventoryOption);
@@ -186,7 +186,7 @@ public class InventoryViewController : MonoBehaviour
         
         _state = State.menuClosed;
         
-        //.Instance.ResumeGameplay();
+        EventBus.Instance.ResumeGameplay();
     }
 
     public void EquipItem()
@@ -231,7 +231,7 @@ public class InventoryViewController : MonoBehaviour
             
             _state = State.menuClosed;
         }
-        //EventBus.Instance.ResumeGameplay();
+        EventBus.Instance.ResumeGameplay();
     }
 
     public void Inspect()
@@ -298,8 +298,7 @@ public class InventoryViewController : MonoBehaviour
     {
         _inventoryViewObject.SetActive(false);
        // footStepAudio.volume = 10f;
-        //_fader.FadeFromBlack(0.3f, EventBus.Instance.ResumeGameplay);
-        _fader.FadeFromBlack(fadeDuration, null);
+        _fader.FadeFromBlack(0.3f, EventBus.Instance.ResumeGameplay);
     }
 
     public void ClearItemData()

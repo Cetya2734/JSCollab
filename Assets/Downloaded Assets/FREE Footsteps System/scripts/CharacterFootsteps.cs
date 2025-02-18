@@ -1,10 +1,4 @@
-﻿// - AUTHOR : Pavel Cristian.
-// - WHERE SHOULD BE ATTACHED : This script should be attached on the main root of the character, 
-//	 on the GameObject the Rigidbody / CharacterController script is attached.
-// - PURPOSE OF THE SCRIPT : The purpose of this script is to gather data from the ground below the character and use the
-//   data to find a user-defined sound for the type of ground found.
-
-// DISCLAIMER : THIS SCRIPT CAN BE USED IN ANY WAY, MENTIONING MY WORK WILL BE GREATLY APPRECIATED BUT NOT REQUIRED.
+﻿// DISCLAIMER : THIS SCRIPT CAN BE USED IN ANY WAY, MENTIONING MY WORK WILL BE GREATLY APPRECIATED BUT NOT REQUIRED.
 
 using UnityEngine;
 
@@ -94,7 +88,32 @@ namespace Footsteps {
 				}
 			}
 		}
+		
+		void OnEnable() {
+				EventBus.Instance.onGameplayPaused += () => audioSource.mute = true;
+				EventBus.Instance.onGameplayResumed += () => audioSource.mute = false;
+				//Debug.Log("Subscribed in Footsteps");
+		}
 
+		void OnDisable() {
+				EventBus.Instance.onGameplayPaused -=  () => audioSource.mute = true;
+				EventBus.Instance.onGameplayResumed -= () => audioSource.mute = false;
+		}
+
+		void MuteFootsteps() {
+			if (audioSource != null) {
+				Debug.Log("Mute footsteps");
+				audioSource.mute = true;
+			}
+		}
+
+		void UnmuteFootsteps() {
+			if (audioSource != null) {
+				Debug.Log("Unmute footsteps");
+				audioSource.mute = false;
+			}
+		}
+		
 		public void TryPlayFootstep() {
 			if(isGrounded) {
 				PlayFootstep();

@@ -43,6 +43,7 @@ public class FPSController : MonoBehaviour
     {
         EventBus.Instance.onGameplayPaused += () => canMove = false;
         EventBus.Instance.onGameplayResumed += () => canMove = true;
+        //Debug.Log("Subscribed");
     }
 
     private void OnDisable()

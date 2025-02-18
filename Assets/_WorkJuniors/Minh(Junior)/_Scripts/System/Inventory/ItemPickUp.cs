@@ -15,6 +15,7 @@ public class ItemPickUp : MonoBehaviour, IInteractable
         else
         {
             EventBus.Instance.PickUpItem(_itemData, equippedObject);
+            EPrompt.SetActive(false);
         }
         Destroy(gameObject);
     }
@@ -25,7 +26,6 @@ public class ItemPickUp : MonoBehaviour, IInteractable
     }
     void OnDestroy()
     {
-        EPrompt.SetActive(false);
         if (pickUpText != null && pickUpText.activeSelf)
         {
             pickUpText.SetActive(false);
