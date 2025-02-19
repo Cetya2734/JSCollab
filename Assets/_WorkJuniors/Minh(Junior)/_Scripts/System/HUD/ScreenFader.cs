@@ -13,6 +13,7 @@ public class ScreenFader : MonoBehaviour
 
     private bool _isBusy;
 
+    // ReSharper disable Unity.PerformanceAnalysis
     public void FadeToBlack(float duration, Action finishedCallback)
     {
         if (_isBusy) return;

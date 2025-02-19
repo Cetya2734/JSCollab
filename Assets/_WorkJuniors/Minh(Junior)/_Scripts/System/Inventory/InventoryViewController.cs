@@ -2,58 +2,59 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class InventoryViewController : MonoBehaviour
 {
-    [SerializeField] private GameObject _inventoryViewObject;
+    [FormerlySerializedAs("_inventoryViewObject")] [SerializeField] private GameObject inventoryViewObject;
 
-    [SerializeField] private GameObject _contextMenuObject;
+    [FormerlySerializedAs("_contextMenuObject")] [SerializeField] private GameObject contextMenuObject;
 
-    [SerializeField] private GameObject _firstContextMenuOption;
+    [FormerlySerializedAs("_firstContextMenuOption")] [SerializeField] private GameObject firstContextMenuOption;
 
-    [SerializeField] private GameObject _secondContextMenuOption;
+    [FormerlySerializedAs("_secondContextMenuOption")] [SerializeField] private GameObject secondContextMenuOption;
 
-    [SerializeField] private GameObject _firstInventoryOption;
+    [FormerlySerializedAs("_firstInventoryOption")] [SerializeField] private GameObject firstInventoryOption;
 
-    [SerializeField] private GameObject _inspectMenu;
+    [FormerlySerializedAs("_inspectMenu")] [SerializeField] private GameObject inspectMenu;
 
-    [SerializeField] private TMP_Text _itemNameText;
+    [FormerlySerializedAs("_itemNameText")] [SerializeField] private TMP_Text itemNameText;
 
-    [SerializeField] private TMP_Text _itemDescriptionText;
+    [FormerlySerializedAs("_itemDescriptionText")] [SerializeField] private TMP_Text itemDescriptionText;
 
    // [SerializeField] private FPSController _characterController;
 
-    [SerializeField] private List<ItemSlot> _slots;
+    [FormerlySerializedAs("_slots")] [SerializeField] private List<ItemSlot> slots;
 
-    [SerializeField] private ItemSlot _currentSlot;
+    [FormerlySerializedAs("_currentSlot")] [SerializeField] private ItemSlot currentSlot;
 
-    [SerializeField] private GameObject _currentlyEquippedItem;
+    [FormerlySerializedAs("_currentlyEquippedItem")] [SerializeField] private GameObject currentlyEquippedItem;
 
-    [SerializeField] private ScreenFader _fader;
+    [FormerlySerializedAs("_fader")] [SerializeField] private ScreenFader fader;
 
-    [SerializeField] private List<Button> _contextMenuIgnore;
+    [FormerlySerializedAs("_contextMenuIgnore")] [SerializeField] private List<Button> contextMenuIgnore;
 
-    [SerializeField] private Button _equipButton;
+    [FormerlySerializedAs("_equipButton")] [SerializeField] private Button equipButton;
 
-    [SerializeField] private Button _useButton;
+    [FormerlySerializedAs("_useButton")] [SerializeField] private Button useButton;
 
-    [SerializeField] private Button _inspectButton;
+    [FormerlySerializedAs("_inspectButton")] [SerializeField] private Button inspectButton;
 
-    [SerializeField] private Button _discardButton;
+    [FormerlySerializedAs("_discardButton")] [SerializeField] private Button discardButton;
 
    // [SerializeField] private AudioSource footStepAudio;
 
-    [SerializeField] private ItemDictionary _dictionary;
+    [FormerlySerializedAs("_dictionary")] [SerializeField] private ItemDictionary dictionary;
 
     [SerializeField] private float fadeDuration = 0.1f;
     private enum State
     {
-        menuClosed,
+        MenuClosed,
 
-        menuOpen,
+        MenuOpen,
 
-        contextMenu, 
+        ContextMenu, 
     };
 
     private State _state;
@@ -62,7 +63,7 @@ public class InventoryViewController : MonoBehaviour
     private void Start()
     {
         //footStepAudio = footStepAudio.GetComponent<AudioSource>();
-        _inspectMenu.transform.localScale = new Vector3(0, 0, 0);
+        inspectMenu.transform.localScale = new Vector3(0, 0, 0);
     }
     
     private void Update()
@@ -70,35 +71,35 @@ public class InventoryViewController : MonoBehaviour
         // Toggle the inventory view on/off when the Tab key is pressed
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            if (_state == State.menuClosed)
+            if (_state == State.MenuClosed)
             {
                 EventBus.Instance.PauseGameplay();
-                _fader.FadeToBlack(fadeDuration, FadeToMenuCallback);
-                _state = State.menuOpen;
-                EventSystem.current.SetSelectedGameObject(_firstInventoryOption);
+                fader.FadeToBlack(fadeDuration, FadeToMenuCallback);
+                _state = State.MenuOpen;
+                EventSystem.current.SetSelectedGameObject(firstInventoryOption);
             }
-            else if (_state == State.menuOpen)
+            else if (_state == State.MenuOpen)
             {
-                _fader.FadeToBlack(fadeDuration, FadeFromMenuCallback);
-                _state = State.menuClosed;
+                fader.FadeToBlack(fadeDuration, FadeFromMenuCallback);
+                _state = State.MenuClosed;
             }
-            else if (_state == State.contextMenu)
+            else if (_state == State.ContextMenu)
             {
-                _inspectMenu.transform.localScale = new Vector3(0, 0, 0);
-                _contextMenuObject.SetActive(false);
-                foreach (var button in _contextMenuIgnore)
+                inspectMenu.transform.localScale = new Vector3(0, 0, 0);
+                contextMenuObject.SetActive(false);
+                foreach (var button in contextMenuIgnore)
                 {
                     button.interactable = true;
                 }
-                EventSystem.current.SetSelectedGameObject(_currentSlot.gameObject);
-                _state = State.menuOpen;
+                EventSystem.current.SetSelectedGameObject(currentSlot.gameObject);
+                _state = State.MenuOpen;
             }
         }
 
         //Open context menu
         if (Input.GetButtonDown("Interact"))
         {
-            if (_state == State.menuOpen)
+            if (_state == State.MenuOpen)
             {
                 if (EventSystem.current.currentSelectedGameObject.TryGetComponent<ItemSlot>(out var slot))
                 {
@@ -106,49 +107,49 @@ public class InventoryViewController : MonoBehaviour
                     if (slot.itemData == null)
                         return;
                     
-                    _currentSlot = slot;
-                    _state = State.contextMenu;
-                    _contextMenuObject.SetActive(true);
+                    currentSlot = slot;
+                    _state = State.ContextMenu;
+                    contextMenuObject.SetActive(true);
                     
-                    foreach (var button in _contextMenuIgnore)
+                    foreach (var button in contextMenuIgnore)
                     {
                         button.interactable = false;
                     }
 
-                    if (_currentSlot.itemData == null)
+                    if (currentSlot.itemData == null)
                     {
-                        _equipButton.interactable = false;
-                        _useButton.interactable = false;
-                        _inspectButton.interactable = false;
-                        _discardButton.interactable = false;
+                        equipButton.interactable = false;
+                        useButton.interactable = false;
+                        inspectButton.interactable = false;
+                        discardButton.interactable = false;
                     }
                     else
                     {
-                        _equipButton.interactable = _currentSlot.itemData.IsEquippable;
-                        _useButton.interactable = _currentSlot.itemData.IsConsumable;
+                        equipButton.interactable = currentSlot.itemData.IsEquippable;
+                        useButton.interactable = currentSlot.itemData.IsConsumable;
                         
-                        if (_equipButton.interactable)
+                        if (equipButton.interactable)
                         {
-                            EventSystem.current.SetSelectedGameObject(_firstContextMenuOption);
+                            EventSystem.current.SetSelectedGameObject(firstContextMenuOption);
                         }
                         
-                        if (_useButton.interactable)
+                        if (useButton.interactable)
                         {
-                            EventSystem.current.SetSelectedGameObject(_secondContextMenuOption);
+                            EventSystem.current.SetSelectedGameObject(secondContextMenuOption);
                         }
                     
-                        _inspectButton.interactable = true;
-                        _discardButton.interactable = true;
+                        inspectButton.interactable = true;
+                        discardButton.interactable = true;
                     }
                 }
             }
 
             if (Input.GetKeyDown(KeyCode.Tab))
             {
-                if (_state == State.contextMenu)
+                if (_state == State.ContextMenu)
                 {
-                    _contextMenuObject.SetActive(false);
-                    foreach (var button in _contextMenuIgnore)
+                    contextMenuObject.SetActive(false);
+                    foreach (var button in contextMenuIgnore)
                     {
                         button.interactable = true;
                     }
@@ -159,69 +160,66 @@ public class InventoryViewController : MonoBehaviour
     
     public void UseItem()
     {
-        _fader.FadeToBlack(fadeDuration,FadeToUseItemCallback );
+        fader.FadeToBlack(fadeDuration,FadeToUseItemCallback );
     }
     public void FadeToUseItemCallback()
     {
-        _contextMenuObject.SetActive(false);
-        _inventoryViewObject.SetActive(false);
+        contextMenuObject.SetActive(false);
+        inventoryViewObject.SetActive(false);
         
-        _itemNameText.text = "";
-        _itemDescriptionText.text = "";
+        itemNameText.text = "";
+        itemDescriptionText.text = "";
         
-       // footStepAudio.volume = 1f;
-        
-        foreach (var button in _contextMenuIgnore)
+        foreach (var button in contextMenuIgnore)
         {
             button.interactable = true;
         }
         
-        EventSystem.current.SetSelectedGameObject(_currentSlot.gameObject);
+        EventSystem.current.SetSelectedGameObject(currentSlot.gameObject);
         
-        _fader.FadeFromBlack(fadeDuration, () =>
+        fader.FadeFromBlack(fadeDuration, () =>
         {
-            EventBus.Instance.UseItem(_currentSlot.itemData);
+            EventBus.Instance.UseItem(currentSlot.itemData);
             ClearItemData();
         });
         
-        _state = State.menuClosed;
+        _state = State.MenuClosed;
         
         EventBus.Instance.ResumeGameplay();
     }
 
     public void EquipItem()
     {
-        _fader.FadeToBlack(fadeDuration, FadeToEquipItemCallback);
+        fader.FadeToBlack(fadeDuration, FadeToEquipItemCallback);
     }
 
     public void FadeToEquipItemCallback()
     {
-        _contextMenuObject.SetActive(false);
-        _inventoryViewObject.SetActive(false);
+        contextMenuObject.SetActive(false);
+        inventoryViewObject.SetActive(false);
 
-        if (_currentlyEquippedItem != null)
+        if (currentlyEquippedItem != null)
         {
-            _currentlyEquippedItem.SetActive(false);
+            currentlyEquippedItem.SetActive(false);
         }
         
-        GameObject equipObject = _dictionary.GetEquipObjectForPickUp(_currentSlot.itemData);
-        //footStepAudio.volume = 1f;
+        GameObject equipObject = dictionary.GetEquipObjectForPickUp(currentSlot.itemData);
         
-        foreach (var button in _contextMenuIgnore)
+        foreach (var button in contextMenuIgnore)
         {
             button.interactable = true;
         }
-        EventSystem.current.SetSelectedGameObject(_currentSlot.gameObject);
+        EventSystem.current.SetSelectedGameObject(currentSlot.gameObject);
 
-        if (_currentSlot.itemData.IsEquippable)
+        if (currentSlot.itemData.IsEquippable)
         {
-            _fader.FadeFromBlack(fadeDuration, () =>
+            fader.FadeFromBlack(fadeDuration, () =>
             {
                 if (equipObject != null)
                 {
                     equipObject.SetActive(true);
-                    _currentSlot.equippedObject = equipObject;
-                    _currentlyEquippedItem = equipObject;
+                    currentSlot.equippedObject = equipObject;
+                    currentlyEquippedItem = equipObject;
                 }
                 else
                 {
@@ -229,14 +227,14 @@ public class InventoryViewController : MonoBehaviour
                 }
             });
             
-            _state = State.menuClosed;
+            _state = State.MenuClosed;
         }
         EventBus.Instance.ResumeGameplay();
     }
 
     public void Inspect()
     {
-        _inspectMenu.transform.localScale = new Vector3(1, 1, 1);
+        inspectMenu.transform.localScale = new Vector3(1, 1, 1);
     }
     
     public void OnSlotSelected(ItemSlot selectedSlot)
@@ -244,16 +242,16 @@ public class InventoryViewController : MonoBehaviour
         // Check if the selected slot is empty
         if (selectedSlot.itemData == null)
         {
-            _currentSlot = null;
+            currentSlot = null;
             // Clear the item name and description texts if the slot is empty
-            _itemNameText.ClearMesh();
-            _itemDescriptionText.ClearMesh();
+            itemNameText.ClearMesh();
+            itemDescriptionText.ClearMesh();
             return;
         }
-        _currentSlot = selectedSlot;
+        currentSlot = selectedSlot;
         // Display the name and first description of the selected item in UI
-        _itemNameText.SetText(selectedSlot.itemData.name);
-        _itemDescriptionText.SetText(selectedSlot.itemData.Description[0]);
+        itemNameText.SetText(selectedSlot.itemData.name);
+        itemDescriptionText.SetText(selectedSlot.itemData.Description[0]);
     }
 
 
@@ -271,7 +269,7 @@ public class InventoryViewController : MonoBehaviour
     private void OnItemPickedUp(ItemData itemData, GameObject equippedObject)
     {
         // Find the first empty slot and assign the picked-up item to it
-        foreach (var slot in _slots)
+        foreach (var slot in slots)
         {
             if (slot == null)
             {
@@ -290,19 +288,17 @@ public class InventoryViewController : MonoBehaviour
  
     private void FadeToMenuCallback()
     {
-        _inventoryViewObject.SetActive(true);
-        //footStepAudio.volume = 0f;
-        _fader.FadeFromBlack(fadeDuration,  null);
+        inventoryViewObject.SetActive(true);
+        fader.FadeFromBlack(fadeDuration,  EventBus.Instance.PauseGameplay);
     }
     private void FadeFromMenuCallback()
     {
-        _inventoryViewObject.SetActive(false);
-       // footStepAudio.volume = 10f;
-        _fader.FadeFromBlack(0.3f, EventBus.Instance.ResumeGameplay);
+        inventoryViewObject.SetActive(false);
+        fader.FadeFromBlack(fadeDuration, EventBus.Instance.ResumeGameplay);
     }
 
     public void ClearItemData()
     {
-        _currentSlot.ClearItemData();
+        currentSlot.ClearItemData();
     }
 }

@@ -37,13 +37,9 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
     }
+    void Start() => ChangeState(GameState.Starting);
 
-    void Start()
-    {
-        
-    }
-
-    public void UpdateGameState(GameState newState)
+    public void ChangeState(GameState newState)
     {
         State = newState;
         switch (newState)
@@ -59,12 +55,15 @@ public class GameManager : MonoBehaviour
         }
         
         OnGameStateChanged?.Invoke(newState);
-
+    }
+    
+    private void HandleStarting() {
     }
 }
 
 public enum GameState
 {
+    Starting,
     Gameplay,
     Win,
     Lose
