@@ -3,11 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EventBus : MonoBehaviour
+public class EventBus
 {
+    private static EventBus instance;
+    
     // Declare a static instance of EventBus accessible from anywhere
-    public static EventBus Instance { get; private set; }
 
+    public static EventBus Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = new EventBus();
+            }
+
+            return instance;
+        }
+    }
+    
     public event Action onOpenInventory;
 
     public event Action onCloseInventory;
@@ -50,12 +64,7 @@ public class EventBus : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
+        instance = this;
     }
 
     public void UseItem(ItemData item)

@@ -12,26 +12,28 @@ public class GameManager : MonoBehaviour
     public GameState State;
     
     public static event Action <GameState> OnGameStateChanged;
-    // void OnEnable()
-    // {
-    //     EventBus.Instance.onGameplayPaused += () => gamePaused();
-    //     EventBus.Instance.onGameplayResumed += () => gameResumed();
-    // }
-    //
-    // void OnDisable() {
-    //     EventBus.Instance.onGameplayPaused -=  () => gamePaused();
-    //     EventBus.Instance.onGameplayResumed -= () => gameResumed();
-    // }
-    //
-    // private void gameResumed()
-    // {
-    //     Time.timeScale = 1;
-    // }
-    //
-    // private void gamePaused()
-    // {
-    //     Time.timeScale = 0;
-    // }
+    void OnEnable()
+    {
+        EventBus.Instance.onGameplayPaused += GamePaused;
+        EventBus.Instance.onGameplayResumed += GameResumed;
+    }
+    
+    void OnDisable()
+    {
+        EventBus.Instance.onGameplayPaused -= GamePaused;
+        EventBus.Instance.onGameplayResumed -= GameResumed;
+    }
+    
+    private void GameResumed()
+    {
+        Time.timeScale = 1;
+    }
+    
+    private void GamePaused()
+    {
+        Time.timeScale = 0;
+        Debug.Log("Game Paused");
+    }
 
     void Awake()
     {

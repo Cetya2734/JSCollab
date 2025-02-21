@@ -62,13 +62,12 @@ public class InventoryViewController : MonoBehaviour
        
     private void Start()
     {
-        //footStepAudio = footStepAudio.GetComponent<AudioSource>();
         inspectMenu.transform.localScale = new Vector3(0, 0, 0);
     }
     
     private void Update()
     {
-        // Toggle the inventory view on/off when the Tab key is pressed
+        // Toggle the inventory view 
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             if (_state == State.MenuClosed)
@@ -78,6 +77,7 @@ public class InventoryViewController : MonoBehaviour
                 _state = State.MenuOpen;
                 EventSystem.current.SetSelectedGameObject(firstInventoryOption);
             }
+            // Close the inventory view
             else if (_state == State.MenuOpen)
             {
                 fader.FadeToBlack(fadeDuration, FadeFromMenuCallback);
@@ -286,10 +286,11 @@ public class InventoryViewController : MonoBehaviour
         }
     }
  
+    // ReSharper disable Unity.PerformanceAnalysis
     private void FadeToMenuCallback()
     {
+        fader.FadeFromBlack(fadeDuration, null);
         inventoryViewObject.SetActive(true);
-        fader.FadeFromBlack(fadeDuration,  EventBus.Instance.PauseGameplay);
     }
     private void FadeFromMenuCallback()
     {
