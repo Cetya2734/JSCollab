@@ -21,31 +21,52 @@ public class SelectorView : MonoBehaviour
         SetSlot();
     }
 
+    // void Update()
+    // {
+    //     // Get the currently selected GameObject in the EventSystem
+    //     var selectedGameObject = EventSystem.current.currentSelectedGameObject;
+    //
+    //     // Update the reference to the selected GameObject
+    //     _selected = (selectedGameObject == null) ? _selected : selectedGameObject;
+    //
+    //     // Set the selected GameObject in the EventSystem
+    //     EventSystem.current.SetSelectedGameObject(_selected);
+    //
+    //     var selected = EventSystem.current.currentSelectedGameObject;
+    //
+    //     if (selected == null) return;
+    //
+    //     // Smoothly move the SelectorView towards the position of the selected GameObject
+    //     transform.position = Vector3.Lerp(transform.position, selected.transform.position, _speed * Time.deltaTime);
+    //
+    //     var otherRect = selected.GetComponent<RectTransform>();
+    //
+    //     // Smoothly adjust the size of the SelectorView to match the size of the selected GameObject
+    //     var horizontalLerp = Mathf.Lerp(_rectTransform.rect.size.x, otherRect.rect.size.x, _speed * Time.deltaTime);
+    //     var verticalLerp = Mathf.Lerp(_rectTransform.rect.size.y, otherRect.rect.size.y, _speed * Time.deltaTime);
+    //
+    //     // Set the size of the SelectorView based on the interpolation
+    //     _rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, horizontalLerp);
+    //     _rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, verticalLerp);
+    // }
+
     void Update()
     {
-        // Get the currently selected GameObject in the EventSystem
         var selectedGameObject = EventSystem.current.currentSelectedGameObject;
-
-        // Update the reference to the selected GameObject
         _selected = (selectedGameObject == null) ? _selected : selectedGameObject;
-
-        // Set the selected GameObject in the EventSystem
         EventSystem.current.SetSelectedGameObject(_selected);
 
         var selected = EventSystem.current.currentSelectedGameObject;
-
         if (selected == null) return;
 
-        // Smoothly move the SelectorView towards the position of the selected GameObject
-        transform.position = Vector3.Lerp(transform.position, selected.transform.position, _speed * Time.deltaTime);
+        // Use unscaledDeltaTime so it works when Time.timeScale = 0
+        transform.position = Vector3.Lerp(transform.position, selected.transform.position, _speed * Time.unscaledDeltaTime);
 
         var otherRect = selected.GetComponent<RectTransform>();
 
-        // Smoothly adjust the size of the SelectorView to match the size of the selected GameObject
-        var horizontalLerp = Mathf.Lerp(_rectTransform.rect.size.x, otherRect.rect.size.x, _speed * Time.deltaTime);
-        var verticalLerp = Mathf.Lerp(_rectTransform.rect.size.y, otherRect.rect.size.y, _speed * Time.deltaTime);
+        var horizontalLerp = Mathf.Lerp(_rectTransform.rect.size.x, otherRect.rect.size.x, _speed * Time.unscaledDeltaTime);
+        var verticalLerp = Mathf.Lerp(_rectTransform.rect.size.y, otherRect.rect.size.y, _speed * Time.unscaledDeltaTime);
 
-        // Set the size of the SelectorView based on the interpolation
         _rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, horizontalLerp);
         _rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, verticalLerp);
     }

@@ -96,6 +96,15 @@ public class InventoryViewController : MonoBehaviour
             }
         }
 
+        if (Input.GetButtonDown("Interact"))
+        {
+            GameObject selectedObject = EventSystem.current.currentSelectedGameObject;
+
+            if (selectedObject != null && selectedObject.TryGetComponent<Button>(out Button button))
+            {
+                button.onClick.Invoke(); // Simulate button click
+            }
+        }
         //Open context menu
         if (Input.GetButtonDown("Interact"))
         {
