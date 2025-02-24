@@ -1510,9 +1510,29 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2137607709}
     - target: {fileID: 6279850814156958372, guid: 0945e6fe06cfab74ea0a3282626e9de0, type: 3}
+      propertyPath: maxFlickerTime
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6279850814156958372, guid: 0945e6fe06cfab74ea0a3282626e9de0, type: 3}
+      propertyPath: minFlickerTime
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6279850814156958372, guid: 0945e6fe06cfab74ea0a3282626e9de0, type: 3}
+      propertyPath: flickerDuration
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6279850814156958372, guid: 0945e6fe06cfab74ea0a3282626e9de0, type: 3}
       propertyPath: interactionText
       value: 
       objectReference: {fileID: 1628316734}
+    - target: {fileID: 6279850814156958372, guid: 0945e6fe06cfab74ea0a3282626e9de0, type: 3}
+      propertyPath: flickerIntensityMax
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6279850814156958372, guid: 0945e6fe06cfab74ea0a3282626e9de0, type: 3}
+      propertyPath: flickerIntensityMin
+      value: 0.3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
