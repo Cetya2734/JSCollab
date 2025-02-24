@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class LightSwitch : MonoBehaviour
+public class LightSwitchs : MonoBehaviour
 {
     public Light lightSource; // Assign in Inspector
     public TextMeshProUGUI interactionText; // Assign UI Text in Inspector
