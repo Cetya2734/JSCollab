@@ -1,0 +1,33 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PickUpKey : MonoBehaviour
+{
+    public GameObject keyOB;
+    public GameObject invOB;
+    public GameObject pickUpText;
+    public AudioSource keySound;
+
+    public bool inReach;
+
+    void Start()
+    {
+        inReach = false;
+        pickUpText.SetActive(false);
+        invOB.SetActive(false);
+    }
+
+    void Update()
+    {
+        if (inReach && Input.GetButtonDown("Interact"))
+        {
+            keyOB.SetActive(false);
+            keySound.Play();
+            invOB.SetActive(true);
+            pickUpText.SetActive(false);
+        }
+
+        
+    }
+}

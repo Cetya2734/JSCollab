@@ -5,10 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
-  - Hook
   - projectile
-  - Interactable
-  - Ground
+  - Fire
+  - Selectable
+  - canPickUp
   layers:
   - Default
   - TransparentFX
@@ -20,7 +20,7 @@ TagManager:
   - Sonar
   - Player
   - Interactable
-  - 
+  - holdLayer
   - 
   - 
   - 

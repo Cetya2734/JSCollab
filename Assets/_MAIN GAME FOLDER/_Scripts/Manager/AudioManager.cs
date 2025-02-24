@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
+    
+    [SerializeField] private AudioSource _musicSource;
+    [SerializeField] private AudioSource _soundsSource;
+    
     [Header("Audio Clips")]
     [SerializeField] private AudioClip shootSound; // Example shoot sound
     [SerializeField] private AudioClip backgroundMusic; // Example background music
@@ -49,5 +53,19 @@ public class AudioManager : MonoBehaviour
     public void StopBackgroundMusic()
     {
         audioSource.Stop();
+    }
+    
+    public void PlayMusic(AudioClip clip) {
+        _musicSource.clip = clip;
+        _musicSource.Play();
+    }
+
+    public void PlaySound(AudioClip clip, Vector3 pos, float vol = 1) {
+        _soundsSource.transform.position = pos;
+        PlaySound(clip, vol);
+    }
+
+    public void PlaySound(AudioClip clip, float vol = 1) {
+        _soundsSource.PlayOneShot(clip, vol);
     }
 }
