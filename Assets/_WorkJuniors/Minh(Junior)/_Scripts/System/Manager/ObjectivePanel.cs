@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Core.Gameplay.Objectives;
-//using Core.Gameplay.State;
 using UnityEngine;
 
 namespace UI.Game.Objectives
