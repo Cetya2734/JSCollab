@@ -16,6 +16,9 @@ public class FPSController : MonoBehaviour
     [SerializeField] private MouseLook mouseLook;
 
     private Camera playerCamera;
+    public GameObject cameraArmature;
+
+
     private Vector2 input;
     private Vector3 moveDirection = Vector3.zero;
     private CharacterController characterController;
@@ -129,6 +132,6 @@ public class FPSController : MonoBehaviour
     private void RotateView()
     {
         if (canMove == false) return;
-        mouseLook.LookRotation(transform, playerCamera.transform);
+        mouseLook.LookRotation(transform, cameraArmature.transform);
     }
 }
