@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEngine;
 
 public class StateMachine
 {
@@ -8,15 +9,16 @@ public class StateMachine
     private Dictionary<Type, StateNode> nodes = new();
     HashSet<ITransition> anyTransitions = new();
 
-    private void Update()
+    public void Update()
     {
         var transitions = GetTransition();
         if (transitions != null)
         {
             ChangeState(transitions.To);
-
-            current.State?.Update();
         }
+        current.State?.Update();
+        
+        //Debug.Log(current.State);
     }
 
     public void FixedUpdate()
@@ -64,7 +66,7 @@ public class StateMachine
         GetOrAddNode(from).AddTransition(GetOrAddNode(to).State, condition);
     }
     
-    public void AddAnyTransition(IState from, IState to, IPredicate condition)
+    public void AddAnyTransition(IState to, IPredicate condition)
     {
         anyTransitions.Add(new Transition(GetOrAddNode(to).State, condition));
     }
