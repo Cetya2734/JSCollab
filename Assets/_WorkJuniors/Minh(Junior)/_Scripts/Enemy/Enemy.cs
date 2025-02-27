@@ -59,7 +59,6 @@ public class Enemy : MonoBehaviour
     public void Attack()
     {
         if(attackTimer.IsRunning) return;
-
         attackTimer.Start();
         Debug.Log("Attacking");
     }

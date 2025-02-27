@@ -24,7 +24,6 @@ public class EnemyWanderState : EnemyBaseState
     {
         if(HasReachedDestination())
         {
-            Debug.Log("Finding new path");
             // Finding a new direction to wander
             var randomDirection = Random.insideUnitSphere * wanderRadius;
             randomDirection += startPoint;

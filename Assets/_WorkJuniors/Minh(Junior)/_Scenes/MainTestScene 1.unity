@@ -11445,10 +11445,10 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1561342621521469981, guid: b887fdc3226961e469bfa341d0c0fa27, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3648881761918804889}
+      addedObject: {fileID: 3648881761918804893}
     - targetCorrespondingSourceObject: {fileID: 1561342621521469981, guid: b887fdc3226961e469bfa341d0c0fa27, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3648881761918804890}
+      addedObject: {fileID: 3648881761918804892}
     - targetCorrespondingSourceObject: {fileID: 1486976549638326615, guid: b887fdc3226961e469bfa341d0c0fa27, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1833480449}
@@ -11463,7 +11463,7 @@ NavMeshAgent:
   m_CorrespondingSourceObject: {fileID: 6803174821580150913, guid: b887fdc3226961e469bfa341d0c0fa27, type: 3}
   m_PrefabInstance: {fileID: 3648881761918804884}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3648881761918804889
+--- !u!114 &3648881761918804892
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -11476,11 +11476,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 3648881761918804887}
-  playerDetector: {fileID: 3648881761918804890}
+  playerDetector: {fileID: 3648881761918804893}
   animator: {fileID: 1833480449}
-  wanderRadius: 15
-  timeBetweenAttacks: 1
---- !u!114 &3648881761918804890
+  wanderRadius: 10
+  timeBetweenAttacks: 3
+--- !u!114 &3648881761918804893
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -11492,9 +11492,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0a2684d2dd5a3743a77da28d87f1613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionAngle: 120
-  detectionRadius: 12.4
-  innerDetectionRadius: 7.3
+  detectionAngle: 60
+  detectionRadius: 10
+  innerDetectionRadius: 5
   detectionCooldown: 1
   attackRange: 2
 --- !u!4 &3698224299511383134
