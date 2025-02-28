@@ -9,10 +9,10 @@ public abstract class EnemyBaseState : IState
     protected readonly Animator animator;
 
     //Get animation hashes
-    protected static readonly int IdleHash = Animator.StringToHash("Idle");
-    protected static readonly int SwimmingHash = Animator.StringToHash("Swimming");
-    protected static readonly int ChargingHash = Animator.StringToHash("Charging");
-    protected static readonly int AttackHash = Animator.StringToHash("Attack");
+    protected static readonly int IdleHash = Animator.StringToHash("FishIdle");
+    protected static readonly int SwimmingHash = Animator.StringToHash("FishPatrolling");
+    protected static readonly int ChargingHash = Animator.StringToHash("FishCharging");
+    protected static readonly int AttackHash = Animator.StringToHash("FishAttack");
     protected static readonly int DeathHash = Animator.StringToHash("Death");
     
     protected const float crossFadeDuration = 0.1f;
