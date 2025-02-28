@@ -16,7 +16,7 @@ public class Enemy : MonoBehaviour
     [SerializeField, Child] private Animator animator;
 
     [SerializeField] private float wanderRadius = 10f;
-    [SerializeField] private float timeBetweenAttacks = 3f;
+    [SerializeField] private float timeBetweenAttacks = 5f;
     
     private StateMachine stateMachine;
 
@@ -37,7 +37,7 @@ public class Enemy : MonoBehaviour
         At(chaseState, wanderState, new FuncPredicate(() => !playerDetector.CanDetectPlayer()));
         
         At(chaseState, attackState, new FuncPredicate(() => playerDetector.CanAttackPlayer()));
-        At(attackState, chaseState, new FuncPredicate(() => !playerDetector.CanAttackPlayer()));
+        At(attackState, chaseState, new FuncPredicate(() => attackState.IsAttackComplete()));
 
         stateMachine.SetState(wanderState);
     }
@@ -48,7 +48,7 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         stateMachine.Update();
-        attackTimer.Tick(Time.deltaTime);
+        attackTimer.Tick(Time.deltaTime); // Update the cooldown timer
     }
 
     private void FixedUpdate()
@@ -61,5 +61,4 @@ public class Enemy : MonoBehaviour
         if (attackTimer.IsRunning) return;
         attackTimer.Start();
     }
-
 }

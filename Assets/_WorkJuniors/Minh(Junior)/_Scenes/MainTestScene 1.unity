@@ -11373,16 +11373,28 @@ PrefabInstance:
       value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 770590027395379089, guid: b887fdc3226961e469bfa341d0c0fa27, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.80555
+      objectReference: {fileID: 0}
+    - target: {fileID: 770590027395379089, guid: b887fdc3226961e469bfa341d0c0fa27, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.80555
+      objectReference: {fileID: 0}
+    - target: {fileID: 770590027395379089, guid: b887fdc3226961e469bfa341d0c0fa27, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.80555
+      objectReference: {fileID: 0}
+    - target: {fileID: 770590027395379089, guid: b887fdc3226961e469bfa341d0c0fa27, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.8671675
+      value: 5.8389
       objectReference: {fileID: 0}
     - target: {fileID: 770590027395379089, guid: b887fdc3226961e469bfa341d0c0fa27, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.41
+      value: 0.16753
       objectReference: {fileID: 0}
     - target: {fileID: 770590027395379089, guid: b887fdc3226961e469bfa341d0c0fa27, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 14.810808
+      value: 14.98
       objectReference: {fileID: 0}
     - target: {fileID: 770590027395379089, guid: b887fdc3226961e469bfa341d0c0fa27, type: 3}
       propertyPath: m_LocalRotation.w
@@ -11431,6 +11443,18 @@ PrefabInstance:
     - target: {fileID: 2299401965881725933, guid: b887fdc3226961e469bfa341d0c0fa27, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: -105
+      objectReference: {fileID: 0}
+    - target: {fileID: 6803174821580150913, guid: b887fdc3226961e469bfa341d0c0fa27, type: 3}
+      propertyPath: m_Speed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6803174821580150913, guid: b887fdc3226961e469bfa341d0c0fa27, type: 3}
+      propertyPath: m_Acceleration
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6803174821580150913, guid: b887fdc3226961e469bfa341d0c0fa27, type: 3}
+      propertyPath: m_AngularSpeed
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 6803174821580150913, guid: b887fdc3226961e469bfa341d0c0fa27, type: 3}
       propertyPath: m_StoppingDistance
@@ -11483,7 +11507,7 @@ MonoBehaviour:
   playerDetector: {fileID: 3648881761918804893}
   animator: {fileID: 1833480449}
   wanderRadius: 10
-  timeBetweenAttacks: 5
+  timeBetweenAttacks: 2
 --- !u!114 &3648881761918804893
 MonoBehaviour:
   m_ObjectHideFlags: 0
