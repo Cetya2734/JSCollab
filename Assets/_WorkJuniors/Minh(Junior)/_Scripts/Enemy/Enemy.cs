@@ -16,11 +16,11 @@ public class Enemy : MonoBehaviour
     [SerializeField, Child] private Animator animator;
 
     [SerializeField] private float wanderRadius = 10f;
-    [SerializeField] private float timeBetweenAttacks = 1f;
+    [SerializeField] private float timeBetweenAttacks = 3f;
     
     private StateMachine stateMachine;
 
-    private CountdownTimer attackTimer;
+    public CountdownTimer attackTimer;
     
     private void OnValidate() => this.ValidateRefs();
 
@@ -58,8 +58,8 @@ public class Enemy : MonoBehaviour
     
     public void Attack()
     {
-        if(attackTimer.IsRunning) return;
+        if (attackTimer.IsRunning) return;
         attackTimer.Start();
-        Debug.Log("Attacking");
     }
+
 }

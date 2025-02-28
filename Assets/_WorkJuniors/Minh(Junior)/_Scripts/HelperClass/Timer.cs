@@ -41,7 +41,8 @@ namespace Utilities {
     public class CountdownTimer : Timer {
         public CountdownTimer(float value) : base(value) { }
 
-        public override void Tick(float deltaTime) {
+        public override void Tick(float deltaTime)
+        {
             if (IsRunning && Time > 0) {
                 Time -= deltaTime;
             }

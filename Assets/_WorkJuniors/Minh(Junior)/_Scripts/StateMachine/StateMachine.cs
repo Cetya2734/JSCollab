@@ -18,7 +18,7 @@ public class StateMachine
         }
         current.State?.Update();
         
-        //Debug.Log(current.State);
+        Debug.Log(current.State);
     }
 
     public void FixedUpdate()

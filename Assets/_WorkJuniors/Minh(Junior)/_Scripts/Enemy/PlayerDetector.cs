@@ -42,7 +42,7 @@ public class PlayerDetector : MonoBehaviour
         var directionToPlayer = Player.position - transform.position;
         return directionToPlayer.magnitude <= attackRange;
     }
-
+    
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;

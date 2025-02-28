@@ -11432,6 +11432,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: -105
       objectReference: {fileID: 0}
+    - target: {fileID: 6803174821580150913, guid: b887fdc3226961e469bfa341d0c0fa27, type: 3}
+      propertyPath: m_StoppingDistance
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7158973763648537459, guid: b887fdc3226961e469bfa341d0c0fa27, type: 3}
       propertyPath: m_LocalPosition.y
       value: -0.1585284
@@ -11479,7 +11483,7 @@ MonoBehaviour:
   playerDetector: {fileID: 3648881761918804893}
   animator: {fileID: 1833480449}
   wanderRadius: 10
-  timeBetweenAttacks: 3
+  timeBetweenAttacks: 5
 --- !u!114 &3648881761918804893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11493,10 +11497,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detectionAngle: 60
-  detectionRadius: 10
-  innerDetectionRadius: 5
-  detectionCooldown: 1
-  attackRange: 2
+  detectionRadius: 12
+  innerDetectionRadius: 7
+  detectionCooldown: 2
+  attackRange: 3
 --- !u!4 &3698224299511383134
 Transform:
   m_ObjectHideFlags: 0
