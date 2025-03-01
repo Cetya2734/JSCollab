@@ -22,6 +22,8 @@ public class FPSController : MonoBehaviour
     private bool previouslyGrounded;
 
     private AudioSource audioSource;
+    
+    [SerializeField] private GameObject cameraArmature;
 
     private void Awake()
     {
@@ -129,6 +131,6 @@ public class FPSController : MonoBehaviour
     private void RotateView()
     {
         if (canMove == false) return;
-        mouseLook.LookRotation(transform, playerCamera.transform);
+        mouseLook.LookRotation(transform, cameraArmature.transform);
     }
 }
