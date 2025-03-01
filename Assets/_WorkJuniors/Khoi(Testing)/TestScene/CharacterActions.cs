@@ -18,6 +18,19 @@ public class CharacterActions : MonoBehaviour
         if(Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
         {
             animator.SetTrigger("walking");
+            if(Input.GetKey(KeyCode.LeftShift)){
+                animator.SetTrigger("running");
+            }
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            animator.SetTrigger("Shoot");
+
+        }
+        if (Input.GetKey(KeyCode.R))
+        {
+            animator.SetTrigger("reload");
+
         }
     }
     
