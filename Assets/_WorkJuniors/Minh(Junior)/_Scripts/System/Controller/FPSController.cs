@@ -16,14 +16,15 @@ public class FPSController : MonoBehaviour
     [SerializeField] private MouseLook mouseLook;
 
     private Camera playerCamera;
+    public GameObject cameraArmature;
+
+
     private Vector2 input;
     private Vector3 moveDirection = Vector3.zero;
     private CharacterController characterController;
     private bool previouslyGrounded;
 
     private AudioSource audioSource;
-    
-    [SerializeField] private GameObject cameraArmature;
 
     private void Awake()
     {
