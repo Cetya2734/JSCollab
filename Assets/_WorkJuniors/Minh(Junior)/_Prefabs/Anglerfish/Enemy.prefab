@@ -12,8 +12,6 @@ GameObject:
   - component: {fileID: 6803174821580150913}
   - component: {fileID: 5413731758528002948}
   - component: {fileID: 4269916310945236043}
-  - component: {fileID: 4981346087937386074}
-  - component: {fileID: 8271049899176293250}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -30,14 +28,14 @@ Transform:
   m_GameObject: {fileID: 1561342621521469981}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.8671675, y: 0.40999997, z: 14.810808}
-  m_LocalScale: {x: 0.80555, y: 0.80555, z: 0.80555}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8054240719412001288}
   - {fileID: 4371355465215159753}
   - {fileID: 8359327475807867885}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!195 &6803174821580150913
 NavMeshAgent:
@@ -77,7 +75,7 @@ MonoBehaviour:
   detectionRadius: 12
   innerDetectionRadius: 7
   detectionCooldown: 2
-  attackRange: 3
+  attackRange: 1.5
 --- !u!114 &4269916310945236043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93,42 +91,8 @@ MonoBehaviour:
   agent: {fileID: 6803174821580150913}
   playerDetector: {fileID: 5413731758528002948}
   animator: {fileID: 5110072079209648121}
-  wanderRadius: 10
-  timeBetweenAttacks: 2
---- !u!114 &4981346087937386074
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1561342621521469981}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0a2684d2dd5a3743a77da28d87f1613, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  detectionAngle: 60
-  detectionRadius: 12
-  innerDetectionRadius: 7
-  detectionCooldown: 2
-  attackRange: 3
---- !u!114 &8271049899176293250
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1561342621521469981}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 204974a8686de5344b9f4bab853eea5b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  agent: {fileID: 6803174821580150913}
-  playerDetector: {fileID: 5413731758528002948}
-  animator: {fileID: 5110072079209648121}
-  wanderRadius: 10
-  timeBetweenAttacks: 2
+  wanderRadius: 4
+  timeBetweenAttacks: 3
 --- !u!1 &7262059163028127579
 GameObject:
   m_ObjectHideFlags: 0
@@ -330,7 +294,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b929d52c71437f649b04443266ba3172, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3
+      value: 3.38
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b929d52c71437f649b04443266ba3172, type: 3}
       propertyPath: m_LocalPosition.z

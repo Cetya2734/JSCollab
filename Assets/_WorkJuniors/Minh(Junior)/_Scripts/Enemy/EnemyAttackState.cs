@@ -55,7 +55,7 @@ public class EnemyAttackState : EnemyBaseState
 
     private void NewDestinationAfterAttack()
     {
-        agent.speed = 10f; // Set a higher speed for the agent
+        agent.speed = 3f; // Set a higher speed for the agent
 
         float minDistance = 5f; // Minimum distance from the player
         float maxDistance = 7f; // Maximum distance from the player

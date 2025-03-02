@@ -18,12 +18,6 @@ public class TutorialText : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-
-
-
-
-
         if (Input.GetKey(continueKey) && isPaused == true)
         {
             Debug.Log("unPause");
@@ -36,12 +30,9 @@ public class TutorialText : MonoBehaviour
 
     void ShowText()
     {      
-
         textBox.SetActive(true);
         Time.timeScale = 0;
         isPaused = true;
-
-
     }
     void OnCollisionEnter2D(Collision2D collision)
     {
