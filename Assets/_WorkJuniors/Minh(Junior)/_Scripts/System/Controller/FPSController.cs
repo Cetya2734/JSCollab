@@ -132,6 +132,6 @@ public class FPSController : MonoBehaviour
     private void RotateView()
     {
         if (canMove == false) return;
-        mouseLook.LookRotation(transform, cameraArmature.transform);
+        mouseLook.LookRotation(transform, playerCamera.transform);
     }
 }
