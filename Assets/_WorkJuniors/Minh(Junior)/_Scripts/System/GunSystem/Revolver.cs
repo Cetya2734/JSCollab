@@ -1,4 +1,4 @@
-using System.Collections;
+    using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -63,7 +63,7 @@ public class Revolver : MonoBehaviour
 
     private void OnDisable()
     {       
-            ToggleAmmoText(false);      
+        ToggleAmmoText(false);      
     }
 
     void Update()

@@ -15,7 +15,6 @@ public class Target : MonoBehaviour
     public bool replace;
     public bool destroy;
 
-
     public void TakeDamage(float amount)
     {
         health -= amount;
