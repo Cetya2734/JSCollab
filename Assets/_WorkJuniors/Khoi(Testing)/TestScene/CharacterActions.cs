@@ -30,6 +30,7 @@ public class CharacterActions : MonoBehaviour
         if (Input.GetKey(KeyCode.R))
         {
             animator.SetTrigger("reload");
+            animator.SetLayerWeight(3, 1);
 
         }
     }
