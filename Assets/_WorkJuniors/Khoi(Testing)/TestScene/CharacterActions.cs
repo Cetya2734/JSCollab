@@ -75,6 +75,10 @@ public class CharacterActions : MonoBehaviour
         currentAmmo = maxAmmo;
         isReloading = false;
         ToggleAmmoText(true);
+
+
+        animator.SetLayerWeight(0, 0);
+        Debug.Log(animator.GetLayerWeight(0));
     }
 
     void OnEnable()
@@ -94,7 +98,7 @@ public class CharacterActions : MonoBehaviour
         // Handle character movement and animations
         if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
         {
-            animator.SetTrigger("walking");
+            animator.SetBool("isWalking", true);
             if (Input.GetKey(KeyCode.LeftShift))
             {
                 animator.SetTrigger("running");
@@ -114,13 +118,13 @@ public class CharacterActions : MonoBehaviour
             StartCoroutine(Recoil());
             animator.SetTrigger("Shoot");
         }
-
+        
         // Handle reload input
         if (Input.GetKeyDown(KeyCode.R) && currentAmmo == 0 && maxAmmo >= 6 && !isReloading)
         {
             StartCoroutine(Reload());
             animator.SetTrigger("reload");
-            animator.SetLayerWeight(3, 1);
+            animator.SetLayerWeight(0, 1);
         }
     }
 
