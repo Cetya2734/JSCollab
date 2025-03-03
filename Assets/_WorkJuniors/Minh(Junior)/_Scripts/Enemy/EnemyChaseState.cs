@@ -18,7 +18,7 @@ public class EnemyChaseState : EnemyBaseState
     public override void OnEnter()
     {
         // Debug.Log("Chasing");
-        agent.speed = 2f;
+        agent.speed = 3f;
        animator.CrossFade(ChargingHash, crossFadeDuration);
     }
 

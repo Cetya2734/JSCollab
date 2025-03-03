@@ -60,5 +60,6 @@ public class Enemy : MonoBehaviour
     {
         if (attackTimer.IsRunning) return;
         attackTimer.Start();
+        
     }
 }

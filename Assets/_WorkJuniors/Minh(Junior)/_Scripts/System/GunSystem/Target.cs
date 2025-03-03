@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Target : MonoBehaviour
 {
-    [SerializeField] private GameObject OriginalOB;
-    [SerializeField] private GameObject ChangeOB;
-    [SerializeField] private Animator ANI;
+    // [SerializeField] private GameObject OriginalOB;
+    // [SerializeField] private GameObject ChangeOB;
+    // [SerializeField] private Animator ANI;
     
     public float health = 100f;
 
@@ -18,35 +18,34 @@ public class Target : MonoBehaviour
     public void TakeDamage(float amount)
     {
         health -= amount;
-        if(health <= 0f && animate)
-        {
-            Animate();
-        }
+        // if(health <= 0f && animate)
+        // {
+        //     Animate();
+        // }
+        //
+        // if (health <= 0f && replace)
+        // {
+        //     Replace();
+        // }
 
-        if (health <= 0f && replace)
-        {
-            Replace();
-        }
-
-        if (health <= 0f && destroy)
+        if (health <= 0f)
         {
             Destroy();
         }
     }
 
-    void Animate()
-    {
-        ANI.SetBool("animate", true);
-    }
+    // void Animate()
+    // {
+    //     ANI.SetBool("animate", true);
+    // }
 
 
-    void Replace()
-    {
-        Debug.Log(OriginalOB);
-        OriginalOB.SetActive(false);
-        ChangeOB.SetActive(true);
-    }
-
+    // void Replace()
+    // {
+    //     Debug.Log(OriginalOB);
+    //     OriginalOB.SetActive(false);
+    //     ChangeOB.SetActive(true);
+    // }
 
     void Destroy()
     {
