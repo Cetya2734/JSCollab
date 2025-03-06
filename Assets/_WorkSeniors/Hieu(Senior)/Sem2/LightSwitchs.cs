@@ -9,6 +9,7 @@ public class LightSwitchs : MonoBehaviour
     public TextMeshProUGUI interactionText; // Assign UI Text in Inspector
     private bool isOn = false;
     private bool playerNearby = false;
+    private Coroutine flickerCoroutine;
 
     [Header("Flicker Settings")]
     public float flickerDuration = 3f; // How long the flicker lasts
@@ -20,6 +21,12 @@ public class LightSwitchs : MonoBehaviour
     [Header("Switch States")]
     public GameObject switchOffState; // Assign "Off" state child object
     public GameObject switchOnState;  // Assign "On" state child object
+
+    [Header("Audio Settings")]
+    public AudioSource audioSource; // Assign in Inspector
+    public AudioClip turnOnSound;   // Assign in Inspector
+    public AudioClip turnOffSound;  // Assign in Inspector
+    public AudioClip flickerSound;  // Assign flickering sound effect in Inspector
 
     void Start()
     {
@@ -43,13 +50,56 @@ public class LightSwitchs : MonoBehaviour
     void ToggleLight()
     {
         isOn = !isOn;
-        lightSource.enabled = isOn;
 
-        UpdateSwitchState(); // Update the visual state
+        if (!isOn)
+        {
+            if (flickerCoroutine != null)
+            {
+                StopCoroutine(flickerCoroutine);
+                flickerCoroutine = null;
+            }
+            StopFlickerSound();
+            lightSource.enabled = false; // Make sure the light turns off
+            lightSource.intensity = 1f; // Reset intensity
+        }
+
+        lightSource.enabled = isOn;
+        PlayToggleSound();
+        UpdateSwitchState();
 
         if (isOn)
         {
-            StartCoroutine(FlickerLight());
+            flickerCoroutine = StartCoroutine(FlickerLight());
+        }
+    }
+
+    void PlayToggleSound()
+    {
+        if (audioSource != null)
+        {
+            audioSource.Stop(); // Stop any ongoing sound before playing a new one
+            audioSource.clip = isOn ? turnOnSound : turnOffSound;
+            audioSource.Play();
+        }
+    }
+
+    void PlayFlickerSound()
+    {
+        if (audioSource != null && flickerSound != null)
+        {
+            audioSource.Stop();
+            audioSource.clip = flickerSound;
+            audioSource.loop = true; // Enable looping for flickering sound
+            audioSource.Play();
+        }
+    }
+
+    void StopFlickerSound()
+    {
+        if (audioSource != null && audioSource.clip == flickerSound)
+        {
+            audioSource.loop = false;
+            audioSource.Stop();
         }
     }
 
@@ -66,13 +116,25 @@ public class LightSwitchs : MonoBehaviour
     {
         float endTime = Time.time + flickerDuration;
 
+        PlayFlickerSound(); // Start flickering sound
+
         while (Time.time < endTime)
         {
             lightSource.enabled = !lightSource.enabled; // Toggle on/off
             lightSource.intensity = Random.Range(flickerIntensityMin, flickerIntensityMax); // Change brightness
-            yield return new WaitForSeconds(Random.Range(minFlickerTime, maxFlickerTime)); // Random flicker speed
+            yield return new WaitForSeconds(Random.Range(minFlickerTime, maxFlickerTime));
+
+            // If the light is turned off during flickering, stop immediately
+            if (!isOn)
+            {
+                StopFlickerSound();
+                lightSource.enabled = false;
+                lightSource.intensity = 1f; // Reset intensity
+                yield break;
+            }
         }
 
+        StopFlickerSound(); // Stop flicker sound after flickering ends
         lightSource.enabled = true;
         lightSource.intensity = 1f; // Reset intensity to normal after flickering
     }
