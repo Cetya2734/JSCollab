@@ -17,6 +17,10 @@ public class LightSwitchs : MonoBehaviour
     public float flickerIntensityMin = 0.5f; // Minimum light intensity
     public float flickerIntensityMax = 2f; // Maximum light intensity
 
+    [Header("Switch States")]
+    public GameObject switchOffState; // Assign "Off" state child object
+    public GameObject switchOnState;  // Assign "On" state child object
+
     void Start()
     {
         if (lightSource != null)
@@ -24,6 +28,8 @@ public class LightSwitchs : MonoBehaviour
 
         if (interactionText != null)
             interactionText.gameObject.SetActive(false);
+
+        UpdateSwitchState(); // Ensure initial state is set properly
     }
 
     void Update()
@@ -39,10 +45,21 @@ public class LightSwitchs : MonoBehaviour
         isOn = !isOn;
         lightSource.enabled = isOn;
 
+        UpdateSwitchState(); // Update the visual state
+
         if (isOn)
         {
             StartCoroutine(FlickerLight());
         }
+    }
+
+    void UpdateSwitchState()
+    {
+        if (switchOffState != null)
+            switchOffState.SetActive(!isOn); // Enable "Off" when light is off
+
+        if (switchOnState != null)
+            switchOnState.SetActive(isOn); // Enable "On" when light is on
     }
 
     IEnumerator FlickerLight()
