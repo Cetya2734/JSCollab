@@ -141,7 +141,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1151388028547126963, guid: 8b60c2d74105a1243a2cd0a06f7f9b78, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.0013
+      objectReference: {fileID: 0}
+    - target: {fileID: 1151388028547126963, guid: 8b60c2d74105a1243a2cd0a06f7f9b78, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.004
       objectReference: {fileID: 0}
     - target: {fileID: 1151388028547126963, guid: 8b60c2d74105a1243a2cd0a06f7f9b78, type: 3}
       propertyPath: m_LocalRotation.y
@@ -216,6 +220,10 @@ MonoBehaviour:
   flickerIntensityMax: 2
   switchOffState: {fileID: 9092499779884000628}
   switchOnState: {fileID: 5206156374200641101}
+  audioSource: {fileID: 0}
+  turnOnSound: {fileID: 0}
+  turnOffSound: {fileID: 0}
+  flickerSound: {fileID: 0}
 --- !u!4 &642069903903196951 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8b60c2d74105a1243a2cd0a06f7f9b78, type: 3}

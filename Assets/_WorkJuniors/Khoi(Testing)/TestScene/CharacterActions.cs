@@ -1,37 +1,3 @@
-// using System.Collections;
-// using System.Collections.Generic;
-// using UnityEngine;
-//
-// public class CharacterActions : MonoBehaviour
-// {
-//     [SerializeField] public Animator animator; 
-//     [SerializeField] public FPSController FPSController;
-//
-//     // Update is called once per frame
-//     void Update()
-//     {
-//         if(Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
-//         {
-//             animator.SetTrigger("walking");
-//             if(Input.GetKey(KeyCode.LeftShift)){
-//                 animator.SetTrigger("running");
-//             }
-//         }
-//         if (Input.GetMouseButtonDown(0))
-//         {
-//             animator.SetTrigger("Shoot");
-//
-//         }
-//         if (Input.GetKey(KeyCode.R))
-//         {
-//             animator.SetTrigger("reload");
-//             animator.SetLayerWeight(3, 1);
-//
-//         }
-//     }
-//     
-// }
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

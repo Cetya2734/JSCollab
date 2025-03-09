@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5413731758528002948}
   - component: {fileID: 4269916310945236043}
   - component: {fileID: 8293497915509829187}
-  - component: {fileID: 3970023520471844255}
+  - component: {fileID: 1646882690324425167}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -92,7 +92,7 @@ MonoBehaviour:
   agent: {fileID: 6803174821580150913}
   playerDetector: {fileID: 5413731758528002948}
   animator: {fileID: 5110072079209648121}
-  wanderRadius: 4
+  wanderRadius: 6
   timeBetweenAttacks: 2
 --- !u!135 &8293497915509829187
 SphereCollider:
@@ -115,7 +115,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.9238032
   m_Center: {x: 0, y: 3.1992927, z: -0.058675207}
---- !u!114 &3970023520471844255
+--- !u!114 &1646882690324425167
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,10 +127,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7582e699019d9ae4d90de32b1ef42aab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
+  health: 200
   animate: 0
   replace: 0
-  destroy: 1
+  destroy: 0
+  blinkIntensity: 20
+  blinkDuration: 0.5
+  blinkTimer: 0
+  skinnedMesh: {fileID: 5620626564987541160}
 --- !u!1 &8709443892096612516
 GameObject:
   m_ObjectHideFlags: 0
@@ -365,6 +369,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AnglerModel
       objectReference: {fileID: 0}
+    - target: {fileID: 2759767775403592523, guid: b929d52c71437f649b04443266ba3172, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 25c7fe719b6ff9f4c87b2a8e4dcc7099, type: 2}
     - target: {fileID: 3876145283279221343, guid: b929d52c71437f649b04443266ba3172, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 90
@@ -441,6 +449,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 5110072079209648121}
   m_SourcePrefab: {fileID: 100100000, guid: b929d52c71437f649b04443266ba3172, type: 3}
+--- !u!137 &5620626564987541160 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2759767775403592523, guid: b929d52c71437f649b04443266ba3172, type: 3}
+  m_PrefabInstance: {fileID: 7515610849972887011}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7245651808481812658 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b929d52c71437f649b04443266ba3172, type: 3}
