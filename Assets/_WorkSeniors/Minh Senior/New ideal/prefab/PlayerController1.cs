@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerController1 : MonoBehaviour
 {
@@ -46,20 +46,25 @@ public class PlayerController1 : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(transform.position, transform.forward, out hit, interactRange))
             {
-                if (hit.collider.CompareTag("Interactable"))
-                {
-                    Debug.Log("Interacting with " + hit.collider.name);
+                Debug.Log("Hit Object: " + hit.collider.name); // Kiểm tra Raycast có trúng cửa không?
 
-                    DoorController door = hit.collider.GetComponent<DoorController>();
-                    if (door != null)
-                    {
-                        door.ToggleDoor(transform.position); // Pass player position to decide opening direction
-                    }
+                DoorController door = hit.collider.GetComponent<DoorController>();
+                if (door != null)
+                {
+                    Debug.Log("Cửa phát hiện, đang mở..."); // Kiểm tra có nhận diện đúng không?
+                    door.ToggleDoor();
                 }
+                else
+                {
+                    Debug.Log("Không tìm thấy DoorController!"); // Lỗi: Không có Script trên cửa
+                }
+            }
+            else
+            {
+                Debug.Log("Không chạm vào cửa!"); // Lỗi: Không trúng gì cả
             }
         }
     }
-
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -77,3 +82,4 @@ public class PlayerController1 : MonoBehaviour
         }
     }
 }
+

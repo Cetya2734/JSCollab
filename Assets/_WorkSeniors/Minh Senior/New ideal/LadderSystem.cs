@@ -1,8 +1,10 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class LadderSystem : MonoBehaviour
 {
     public float climbSpeed = 3f;  // Speed of climbing
+    public AudioSource climbSound; // Âm thanh khi leo thang
+
     private bool isClimbing = false;
     private Rigidbody playerRb;
     private Transform playerTransform;
@@ -23,6 +25,12 @@ public class LadderSystem : MonoBehaviour
             }
 
             isClimbing = true;
+
+            // Bắt đầu phát âm thanh nếu có AudioSource
+            if (climbSound != null && !climbSound.isPlaying)
+            {
+                climbSound.Play();
+            }
         }
     }
 
@@ -50,6 +58,16 @@ public class LadderSystem : MonoBehaviour
                 verticalInput = -1f; // Move DOWN
             }
 
+            // Nếu không bấm phím thì tắt âm thanh
+            if (verticalInput == 0 && climbSound.isPlaying)
+            {
+                climbSound.Stop();
+            }
+            else if (verticalInput != 0 && !climbSound.isPlaying)
+            {
+                climbSound.Play();
+            }
+
             // Apply Rigidbody movement
             playerRb.velocity = new Vector3(0, verticalInput * climbSpeed, 0);
         }
@@ -63,6 +81,12 @@ public class LadderSystem : MonoBehaviour
         {
             playerRb.useGravity = true; // Re-enable gravity
             playerRb.velocity = Vector3.zero; // Stop movement when leaving the ladder
+        }
+
+        // Dừng âm thanh khi ngừng leo
+        if (climbSound != null && climbSound.isPlaying)
+        {
+            climbSound.Stop();
         }
 
         Debug.Log("Stopped climbing.");

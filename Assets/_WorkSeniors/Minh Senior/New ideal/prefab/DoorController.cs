@@ -1,59 +1,60 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 public class DoorController : MonoBehaviour
 {
-    public Transform door; // Assign the "DoorPivot" in the Inspector
-    public float openAngle = 90f; // How much the door rotates
-    public float openSpeed = 2f;  // Speed of rotation
-    public float autoCloseTime = 10f; // Time before door auto closes
+    public Transform doorMesh; // GameObject chứa Mesh của cửa
+    public AudioSource doorSound; // Âm thanh cửa
+    public float openAngle = 90f; // Góc mở cửa
+    public float openSpeed = 2f; // Tốc độ mở cửa
+    public float closeDelay = 3f; // Thời gian chờ để đóng cửa
+    public bool isSlidingDoor = false; // Nếu true, cửa sẽ trượt
 
     private bool isOpen = false;
-    private bool isLeftSide = true; // Track which side the player is on
     private Quaternion closedRotation;
-    private Quaternion openRotationLeft;
-    private Quaternion openRotationRight;
-    private Coroutine closeDoorCoroutine;
+    private Quaternion openRotation;
 
     void Start()
     {
-        closedRotation = door.rotation;
-        openRotationLeft = Quaternion.Euler(door.eulerAngles + new Vector3(0, openAngle, 0)); // Open in one direction
-        openRotationRight = Quaternion.Euler(door.eulerAngles + new Vector3(0, -openAngle, 0)); // Open in opposite direction
+        if (doorMesh == null)
+            doorMesh = transform; // Dùng chính đối tượng này nếu quên gán
+
+        closedRotation = doorMesh.localRotation;
+        openRotation = Quaternion.Euler(0, openAngle, 0) * closedRotation;
     }
 
-    public void ToggleDoor(Vector3 playerPosition)
+    public void ToggleDoor()
     {
-        // Determine which side the player is on
-        isLeftSide = Vector3.Dot(transform.forward, (playerPosition - transform.position).normalized) < 0;
+        isOpen = !isOpen;
+        Debug.Log("Cửa đang " + (isOpen ? "MỞ" : "ĐÓNG"));
 
-        isOpen = true; // Always open first
-        StopAllCoroutines();
-        StartCoroutine(RotateDoor(isLeftSide ? openRotationLeft : openRotationRight));
-
-        // Start auto-close countdown
-        if (closeDoorCoroutine != null)
+        // Phát âm thanh nếu có gán AudioSource
+        if (doorSound != null)
         {
-            StopCoroutine(closeDoorCoroutine);
+            doorSound.Play();
         }
-        closeDoorCoroutine = StartCoroutine(AutoCloseDoor());
-    }
 
-    private IEnumerator RotateDoor(Quaternion targetRotation)
-    {
-        while (Quaternion.Angle(door.rotation, targetRotation) > 0.1f)
+        // Nếu cửa mở, đợi rồi tự động đóng
+        if (isOpen)
         {
-            door.rotation = Quaternion.Slerp(door.rotation, targetRotation, Time.deltaTime * openSpeed);
-            yield return null;
+            StartCoroutine(CloseDoorAfterDelay());
         }
-        door.rotation = targetRotation; // Ensure final position is exact
     }
 
-    private IEnumerator AutoCloseDoor()
+    IEnumerator CloseDoorAfterDelay()
     {
-        yield return new WaitForSeconds(autoCloseTime);
+        yield return new WaitForSeconds(closeDelay);
         isOpen = false;
-        StartCoroutine(RotateDoor(closedRotation));
+
+        // Phát âm thanh khi đóng cửa
+        if (doorSound != null)
+        {
+            doorSound.Play();
+        }
+    }
+
+    void Update()
+    {
+        doorMesh.localRotation = Quaternion.Slerp(doorMesh.localRotation, isOpen ? openRotation : closedRotation, Time.deltaTime * openSpeed);
     }
 }
-
