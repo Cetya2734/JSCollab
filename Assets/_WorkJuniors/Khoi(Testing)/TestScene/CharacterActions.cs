@@ -54,6 +54,7 @@ public class CharacterActions : MonoBehaviour
 
     private bool isReloading = false;
     private bool isRecoilPlaying = false;
+    private bool isAiming;
 
     // References to components and game objects
     public GameObject fpsCam;                   // The Point Of Shooting
@@ -103,6 +104,12 @@ public class CharacterActions : MonoBehaviour
             {
                 animator.SetTrigger("running");
             }
+
+            //for ADS
+            if (isAiming == true)
+            {
+                animator.SetBool("isAimWalking", true);
+            }
         }
 
         // Handle shooting input
@@ -126,6 +133,9 @@ public class CharacterActions : MonoBehaviour
             animator.SetTrigger("reload");
             animator.SetLayerWeight(0, 1);
         }
+
+
+        AimDownSight();
     }
 
     // Logic for shooting
@@ -213,5 +223,20 @@ public class CharacterActions : MonoBehaviour
 
         // Reset reloading flag
         isReloading = false;
+    }
+
+    //ADS
+    void AimDownSight()
+    {
+        if (Input.GetMouseButton(1))
+        {
+            animator.SetBool("isAiming", true);
+            isAiming = true;
+        }
+        else
+        {
+            animator.SetBool("isAiming", false);
+            isAiming = false;
+        }
     }
 }
