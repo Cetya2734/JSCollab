@@ -7,7 +7,6 @@ public class CharacterActions : MonoBehaviour
 {
     // Character movement and animation
     [SerializeField] private Animator animator;
-    [SerializeField] private FPSController fpsController;
 
     // Revolver attributes
     public float damage = 10f;
@@ -22,24 +21,33 @@ public class CharacterActions : MonoBehaviour
     private bool isRecoilPlaying = false;
 
     // References to components and game objects
-    public GameObject fpsCam;                   // The Point Of Shooting
-    public ParticleSystem muzzleFlash;          // Particle Effect For Muzzle Flash
-    public GameObject impactEffect;             // Bullet Impact Effect
-    public GameObject bulletCasing;             // Eject Used Casing
-    public Transform casingLocation;            // Where The Casing Gets Ejected
-
-    public AudioSource weaponSound;             // Weapon Sound Effect
-    public AudioSource noAmmoSound;             // Empty Gun Sound 
-    public AudioSource reloadSound;             // Reload Sound 
+    public GameObject fpsCam;                 
+    public ParticleSystem muzzleFlash;          
+    public GameObject impactEffect;          
+    public GameObject bulletCasing;       
+    
+    // Eject Used Casing
+    public Transform casingLocation;            
+    public AudioSource weaponSound;             
+    public AudioSource noAmmoSound;             
+    public AudioSource reloadSound;             
 
     private float nextTimeToFire = 0f;
 
     public TextMeshProUGUI ammoText;
+    private CrosshairFeedback crosshair;
+
 
     void Start()
     {
         currentAmmo = maxAmmo;
         isReloading = false;
+        crosshair = FindObjectOfType<CrosshairFeedback>(); // Find the crosshair script
+        if (crosshair != null)
+        {
+            crosshair.SetRateOfFire(fireRate/10); // Pass rate of fire to crosshair
+        }
+
         ToggleAmmoText(true);
     }
 
@@ -88,15 +96,31 @@ public class CharacterActions : MonoBehaviour
             animator.SetTrigger("reload");
             animator.SetLayerWeight(3, 1);
         }
+        
+        if (Input.GetMouseButtonDown(1)) // Right mouse button for aiming
+        {
+            CameraManager.Instance.ToggleAim(true);
+        }
+        else if (Input.GetMouseButtonUp(1)) // Release to stop aiming
+        {
+            CameraManager.Instance.ToggleAim(false);
+        }
     }
 
     // Logic for shooting
     void Shoot()
     {
-        // Play visual and audio effects
+        // Feedback
         muzzleFlash.Play();
         weaponSound.Play();
-        CameraManager.Instance.ImpactShake(); 
+        CameraManager.Instance.ImpactShake();
+
+        if (crosshair != null)
+        {
+            crosshair.SetRateOfFire(fireRate/10);
+            crosshair.AnimateCrosshair();
+        }
+        
         currentAmmo--;
         UpdateAmmoText();
 

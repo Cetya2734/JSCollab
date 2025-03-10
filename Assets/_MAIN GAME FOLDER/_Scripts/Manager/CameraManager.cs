@@ -13,6 +13,12 @@ public class CameraManager : MonoBehaviour
     public int defaultShakeVibration = 10;
     public float defaultShakeRandomness = 90f;
 
+    [Header("Aiming Settings")]
+    public float aimFOV = 55f; // Adjust FOV for zoom effect
+    public float defaultFOV = 65f;
+    public float aimTransitionDuration = 0.2f;
+
+
     private Camera mainCamera;
 
     private void Awake()
@@ -23,9 +29,6 @@ public class CameraManager : MonoBehaviour
         mainCamera = Camera.main;
     }
 
-    /// <summary>
-    /// Shakes the camera with default settings.
-    /// </summary>
     public void ShakeCamera()
     {
         if (mainCamera != null)
@@ -33,14 +36,14 @@ public class CameraManager : MonoBehaviour
             mainCamera.transform.DOShakePosition(defaultShakeDuration, defaultShakeStrength, defaultShakeVibration, defaultShakeRandomness);
         }
     }
-
-    /// <summary>
-    /// Customizable camera shake.
-    /// </summary>
-    /// <param name="duration">How long the shake lasts.</param>
-    /// <param name="strength">How strong the shake is.</param>
-    /// <param name="vibrato">Number of vibrations.</param>
-    /// <param name="randomness">Random variation in the shake.</param>
+    
+    public void ToggleAim(bool isAiming)
+    {
+        float targetFOV = isAiming ? aimFOV : defaultFOV;
+        mainCamera.DOFieldOfView(targetFOV, aimTransitionDuration);
+    }
+    
+    
     public void ShakeCamera(float duration, float strength, int vibrato = 10, float randomness = 90f)
     {
         if (mainCamera != null)
@@ -49,19 +52,13 @@ public class CameraManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Predefined strong shake for explosions.
-    /// </summary>
     public void ExplosionShake()
     {
         ShakeCamera(0.5f, 1.2f, 20, 100f);
     }
 
-    /// <summary>
-    /// Predefined mild shake for light impacts.
-    /// </summary>
     public void ImpactShake()
     {
-        ShakeCamera(0.2f, 0.4f, 15, 50f);
+        ShakeCamera(0.3f, 0.6f, 15, 50f);
     }
 }
