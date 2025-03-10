@@ -46,9 +46,10 @@ public class Target : MonoBehaviour
     }
     
 
-    public void TakeDamage(float amount)
+    public void TakeDamage(float amount, Vector3 hitPos)
     {
         health -= amount;
+        ParticleSpawnManager.Instance.SpawnParticle(ParticleSpawnManager.ParticleType.Hit,hitPos);
         if (health <= 0f)
         {
             Destroy();
@@ -61,6 +62,7 @@ public class Target : MonoBehaviour
     void Destroy()
     {
         Destroy(gameObject);
+        ParticleSpawnManager.Instance.SpawnParticle(ParticleSpawnManager.ParticleType.Death, transform.position);
     }
 
 }

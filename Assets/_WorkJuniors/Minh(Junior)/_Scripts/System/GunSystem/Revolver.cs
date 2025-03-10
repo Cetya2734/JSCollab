@@ -117,7 +117,7 @@ public class Revolver : MonoBehaviour
             Target target = hit.transform.GetComponent<Target>();
             if (target != null)
             {
-                target.TakeDamage(damage);
+                target.TakeDamage(damage, hit.point);
             }
 
             // Create impact effect

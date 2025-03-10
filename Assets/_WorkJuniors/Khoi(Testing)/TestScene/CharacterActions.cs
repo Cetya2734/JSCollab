@@ -93,17 +93,10 @@ public class CharacterActions : MonoBehaviour
     // Logic for shooting
     void Shoot()
     {
-        // // Check for available ammo
-        // if (currentAmmo <= 0)
-        // {
-        //     noAmmoSound.Play();
-        //     return;
-        // }
-
         // Play visual and audio effects
         muzzleFlash.Play();
         weaponSound.Play();
-
+        CameraManager.Instance.ImpactShake(); 
         currentAmmo--;
         UpdateAmmoText();
 
@@ -122,7 +115,7 @@ public class CharacterActions : MonoBehaviour
             Target target = hit.transform.GetComponent<Target>();
             if (target != null)
             {
-                target.TakeDamage(damage);
+                target.TakeDamage(damage, hit.point);
             }
 
             // Create impact effect
