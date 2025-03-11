@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 
 namespace CartoonFX
 {
-    [InitializeOnLoad]
+    //[InitializeOnLoad]
     public class CFXR_WelcomeScreen : EditorWindow
     {
         static CFXR_WelcomeScreen()

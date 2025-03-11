@@ -100,13 +100,22 @@ public class CrosshairFeedback : MonoBehaviour
     {
         if (!isZooming) return;
         isZooming = false;
-
-       // Shrink zoom circle and hide
+        
+        float delayBeforeDeactivation = 0.1f;
+        
+        
+        // Shrink zoom circle and hide
         zoomCircle.rectTransform.DOScale(Vector3.zero, zoomDuration).SetEase(Ease.InQuad).OnComplete(() =>
         {
             zoomCircle.gameObject.SetActive(false);
         });
         
+        Invoke(nameof(PerformDeactivation), delayBeforeDeactivation);
+    }
+    void PerformDeactivation()
+    {
+        if (isZooming) return; // Prevent reactivating if aiming again
+
 
         // Reset crosshair squares and make them visible again
         top.gameObject.SetActive(true);
@@ -126,6 +135,7 @@ public class CrosshairFeedback : MonoBehaviour
         left.DOLocalMoveX(leftStart.x, crosshairMoveInDuration).SetEase(Ease.OutQuad);
         right.DOLocalMoveX(rightStart.x, crosshairMoveInDuration).SetEase(Ease.OutQuad);
     }
+    
     
     public void SetRateOfFire(float newRate)
     {

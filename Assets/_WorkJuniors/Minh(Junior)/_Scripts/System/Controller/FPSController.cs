@@ -58,6 +58,7 @@ public class FPSController : MonoBehaviour
     {
         RotateView();
     }
+    
     private void FixedUpdate()
     {
         // Check if movement is allowed
