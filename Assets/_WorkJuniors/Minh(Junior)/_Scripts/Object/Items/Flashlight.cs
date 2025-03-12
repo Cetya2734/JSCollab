@@ -6,8 +6,8 @@ public class Flashlight : MonoBehaviour
 {
     [SerializeField] private GameObject flashlight;
 
-    [SerializeField] private  AudioSource turnOn;
-    [SerializeField] private  AudioSource turnOff;
+    // [SerializeField] private  AudioSource turnOn;
+    // [SerializeField] private  AudioSource turnOff;
 
     private bool on;
     private bool off;
@@ -25,14 +25,14 @@ public class Flashlight : MonoBehaviour
         if(off && Input.GetButtonDown("F"))
         {
             flashlight.SetActive(true);
-            turnOn.Play();
+            // turnOn.Play();
             off = false;
             on = true;
         }
         else if (on && Input.GetButtonDown("F"))
         {
             flashlight.SetActive(false);
-            turnOff.Play();
+            // turnOff.Play();
             off = true;
             on = false;
         }

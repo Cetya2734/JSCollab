@@ -22,6 +22,7 @@ public class EnemyAttackState : EnemyBaseState
     public override void OnEnter()
     {
         Debug.Log("Attack State");
+        agent.SetDestination(player.position);
         animator.CrossFade(AttackHash, crossFadeDuration);
         PerformAttack();
         enemy.attackTimer.Reset(); // Reset the cooldown timer
@@ -75,10 +76,10 @@ public class EnemyAttackState : EnemyBaseState
     {
         yield return new WaitForSeconds(delay);
     
-        agent.speed = 3f; // Set a higher speed for the agent
+        agent.speed = 2f; // Set a higher speed for the agent
 
-        float minDistance = 3f; // Minimum distance from the player
-        float maxDistance = 9f; // Maximum distance from the player
+        float minDistance = 5f; // Minimum distance from the player
+        float maxDistance = 8f; // Maximum distance from the player
 
         Vector3 randomDirection;
         Vector3 newDestination;

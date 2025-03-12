@@ -1,31 +1,29 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using KBCore.Refs;
 using UnityEngine;
 
 public class Target : MonoBehaviour
 {
     public float health = 100f;
+    public float lightBulbHealth = 30f;
+    public float lightBulbDamageMultiplier = 2f;
+    public float vulnerableDamageMultiplier = 1.5f;
+    private bool isLightBulbDestroyed = false;
 
-    // Flags to control different actions upon taking damage
-    public bool animate;
-    public bool replace;
-    public bool destroy;
+    [Header("Visual Settings")]
+    [SerializeField] private float blinkIntensity = 2f;
+    [SerializeField] private float blinkDuration = 0.5f;
+    private float blinkTimer;
+    [SerializeField, Child] SkinnedMeshRenderer skinnedMesh;
+    private Color originalColor;
 
-    [SerializeField] private float blinkIntensity;
-    [SerializeField] private float blinkDuration;
-    [SerializeField] private float blinkTimer;
-    [SerializeField] private SkinnedMeshRenderer skinnedMesh;
-    private Color originalColor; // Store the original color
-    
+    [SerializeField, Child] GameObject lightBulbObject; // Assign the light bulb GameObject in the inspector
+
     private void Start()
     {
-        skinnedMesh = GetComponentInChildren<SkinnedMeshRenderer>();
-        
         if (skinnedMesh != null)
         {
-            // Store original material color
             originalColor = skinnedMesh.material.color;
-            skinnedMesh.material = new Material(skinnedMesh.material); // Ensure unique material instance
+            skinnedMesh.material = new Material(skinnedMesh.material);
         }
     }
 
@@ -40,29 +38,44 @@ public class Target : MonoBehaviour
         }
         else
         {
-            // Reset to original color when not blinking
             skinnedMesh.material.color = originalColor;
         }
     }
-    
 
-    public void TakeDamage(float amount, Vector3 hitPos)
+    public void TakeDamage(float amount, Vector3 hitPos, bool isLightBulbHit)
     {
-        health -= amount;
-        ParticleSpawnManager.Instance.SpawnParticle(ParticleSpawnManager.ParticleType.Hit,hitPos);
-        if (health <= 0f)
+        if (isLightBulbHit && !isLightBulbDestroyed)
         {
-            Destroy();
+            Debug.Log("Lightbulb hit");
+            float damageDealt = amount * lightBulbDamageMultiplier;
+            lightBulbHealth -= damageDealt;
+            health -= damageDealt;
+
+            if (lightBulbHealth <= 0)
+            {
+                isLightBulbDestroyed = true;
+                if (lightBulbObject != null)
+                    lightBulbObject.SetActive(false); // Disable the light bulb
+                Debug.Log("Lightbulb destroyed");
+            }
+        }
+        else
+        {
+            float damage = amount * (isLightBulbDestroyed ? vulnerableDamageMultiplier : 1f);
+            health -= damage;
         }
 
+        ParticleSpawnManager.Instance.SpawnParticle(ParticleSpawnManager.ParticleType.Hit, hitPos);
+
+        if (health <= 0f)
+            Destroy();
+        
         blinkTimer = blinkDuration;
     }
-
 
     void Destroy()
     {
         Destroy(gameObject);
         ParticleSpawnManager.Instance.SpawnParticle(ParticleSpawnManager.ParticleType.Death, transform.position);
     }
-
 }

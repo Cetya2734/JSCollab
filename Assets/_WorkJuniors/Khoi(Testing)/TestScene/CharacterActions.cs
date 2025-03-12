@@ -135,11 +135,28 @@ public class CharacterActions : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
         {
-            // Deal damage to the target
-            Target target = hit.transform.GetComponent<Target>();
-            if (target != null)
+            // // Deal damage to the target
+            // Target target = hit.transform.GetComponent<Target>();
+            // if (target != null)
+            // {
+            //     target.TakeDamage(damage, hit.point);
+            // }
+            
+            // Check for hitbox first
+            HitBox hitbox = hit.transform.GetComponent<HitBox>();
+            if (hitbox != null)
             {
-                target.TakeDamage(damage, hit.point);
+                // Pass damage through the hitbox to the main target
+                hitbox.TakeDamage(damage, hit.point);
+            }
+            else
+            {
+                // Fallback for direct target hits (if needed)
+                Target target = hit.transform.GetComponent<Target>();
+                if (target != null)
+                {
+                    target.TakeDamage(damage, hit.point, false);
+                }
             }
 
             // Create impact effect
