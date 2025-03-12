@@ -21,7 +21,6 @@ public class EnemyAttackState : EnemyBaseState
 
     public override void OnEnter()
     {
-        Debug.Log("Attack State");
         agent.SetDestination(player.position);
         animator.CrossFade(AttackHash, crossFadeDuration);
         PerformAttack();
@@ -51,7 +50,6 @@ public class EnemyAttackState : EnemyBaseState
                 if (playerHealth != null)
                 {
                     playerHealth.TakeDamage(attackDamage);
-                    Debug.Log($"Player took {attackDamage} damage!");
                 }
             }
         }
@@ -69,7 +67,7 @@ public class EnemyAttackState : EnemyBaseState
 
     private void NewDestinationAfterAttack()
     {
-        enemy.StartCoroutine(MoveAfterDelay(0.4f)); // Adjust delay as needed
+        enemy.StartCoroutine(MoveAfterDelay(0.6f)); // Adjust delay as needed
     }
     
     private IEnumerator MoveAfterDelay(float delay)

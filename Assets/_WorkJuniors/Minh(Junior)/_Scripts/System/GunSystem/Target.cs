@@ -17,6 +17,8 @@ public class Target : MonoBehaviour
     private Color originalColor;
 
     [SerializeField, Child] GameObject lightBulbObject; // Assign the light bulb GameObject in the inspector
+    
+    private Enemy enemy; // Reference to the Enemy script
 
     private void Start()
     {
@@ -25,6 +27,8 @@ public class Target : MonoBehaviour
             originalColor = skinnedMesh.material.color;
             skinnedMesh.material = new Material(skinnedMesh.material);
         }
+        
+        enemy = GetComponent<Enemy>();
     }
 
     private void Update()
@@ -46,7 +50,6 @@ public class Target : MonoBehaviour
     {
         if (isLightBulbHit && !isLightBulbDestroyed)
         {
-            Debug.Log("Lightbulb hit");
             float damageDealt = amount * lightBulbDamageMultiplier;
             lightBulbHealth -= damageDealt;
             health -= damageDealt;
@@ -56,13 +59,19 @@ public class Target : MonoBehaviour
                 isLightBulbDestroyed = true;
                 if (lightBulbObject != null)
                     lightBulbObject.SetActive(false); // Disable the light bulb
-                Debug.Log("Lightbulb destroyed");
+                ParticleSpawnManager.Instance.SpawnParticle(ParticleSpawnManager.ParticleType.Explosion, hitPos);
             }
         }
         else
         {
             float damage = amount * (isLightBulbDestroyed ? vulnerableDamageMultiplier : 1f);
             health -= damage;
+        }
+        
+        // Trigger stagger if the enemy script is present
+        if (enemy != null)
+        {
+            enemy.OnTakeDamage(hitPos);
         }
 
         ParticleSpawnManager.Instance.SpawnParticle(ParticleSpawnManager.ParticleType.Hit, hitPos);
