@@ -20,12 +20,12 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_AmbientSkyColor: {r: 0, g: 0, b: 0, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 3
-  m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
+  m_SubtractiveShadowColor: {r: 0, g: 0, b: 0, a: 1}
   m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
@@ -5851,6 +5851,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: cb008f992332d67498f8106a2f54c958, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: cb008f992332d67498f8106a2f54c958, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 0b40a7f147fbcc2449685ae9e9e39600, type: 2}
@@ -8937,7 +8941,7 @@ MonoBehaviour:
   _musicSource: {fileID: 0}
   _soundsSource: {fileID: 0}
   shootSound: {fileID: 8300000, guid: 6a3091894a83f7546b4bb570d3139a7d, type: 3}
-  backgroundMusic: {fileID: 8300000, guid: f9821bc191ffeb2478943a0dd3d0387a, type: 3}
+  backgroundMusic: {fileID: 8300000, guid: 30040782ccab77b46baf7be13db33ca9, type: 3}
   audioSource: {fileID: 0}
 --- !u!4 &1477860152
 Transform:
@@ -13691,7 +13695,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: d92929e42167a17468a528584b95a369, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 17517a5803e13b140ae07c531826b18f, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -14835,7 +14839,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 877341785012911682, guid: 0d24108c113d528479415158c410ded0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -12
+      value: -11.079
       objectReference: {fileID: 0}
     - target: {fileID: 877341785012911682, guid: 0d24108c113d528479415158c410ded0, type: 3}
       propertyPath: m_LocalPosition.y
@@ -14843,7 +14847,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 877341785012911682, guid: 0d24108c113d528479415158c410ded0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -28
+      value: -28.91
       objectReference: {fileID: 0}
     - target: {fileID: 877341785012911682, guid: 0d24108c113d528479415158c410ded0, type: 3}
       propertyPath: m_LocalRotation.w
@@ -17024,7 +17028,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: e4f9df4df53522142bfcd7fd04e72aea, type: 3}
+  m_audioClip: {fileID: 8300000, guid: b42cfbb8e199fe8418dfba18a1bffadd, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
