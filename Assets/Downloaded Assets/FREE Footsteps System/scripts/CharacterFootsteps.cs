@@ -92,7 +92,6 @@ namespace Footsteps {
 		void OnEnable() {
 				EventBus.Instance.onGameplayPaused += () => audioSource.mute = true;
 				EventBus.Instance.onGameplayResumed += () => audioSource.mute = false;
-				//Debug.Log("Subscribed in Footsteps");
 		}
 
 		void OnDisable() {
@@ -164,7 +163,6 @@ namespace Footsteps {
 			if(!previouslyGrounded && isGrounded) {
 				PlayLandSound();
 			}
-			// print(isGrounded);
 		}
 	}
 }
