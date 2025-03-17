@@ -1,4 +1,5 @@
-﻿using KBCore.Refs;
+﻿using System;
+using KBCore.Refs;
 using UnityEngine;
 
 public class Target : MonoBehaviour
@@ -17,6 +18,8 @@ public class Target : MonoBehaviour
     private Color originalColor;
 
     [SerializeField, Child] GameObject lightBulbObject; // Assign the light bulb GameObject in the inspector
+
+    [SerializeField] private AudioSource burstSound;
     
     private Enemy enemy; // Reference to the Enemy script
 
@@ -29,6 +32,11 @@ public class Target : MonoBehaviour
         }
         
         enemy = GetComponent<Enemy>();
+    }
+
+    private void Awake()
+    {
+        
     }
 
     private void Update()
@@ -60,6 +68,7 @@ public class Target : MonoBehaviour
                 if (lightBulbObject != null)
                     lightBulbObject.SetActive(false); // Disable the light bulb
                 ParticleSpawnManager.Instance.SpawnParticle(ParticleSpawnManager.ParticleType.Explosion, hitPos);
+                burstSound.Play();
             }
         }
         else

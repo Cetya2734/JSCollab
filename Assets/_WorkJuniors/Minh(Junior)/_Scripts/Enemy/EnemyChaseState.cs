@@ -17,7 +17,7 @@ public class EnemyChaseState : EnemyBaseState
     // ReSharper disable Unity.PerformanceAnalysis
     public override void OnEnter()
     {
-        agent.speed = 2.5f;
+        agent.speed = 4f;
         animator.CrossFade(ChargingHash, crossFadeDuration);
     }
 

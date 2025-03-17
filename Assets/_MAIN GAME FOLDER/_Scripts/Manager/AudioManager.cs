@@ -12,10 +12,24 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip backgroundMusic; // Example background music
 
     [SerializeField] AudioSource audioSource;
+    
+    public static AudioManager Instance { get; private set; }
 
     private void Awake()
     {
         // Subscribe to the OnPlayAudio event to handle audio playback
+        
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); // Keep AudioManager between scenes
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         AudioEventManager.OnPlayAudio += PlayAudio;
     }
 
@@ -23,6 +37,11 @@ public class AudioManager : MonoBehaviour
     {
         // Unsubscribe from the event to avoid memory leaks
         AudioEventManager.OnPlayAudio -= PlayAudio;
+    }
+
+    private void Start()
+    {
+        PlayMusic(_musicSource.clip);
     }
 
     // Play audio based on the triggered event
