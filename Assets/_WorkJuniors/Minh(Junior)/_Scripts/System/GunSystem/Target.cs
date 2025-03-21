@@ -20,7 +20,8 @@ public class Target : MonoBehaviour
     [SerializeField, Child] GameObject lightBulbObject; // Assign the light bulb GameObject in the inspector
 
     [SerializeField] private AudioSource burstSound;
-    
+    [SerializeField] private AudioSource hitSound;
+
     private Enemy enemy; // Reference to the Enemy script
 
     private void Start()
@@ -75,8 +76,9 @@ public class Target : MonoBehaviour
         {
             float damage = amount * (isLightBulbDestroyed ? vulnerableDamageMultiplier : 1f);
             health -= damage;
+            hitSound.Play();
         }
-        
+
         // Trigger stagger if the enemy script is present
         if (enemy != null)
         {
