@@ -17,7 +17,6 @@ public class EnemyWanderState : EnemyBaseState
     public override void OnEnter()
     {
         // Debug.Log("Wandering");
-        agent.speed = 0.5f;
         animator.CrossFade(SwimmingHash, crossFadeDuration);
     }
 

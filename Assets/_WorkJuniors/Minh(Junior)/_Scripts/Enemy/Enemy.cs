@@ -9,10 +9,16 @@ using Utilities;
 
 public class Enemy : MonoBehaviour
 {
+    [SerializeField] private Transform player;  // Assign player in Inspector
     [SerializeField, Self] private NavMeshAgent agent;
     [SerializeField, Self] private PlayerDetector playerDetector;
     [SerializeField, Child] private Animator animator;
 
+    [SerializeField] private float investigationDuration = 5f;
+
+    private Vector3 lastKnownPlayerPosition;
+    private CountdownTimer investigationTimer;
+    
     [SerializeField] private float wanderRadius = 10f;
     [SerializeField] private float timeBetweenAttacks = 5f;
 
@@ -33,6 +39,7 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         attackTimer = new CountdownTimer(timeBetweenAttacks);
+        investigationTimer = new CountdownTimer(investigationDuration);
         stateMachine = new StateMachine();
         
         var wanderState = new EnemyWanderState(this, animator, agent, wanderRadius);
@@ -75,9 +82,12 @@ public class Enemy : MonoBehaviour
         LastDamageSource = damageSource; 
         shouldStagger = true;
         
-        if (!playerDetector.CanDetectPlayer()) 
+        if (!playerDetector.CanDetectPlayer())
         {
-            stateMachine.SetState(new EnemyInvestigateState(this, animator, agent));
+            lastKnownPlayerPosition = player.position;
+            agent.speed = 4f;
+            agent.SetDestination(lastKnownPlayerPosition);
+            investigationTimer.Tick(Time.deltaTime);
         }
     }
     

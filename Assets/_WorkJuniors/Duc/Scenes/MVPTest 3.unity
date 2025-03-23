@@ -4358,6 +4358,10 @@ PrefabInstance:
       propertyPath: lightBulbObject
       value: 
       objectReference: {fileID: 801302503}
+    - target: {fileID: 4269916310945236043, guid: b887fdc3226961e469bfa341d0c0fa27, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 801614697}
     - target: {fileID: 4408991982255191488, guid: b887fdc3226961e469bfa341d0c0fa27, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -4794,6 +4798,10 @@ PrefabInstance:
       propertyPath: lightBulbObject
       value: 
       objectReference: {fileID: 839038383}
+    - target: {fileID: 4269916310945236043, guid: b887fdc3226961e469bfa341d0c0fa27, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 801614697}
     - target: {fileID: 4408991982255191488, guid: b887fdc3226961e469bfa341d0c0fa27, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -8721,6 +8729,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 4269916310945236043, guid: b887fdc3226961e469bfa341d0c0fa27, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 801614697}
+    - target: {fileID: 6803174821580150913, guid: b887fdc3226961e469bfa341d0c0fa27, type: 3}
+      propertyPath: m_Speed
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10428,6 +10444,10 @@ PrefabInstance:
       propertyPath: lightBulbObject
       value: 
       objectReference: {fileID: 1491609964}
+    - target: {fileID: 4269916310945236043, guid: b887fdc3226961e469bfa341d0c0fa27, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 801614697}
     - target: {fileID: 4408991982255191488, guid: b887fdc3226961e469bfa341d0c0fa27, type: 3}
       propertyPath: m_Enabled
       value: 1
