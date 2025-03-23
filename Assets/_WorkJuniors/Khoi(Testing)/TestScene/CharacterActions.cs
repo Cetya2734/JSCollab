@@ -99,8 +99,15 @@ public class CharacterActions : MonoBehaviour
 
         }
 
-        // Handle reload input
-        if (Input.GetKeyDown(KeyCode.R) && currentAmmo == 0 && maxAmmo >= 6 && !isReloading)
+        // // Handle reload input
+        // if (Input.GetKeyDown(KeyCode.R) && currentAmmo == 0 && maxAmmo >= 6 && !isReloading)
+        // {
+        //     StartCoroutine(Reload());
+        //     animator.SetTrigger("reload");
+        //     animator.SetLayerWeight(3, 1);
+        // }
+        
+        if (Input.GetKeyDown(KeyCode.R) && currentAmmo < maxAmmo && !isReloading && maxAmmo > 0)
         {
             StartCoroutine(Reload());
             animator.SetTrigger("reload");
@@ -228,6 +235,28 @@ public class CharacterActions : MonoBehaviour
     }
 
     // Coroutine for reloading
+    // IEnumerator Reload()
+    // {
+    //     // Disable switching during reload
+    //     AudioManager.Instance.PlaySound(reloadSound, this.transform.position);
+    //
+    //     // Set reloading flag
+    //     isReloading = true;
+    //     yield return new WaitForSeconds(reloadTime - 0.25f);
+    //
+    //     // Reset ammo
+    //     maxAmmo -= 6;
+    //     currentAmmo = 6;
+    //
+    //     if (maxAmmo < 0) // Ensure maxAmmo doesn't go below 0
+    //         maxAmmo = 0;
+    //
+    //     UpdateAmmoText();
+    //
+    //     // Reset reloading flag
+    //     isReloading = false;
+    // }
+    
     IEnumerator Reload()
     {
         // Disable switching during reload
@@ -237,16 +266,25 @@ public class CharacterActions : MonoBehaviour
         isReloading = true;
         yield return new WaitForSeconds(reloadTime - 0.25f);
 
-        // Reset ammo
-        maxAmmo -= 6;
-        currentAmmo = 6;
+        // Calculate the missing ammo
+        int missingAmmo = 6 - currentAmmo; // How many bullets are needed to fill the clip
+        int ammoToReload = Mathf.Min(missingAmmo, maxAmmo); // Don't reload more than what's available in maxAmmo
 
-        if (maxAmmo < 0) // Ensure maxAmmo doesn't go below 0
+        // Add the missing bullets to currentAmmo
+        currentAmmo += ammoToReload;
+
+        // Subtract the reloaded bullets from maxAmmo
+        maxAmmo -= ammoToReload;
+
+        // Ensure maxAmmo doesn't go below 0
+        if (maxAmmo < 0)
             maxAmmo = 0;
 
+        // Update the ammo UI
         UpdateAmmoText();
 
-        // Reset reloading flag
+        // Reset reloading flag and animation layer weight
         isReloading = false;
+        animator.SetLayerWeight(3, 0);
     }
 }
