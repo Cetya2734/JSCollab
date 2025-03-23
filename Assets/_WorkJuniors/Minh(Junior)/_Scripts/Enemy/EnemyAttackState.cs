@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -10,20 +11,24 @@ public class EnemyAttackState : EnemyBaseState
     
     // SphereCast parameters
     private float attackRadius = 2f; // Radius of the SphereCast
-    private float attackRange = 3f; // Range of the SphereCast
+    private float attackRange = 2f; // Range of the SphereCast
     private int attackDamage = 20; // Damage dealt by the attack
 
-    public EnemyAttackState(Enemy enemy, Animator animator, NavMeshAgent agent, Transform player) : base(enemy, animator)
+    private readonly AudioClip attackSound;
+
+    public EnemyAttackState(Enemy enemy, Animator animator, NavMeshAgent agent, Transform player, AudioClip attackSound) : base(enemy, animator)
     {
         this.agent = agent;
         this.player = player;
+        this.attackSound = attackSound;
     }
 
     public override void OnEnter()
     {
-//        Debug.Log("Attack State");
+        agent.SetDestination(player.position);
         animator.CrossFade(AttackHash, crossFadeDuration);
-        PerformAttack();
+        AudioManager.Instance.PlaySound(attackSound, enemy.transform.position);
+        DelayAttack();
         enemy.attackTimer.Reset(); // Reset the cooldown timer
         
         enemy.Attack(); // Start attack cooldown timer
@@ -32,20 +37,18 @@ public class EnemyAttackState : EnemyBaseState
 
         // Ensure the agent is not stopped
         agent.isStopped = false;
-        agent.stoppingDistance = 0.1f; // Set a small stopping distance
     }
     public void PerformAttack()
     {
-        Debug.Log("Attacked player");
         // Calculate the direction to the player
         Vector3 directionToPlayer = (player.position - enemy.transform.position).normalized;
         
-        // Draw a debug line to visualize the SphereCast
-        Debug.DrawLine(enemy.transform.position, enemy.transform.position + directionToPlayer * attackRange, Color.red, 5f);
-
         // Perform the SphereCast
         if (Physics.SphereCast(enemy.transform.position, attackRadius, directionToPlayer, out RaycastHit hit, attackRange))
         {
+            //Debug.DrawLine(enemy.transform.position, enemy.transform.position + directionToPlayer * attackRange, Color.red, 5f);
+            
+            Debug.DrawRay(enemy.transform.position, directionToPlayer * attackRange, Color.blue, 3f);
             // Check if the hit object is the player
             if (hit.transform == player)
             {
@@ -54,11 +57,31 @@ public class EnemyAttackState : EnemyBaseState
                 if (playerHealth != null)
                 {
                     playerHealth.TakeDamage(attackDamage);
-                    Debug.Log($"Player took {attackDamage} damage!");
                 }
             }
         }
     }
+    
+    private void OnDrawGizmosSelected()
+    {
+        if (enemy == null || player == null) return;
+
+        // Draw sphere at enemy position (attack starting point)
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(enemy.transform.position, attackRadius);
+
+        // Calculate direction to player
+        Vector3 directionToPlayer = (player.position - enemy.transform.position).normalized;
+    
+        // Draw attack range (SphereCast path)
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(enemy.transform.position + directionToPlayer * attackRange, attackRadius);
+
+        // Draw a line from enemy to attack end position
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(enemy.transform.position, enemy.transform.position + directionToPlayer * attackRange);
+    }
+
 
     public override void Update()
     {
@@ -68,79 +91,53 @@ public class EnemyAttackState : EnemyBaseState
             hasReachedDestination = true;
             RotateTowardPlayer();
         }
-        
-        // if (!hasReachedDestination)
-        // {
-        //     // Check if the enemy has reached the new destination
-        //     if (HasReachedDestination())
-        //     {
-        //         hasReachedDestination = true;
-        //         agent.isStopped = true; // Stop the agent from moving
-        //     }
-        // }
-        // else
-        // {
-        //     // Rotate toward the player while waiting for the cooldown
-        //     RotateTowardPlayer();
-        // }
     }
 
     private void NewDestinationAfterAttack()
     {
-        enemy.StartCoroutine(MoveAfterDelay(0.15f)); // Adjust delay as needed
+        enemy.StartCoroutine(MoveAfterDelay(0.6f)); // Adjust delay as needed
     }
-    // }
-    // private void NewDestinationAfterAttack()
-    // {
-    //     agent.speed = 5f; // Set a higher speed for the agent
-    //
-    //     float minDistance = 5f; // Minimum distance from the player
-    //     float maxDistance = 7f; // Maximum distance from the player
-    //
-    //     Vector3 randomDirection;
-    //     Vector3 newDestination;
-    //     bool validPositionFound = false;
-    //     int attempts = 0;
-    //     const int maxAttempts = 10; // Limit the number of attempts to find a valid position
-    //
-    //     // Try to find a valid position within the min and max distance
-    //     do
-    //     {
-    //         randomDirection = Random.insideUnitSphere * maxDistance;
-    //         randomDirection += player.position;
-    //
-    //         if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, maxDistance, NavMesh.AllAreas))
-    //         {
-    //             newDestination = hit.position;
-    //             float distanceToPlayer = Vector3.Distance(newDestination, player.position);
-    //
-    //             // Check if the new destination is within the desired range
-    //             if (distanceToPlayer >= minDistance && distanceToPlayer <= maxDistance)
-    //             {
-    //                 agent.SetDestination(newDestination);
-    //                 validPositionFound = true;
-    //                 //Debug.Log($"New destination set at {newDestination}, distance to player: {distanceToPlayer}");
-    //                 break;
-    //             }
-    //         }
-    //
-    //         attempts++;
-    //     } while (!validPositionFound && attempts < maxAttempts);
-    //
-    //     if (!validPositionFound)
-    //     {
-    //         Debug.LogWarning("Failed to find a valid NavMesh position within the desired range");
-    //     }
-    // }
 
+    private void DelayAttack()
+    {
+        enemy.StartCoroutine(PerformDelayedAttack(0.5f));
+    }
+    
+    private IEnumerator PerformDelayedAttack(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        
+        // Calculate the direction to the player
+        Vector3 directionToPlayer = (player.position - enemy.transform.position).normalized;
+        
+        // Perform the SphereCast
+        if (Physics.SphereCast(enemy.transform.position, attackRadius, directionToPlayer, out RaycastHit hit, attackRange))
+        {
+            //Debug.DrawLine(enemy.transform.position, enemy.transform.position + directionToPlayer * attackRange, Color.red, 5f);
+            
+            Debug.DrawRay(enemy.transform.position, directionToPlayer * attackRange, Color.blue, 3f);
+            // Check if the hit object is the player
+            if (hit.transform == player)
+            {
+                // Apply damage to the player
+                PlayerHealth playerHealth = hit.transform.GetComponent<PlayerHealth>();
+                if (playerHealth != null)
+                {
+                    playerHealth.TakeDamage(attackDamage);
+                }
+            }
+        }
+    }
     private IEnumerator MoveAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
     
-        agent.speed = 5f; // Set a higher speed for the agent
+        agent.speed = 3f; // Set a higher speed for the agent
 
-        float minDistance = 5f; // Minimum distance from the player
-        float maxDistance = 7f; // Maximum distance from the player
+        animator.CrossFade(ChargingHash, crossFadeDuration);
+
+        float minDistance = 4f; // Minimum distance from the player
+        float maxDistance = 6f; // Maximum distance from the player
 
         Vector3 randomDirection;
         Vector3 newDestination;
@@ -202,7 +199,7 @@ public class EnemyAttackState : EnemyBaseState
         enemy.transform.rotation = Quaternion.Slerp(
             enemy.transform.rotation,
             targetRotation,
-            Time.deltaTime * 3f // Adjust rotation speed
+            Time.deltaTime * 100f // Adjust rotation speed
         );
     }
 }

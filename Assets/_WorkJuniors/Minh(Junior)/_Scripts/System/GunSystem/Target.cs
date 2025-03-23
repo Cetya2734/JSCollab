@@ -1,55 +1,108 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using KBCore.Refs;
 using UnityEngine;
 
 public class Target : MonoBehaviour
 {
-    // [SerializeField] private GameObject OriginalOB;
-    // [SerializeField] private GameObject ChangeOB;
-    // [SerializeField] private Animator ANI;
-    
     public float health = 100f;
+    public float lightBulbHealth = 30f;
+    public float lightBulbDamageMultiplier = 2f;
+    public float vulnerableDamageMultiplier = 1.5f;
+    private bool isLightBulbDestroyed = false;
 
-    // Flags to control different actions upon taking damage
-    public bool animate;
-    public bool replace;
-    public bool destroy;
+    [Header("Visual Settings")]
+    [SerializeField] private float blinkIntensity = 2f;
+    [SerializeField] private float blinkDuration = 0.5f;
+    private float blinkTimer;
+    [SerializeField, Child] SkinnedMeshRenderer skinnedMesh;
+    private Color originalColor;
 
-    public void TakeDamage(float amount)
+    [SerializeField, Child] GameObject lightBulbObject; // Assign the light bulb GameObject in the inspector
+    
+    [SerializeField] private AudioClip burstSound;
+    [SerializeField] private AudioClip hitSound;
+    [SerializeField] private AudioClip metallicHitSound;
+    [SerializeField] private AudioClip monsterGruntSound;
+
+    private Enemy enemy; // Reference to the Enemy script
+
+    private void Start()
     {
-        health -= amount;
-        // if(health <= 0f && animate)
-        // {
-        //     Animate();
-        // }
-        //
-        // if (health <= 0f && replace)
-        // {
-        //     Replace();
-        // }
-
-        if (health <= 0f)
+        if (skinnedMesh != null)
         {
-            Destroy();
+            originalColor = skinnedMesh.material.color;
+            skinnedMesh.material = new Material(skinnedMesh.material);
+        }
+        
+        enemy = GetComponent<Enemy>();
+    }
+
+    private void Awake()
+    {
+        
+    }
+
+    private void Update()
+    {
+        if (blinkTimer > 0)
+        {
+            blinkTimer -= Time.deltaTime;
+            float lerp = Mathf.Clamp01(blinkTimer / blinkDuration);
+            float intensity = (lerp * blinkIntensity) + 1.0f;
+            skinnedMesh.material.color = Color.red * intensity;
+        }
+        else
+        {
+            skinnedMesh.material.color = originalColor;
         }
     }
 
-    // void Animate()
-    // {
-    //     ANI.SetBool("animate", true);
-    // }
+    public void TakeDamage(float amount, Vector3 hitPos, bool isLightBulbHit)
+    {
+        if (isLightBulbHit && !isLightBulbDestroyed)
+        {
+            float damageDealt = amount * lightBulbDamageMultiplier;
+            lightBulbHealth -= damageDealt;
+            health -= damageDealt;
 
+            if (lightBulbHealth <= 0)
+            {
+                isLightBulbDestroyed = true;
+                if (lightBulbObject != null)
+                    lightBulbObject.SetActive(false); // Disable the light bulb
+                
+                ParticleSpawnManager.Instance.SpawnParticle(ParticleSpawnManager.ParticleType.Explosion, hitPos);
+                AudioManager.Instance.PlaySound(burstSound, hitPos);
+                AudioManager.Instance.PlaySound(monsterGruntSound, hitPos);
+            }
+        }
+        else
+        {
+            float damage = amount * (isLightBulbDestroyed ? vulnerableDamageMultiplier : 1f);
+            health -= damage;
+            
+            AudioManager.Instance.PlaySound(monsterGruntSound, hitPos);
+            AudioManager.Instance.PlaySound(hitSound, hitPos);
+            AudioManager.Instance.PlaySound(metallicHitSound, hitPos);
+        }
 
-    // void Replace()
-    // {
-    //     Debug.Log(OriginalOB);
-    //     OriginalOB.SetActive(false);
-    //     ChangeOB.SetActive(true);
-    // }
+        // Trigger stagger if the enemy script is present
+        if (enemy != null)
+        {
+            enemy.OnTakeDamage(hitPos);
+        }
+
+        ParticleSpawnManager.Instance.SpawnParticle(ParticleSpawnManager.ParticleType.Hit, hitPos);
+
+        if (health <= 0f)
+            Destroy();
+        
+        blinkTimer = blinkDuration;
+    }
 
     void Destroy()
     {
         Destroy(gameObject);
+        ParticleSpawnManager.Instance.SpawnParticle(ParticleSpawnManager.ParticleType.Death, transform.position);
     }
-
 }

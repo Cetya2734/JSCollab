@@ -1,47 +1,13 @@
-// using System.Collections;
-// using System.Collections.Generic;
-// using UnityEngine;
-//
-// public class CharacterActions : MonoBehaviour
-// {
-//     [SerializeField] public Animator animator; 
-//     [SerializeField] public FPSController FPSController;
-//
-//     // Update is called once per frame
-//     void Update()
-//     {
-//         if(Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
-//         {
-//             animator.SetTrigger("walking");
-//             if(Input.GetKey(KeyCode.LeftShift)){
-//                 animator.SetTrigger("running");
-//             }
-//         }
-//         if (Input.GetMouseButtonDown(0))
-//         {
-//             animator.SetTrigger("Shoot");
-//
-//         }
-//         if (Input.GetKey(KeyCode.R))
-//         {
-//             animator.SetTrigger("reload");
-//             animator.SetLayerWeight(3, 1);
-//
-//         }
-//     }
-//     
-// }
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.Serialization;
 
 public class CharacterActions : MonoBehaviour
 {
     // Character movement and animation
     [SerializeField] private Animator animator;
-    [SerializeField] private FPSController fpsController;
 
     // Revolver attributes
     public float damage = 10f;
@@ -55,25 +21,41 @@ public class CharacterActions : MonoBehaviour
     private bool isReloading = false;
     private bool isRecoilPlaying = false;
 
+    [Space(10)]
     // References to components and game objects
-    public GameObject fpsCam;                   // The Point Of Shooting
-    public ParticleSystem muzzleFlash;          // Particle Effect For Muzzle Flash
-    public GameObject impactEffect;             // Bullet Impact Effect
-    public GameObject bulletCasing;             // Eject Used Casing
-    public Transform casingLocation;            // Where The Casing Gets Ejected
-
-    public AudioSource weaponSound;             // Weapon Sound Effect
-    public AudioSource noAmmoSound;             // Empty Gun Sound 
-    public AudioSource reloadSound;             // Reload Sound 
+    public GameObject fpsCam;                 
+    public ParticleSystem muzzleFlash;          
+    public GameObject impactEffect;          
+    public GameObject bulletCasing;       
+    
+    [Space(10)]
+    // Eject Used Casing
+    public Transform casingLocation;
+    public TrailRenderer bulletTracer;
+    public Transform tracerLocation;
+    
+    [Space(10)]
+    [FormerlySerializedAs("hitSound")] public AudioClip shootSound;             
+    public AudioClip noAmmoSound;             
+    public AudioClip reloadSound;             
+    public AudioClip aimSound;             
 
     private float nextTimeToFire = 0f;
-
+    [Space(10)]
     public TextMeshProUGUI ammoText;
+    private CrosshairFeedback crosshair;
+
 
     void Start()
     {
         currentAmmo = maxAmmo;
         isReloading = false;
+        crosshair = FindObjectOfType<CrosshairFeedback>(); // Find the crosshair script
+        if (crosshair != null)
+        {
+            crosshair.SetRateOfFire(fireRate/10); // Pass rate of fire to crosshair
+        }
+
         ToggleAmmoText(true);
     }
 
@@ -106,38 +88,57 @@ public class CharacterActions : MonoBehaviour
         {
             if (currentAmmo == 0)
             {
-                noAmmoSound.Play();
+                AudioManager.Instance.PlaySound(noAmmoSound, this.transform.position);
                 return;
             }
             nextTimeToFire = Time.time + 1f / fireRate;
-            Shoot();
             StartCoroutine(Recoil());
             animator.SetTrigger("Shoot");
+            
+            Shoot();
+
         }
 
-        // Handle reload input
-        if (Input.GetKeyDown(KeyCode.R) && currentAmmo == 0 && maxAmmo >= 6 && !isReloading)
+        // // Handle reload input
+        // if (Input.GetKeyDown(KeyCode.R) && currentAmmo == 0 && maxAmmo >= 6 && !isReloading)
+        // {
+        //     StartCoroutine(Reload());
+        //     animator.SetTrigger("reload");
+        //     animator.SetLayerWeight(3, 1);
+        // }
+        
+        if (Input.GetKeyDown(KeyCode.R) && currentAmmo < maxAmmo && !isReloading && maxAmmo > 0)
         {
             StartCoroutine(Reload());
             animator.SetTrigger("reload");
             animator.SetLayerWeight(3, 1);
+        }
+        
+        if (Input.GetMouseButtonDown(1)) // Right mouse button for aiming
+        {
+            CameraManager.Instance.ToggleAim(true);
+            AudioManager.Instance.PlaySound(aimSound, this.transform.position);
+        }
+        else if (Input.GetMouseButtonUp(1)) // Release to stop aiming
+        {
+            CameraManager.Instance.ToggleAim(false);
         }
     }
 
     // Logic for shooting
     void Shoot()
     {
-        // // Check for available ammo
-        // if (currentAmmo <= 0)
-        // {
-        //     noAmmoSound.Play();
-        //     return;
-        // }
-
-        // Play visual and audio effects
+        // Feedback
         muzzleFlash.Play();
-        weaponSound.Play();
+        AudioManager.Instance.PlaySound(shootSound, this.transform.position);
+        CameraManager.Instance.ImpactShake();
 
+        if (crosshair != null)
+        {
+            crosshair.SetRateOfFire(fireRate/10);
+            crosshair.AnimateCrosshair();
+        }
+        
         currentAmmo--;
         UpdateAmmoText();
 
@@ -152,17 +153,62 @@ public class CharacterActions : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
         {
-            // Deal damage to the target
-            Target target = hit.transform.GetComponent<Target>();
-            if (target != null)
+            TrailRenderer trail = Instantiate(bulletTracer, tracerLocation.transform.position, Quaternion.identity);
+
+            StartCoroutine(SpawnTrail(trail, hit));
+            // Check for hitbox first
+            HitBox hitbox = hit.transform.GetComponent<HitBox>();
+            if (hitbox != null)
             {
-                target.TakeDamage(damage);
+                StartCoroutine(DelayedDamage(hitbox, damage, hit.point));
+            }
+            else
+            {
+                // Fallback for direct target hits (if needed)
+                Target target = hit.transform.GetComponent<Target>();
+                if (target != null)
+                {
+                   // target.TakeDamage(damage, hit.point, false);
+                    
+                    StartCoroutine(DelayedDamage(target, damage, hit.point));
+
+                }
             }
 
-            // Create impact effect
-            GameObject impactOB = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
-            Destroy(impactOB, 2f);
         }
+    }
+    
+    // Coroutine to delay damage
+    IEnumerator DelayedDamage(Target target, float damage, Vector3 hitPoint)
+    {
+        yield return new WaitForSeconds(0.2f); // 50 milliseconds
+        target.TakeDamage(damage, hitPoint, false);
+    }
+
+    IEnumerator DelayedDamage(HitBox hitbox, float damage, Vector3 hitPoint)
+    {
+        yield return new WaitForSeconds(0.2f); // 50 milliseconds
+        hitbox.TakeDamage(damage, hitPoint);
+    }
+    
+    private IEnumerator SpawnTrail(TrailRenderer trail, RaycastHit hit)
+    {
+
+        float time = 0;
+        Vector3 startPos = trail.transform.position;
+
+        while (time < 1)
+        {
+            trail.transform.position = Vector3.Lerp(startPos, hit.point, time);
+            time += Time.deltaTime / trail.time;
+
+            yield return null;
+        }
+
+        trail.transform.position = hit.point;
+        Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
+        
+        Destroy(trail.gameObject, trail.time);
     }
 
     // Update the ammo UI text
@@ -187,27 +233,35 @@ public class CharacterActions : MonoBehaviour
         yield return new WaitForSeconds(1f);
         isRecoilPlaying = false;
     }
-
-    // Coroutine for reloading
+    
     IEnumerator Reload()
     {
         // Disable switching during reload
-        reloadSound.Play();
+        AudioManager.Instance.PlaySound(reloadSound, this.transform.position);
 
         // Set reloading flag
         isReloading = true;
         yield return new WaitForSeconds(reloadTime - 0.25f);
 
-        // Reset ammo
-        maxAmmo -= 6;
-        currentAmmo = 6;
+        // Calculate the missing ammo
+        int missingAmmo = 6 - currentAmmo; // How many bullets are needed to fill the clip
+        int ammoToReload = Mathf.Min(missingAmmo, maxAmmo); // Don't reload more than what's available in maxAmmo
 
-        if (maxAmmo < 0) // Ensure maxAmmo doesn't go below 0
+        // Add the missing bullets to currentAmmo
+        currentAmmo += ammoToReload;
+
+        // Subtract the reloaded bullets from maxAmmo
+        maxAmmo -= ammoToReload;
+
+        // Ensure maxAmmo doesn't go below 0
+        if (maxAmmo < 0)
             maxAmmo = 0;
 
+        // Update the ammo UI
         UpdateAmmoText();
 
-        // Reset reloading flag
+        // Reset reloading flag and animation layer weight
         isReloading = false;
+        animator.SetLayerWeight(3, 0);
     }
 }

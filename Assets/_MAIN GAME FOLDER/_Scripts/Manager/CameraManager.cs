@@ -1,48 +1,64 @@
 using System.Collections;
 using System.Collections.Generic;
-using com.cyborgAssets.inspectorButtonPro;
 using UnityEngine;
-using DG.Tweening; // Ensure DOTween is being used
+using DG.Tweening; // DOTween
 
 public class CameraManager : MonoBehaviour
 {
-    [SerializeField] Camera sceneCamera;
-    private Vector3 originalPosition;  // Store the original position of the camera
-
+    public static CameraManager Instance { get; private set; }
     
     [Header("Shake Settings")]
-    [SerializeField] private float shakeDuration = 0.5f;
-    [SerializeField] private float shakeStrength = 1f;
-    [SerializeField] private int shakeVibration = 10;
-    [SerializeField] private float shakeRandomness = 90f;
+    public float defaultShakeDuration = 0.3f;
+    public float defaultShakeStrength = 0.5f;
+    public int defaultShakeVibration = 10;
+    public float defaultShakeRandomness = 90f;
+
+    [Header("Aiming Settings")]
+    public float aimFOV = 55f; // Adjust FOV for zoom effect
+    public float defaultFOV = 65f;
+    public float aimTransitionDuration = 0.2f;
+
+
+    private Camera mainCamera;
 
     private void Awake()
     {
-        originalPosition = sceneCamera.transform.localPosition;  // Store the original position
-        ShootingManager.OnShoot += ShakeCamera;
-    }
-    
-    private void OnDestroy()
-    {
-        // Unsubscribe from the event to prevent memory leaks
-        ShootingManager.OnShoot -= ShakeCamera;
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+
+        mainCamera = Camera.main;
     }
 
-    [ProButton]
-    // Method to trigger the camera shake
     public void ShakeCamera()
     {
-        // Ensure the camera's position is reset after shaking
-        sceneCamera.transform.DOShakePosition(shakeDuration, shakeStrength, shakeVibration, shakeRandomness)
-            .OnKill(() => sceneCamera.transform.localPosition = originalPosition); // Reset position after shake
+        if (mainCamera != null)
+        {
+            mainCamera.transform.DOShakePosition(defaultShakeDuration, defaultShakeStrength, defaultShakeVibration, defaultShakeRandomness);
+        }
+    }
+    
+    public void ToggleAim(bool isAiming)
+    {
+        float targetFOV = isAiming ? aimFOV : defaultFOV;
+        mainCamera.DOFieldOfView(targetFOV, aimTransitionDuration);
+    }
+    
+    
+    public void ShakeCamera(float duration, float strength, int vibrato = 10, float randomness = 90f)
+    {
+        if (mainCamera != null)
+        {
+            mainCamera.transform.DOShakePosition(duration, strength, vibrato, randomness);
+        }
     }
 
-    // Method to adjust shake properties dynamically
-    public void SetShakeProperties(float duration, float strength, int vibration, float randomness)
+    public void ExplosionShake()
     {
-        shakeDuration = duration;
-        shakeStrength = strength;
-        shakeVibration = vibration;
-        shakeRandomness = randomness;
+        ShakeCamera(0.5f, 1.2f, 20, 100f);
+    }
+
+    public void ImpactShake()
+    {
+        ShakeCamera(0.3f, 0.6f, 15, 50f);
     }
 }

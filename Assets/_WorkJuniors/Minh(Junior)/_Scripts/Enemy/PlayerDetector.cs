@@ -27,8 +27,15 @@ public class PlayerDetector : MonoBehaviour
 
     void Update()
     {
+
+    }
+
+    private void FixedUpdate()
+    {
         detectionTimer.Tick(Time.deltaTime);
-    } 
+        var directionToPlayer = Player.position - transform.position;
+//        Debug.Log(directionToPlayer.magnitude);
+    }
 
     public bool CanDetectPlayer()
     {
@@ -49,9 +56,13 @@ public class PlayerDetector : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, detectionRadius);
         Gizmos.DrawWireSphere(transform.position, innerDetectionRadius);
 
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
+
         Vector3 forwardConeDirection = Quaternion.Euler(0, detectionAngle / 2, 0) * transform.forward * detectionRadius;
         Vector3 backwardConeDirection = Quaternion.Euler(0, -detectionAngle / 2, 0) * transform.forward * detectionRadius;
         
+        Gizmos.color = Color.red;
         Gizmos.DrawLine(transform.position, transform.position + forwardConeDirection);
         Gizmos.DrawLine(transform.position, transform.position + backwardConeDirection);
     }

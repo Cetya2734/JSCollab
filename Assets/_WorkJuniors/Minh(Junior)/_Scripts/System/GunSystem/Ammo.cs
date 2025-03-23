@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Ammo : MonoBehaviour, IInteractable
 {
@@ -15,11 +12,11 @@ public class Ammo : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        weaponOB.GetComponent<Revolver>().maxAmmo += ammoBoxAmount;
+        //weaponOB.GetComponent<Revolver>().maxAmmo += ammoBoxAmount;
         pickUpText.SetActive(false);
         theAmmo.SetActive(false);
         pickUpSound.Play();
-        weaponOB.GetComponent<Revolver>().UpdateAmmoText();
+        //weaponOB.GetComponent<Revolver>().UpdateAmmoText();
     }
 
     public GameObject InteractionText()

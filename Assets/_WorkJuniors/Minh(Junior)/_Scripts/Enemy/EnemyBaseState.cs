@@ -15,7 +15,7 @@ public abstract class EnemyBaseState : IState
     protected static readonly int AttackHash = Animator.StringToHash("FishAttack");
     protected static readonly int DeathHash = Animator.StringToHash("Death");
     
-    protected const float crossFadeDuration = 0.1f;
+    protected const float crossFadeDuration = 0.2f;
     
     protected EnemyBaseState(Enemy enemy, Animator animator)
     {
