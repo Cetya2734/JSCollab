@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using KBCore.Refs;
 using UnityEngine;
 using UnityEngine.AI;
@@ -17,6 +15,10 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] private float wanderRadius = 10f;
     [SerializeField] private float timeBetweenAttacks = 5f;
+
+    [SerializeField] private AudioClip chargingSound;
+    [SerializeField] private AudioClip detectedSound;
+    [SerializeField] private AudioClip attackSound;
     
     private StateMachine stateMachine;
 
@@ -34,9 +36,13 @@ public class Enemy : MonoBehaviour
         stateMachine = new StateMachine();
         
         var wanderState = new EnemyWanderState(this, animator, agent, wanderRadius);
-        var chaseState = new EnemyChaseState(this, animator, agent, playerDetector.Player);
-        var attackState = new EnemyAttackState(this, animator, agent, playerDetector.Player);
+        var chaseState = new EnemyChaseState(this, animator, agent, playerDetector.Player, detectedSound, chargingSound);
+        var attackState = new EnemyAttackState(this, animator, agent, playerDetector.Player, attackSound);
         var staggerState = new EnemyStaggerState(this, animator, agent);
+        var investigateState = new EnemyInvestigateState(this, animator, agent);
+
+        At(investigateState, wanderState, new FuncPredicate(() => !playerDetector.CanDetectPlayer()));
+        At(investigateState, chaseState, new FuncPredicate(() => playerDetector.CanDetectPlayer()));
         
         At(wanderState, chaseState, new FuncPredicate(() => playerDetector.CanDetectPlayer()));
         At(chaseState, wanderState, new FuncPredicate(() => !playerDetector.CanDetectPlayer()));
@@ -53,7 +59,6 @@ public class Enemy : MonoBehaviour
     }
     
     void At(IState from, IState to, IPredicate condition) => stateMachine.AddTransition(from, to, condition);
-    // void Any(IState to, IPredicate condition) => stateMachine.AddAnyTransition(to, condition);
     
     void Any(IState to, Func<bool> condition)
         => stateMachine.AddAnyTransition(to, new FuncPredicate(condition));
@@ -61,15 +66,24 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         stateMachine.Update();
-        attackTimer.Tick(Time.deltaTime); // Update the cooldown timer
-        shouldStagger = false; // Reset flag after processing
+        attackTimer.Tick(Time.deltaTime); 
+        shouldStagger = false;
     }
     
     public void OnTakeDamage(Vector3 damageSource)
     {
-        LastDamageSource = damageSource; // Store the damage source position
+        LastDamageSource = damageSource; 
         shouldStagger = true;
-        Debug.Log("Staggered");
+        
+        if (!playerDetector.CanDetectPlayer()) 
+        {
+            stateMachine.SetState(new EnemyInvestigateState(this, animator, agent));
+        }
+    }
+    
+    public void OnInvestigationComplete()
+    {
+        stateMachine.SetState(new EnemyWanderState(this, animator, agent, wanderRadius));
     }
 
     private void FixedUpdate()

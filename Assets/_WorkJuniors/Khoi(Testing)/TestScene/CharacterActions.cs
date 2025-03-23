@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.Serialization;
 
 public class CharacterActions : MonoBehaviour
 {
@@ -20,20 +21,27 @@ public class CharacterActions : MonoBehaviour
     private bool isReloading = false;
     private bool isRecoilPlaying = false;
 
+    [Space(10)]
     // References to components and game objects
     public GameObject fpsCam;                 
     public ParticleSystem muzzleFlash;          
     public GameObject impactEffect;          
     public GameObject bulletCasing;       
     
+    [Space(10)]
     // Eject Used Casing
-    public Transform casingLocation;            
-    public AudioSource weaponSound;             
-    public AudioSource noAmmoSound;             
-    public AudioSource reloadSound;             
+    public Transform casingLocation;
+    public TrailRenderer bulletTracer;
+    public Transform tracerLocation;
+    
+    [Space(10)]
+    [FormerlySerializedAs("hitSound")] public AudioClip shootSound;             
+    public AudioClip noAmmoSound;             
+    public AudioClip reloadSound;             
+    public AudioClip aimSound;             
 
     private float nextTimeToFire = 0f;
-
+    [Space(10)]
     public TextMeshProUGUI ammoText;
     private CrosshairFeedback crosshair;
 
@@ -80,13 +88,15 @@ public class CharacterActions : MonoBehaviour
         {
             if (currentAmmo == 0)
             {
-                noAmmoSound.Play();
+                AudioManager.Instance.PlaySound(noAmmoSound, this.transform.position);
                 return;
             }
             nextTimeToFire = Time.time + 1f / fireRate;
-            Shoot();
             StartCoroutine(Recoil());
             animator.SetTrigger("Shoot");
+            
+            Shoot();
+
         }
 
         // Handle reload input
@@ -100,6 +110,7 @@ public class CharacterActions : MonoBehaviour
         if (Input.GetMouseButtonDown(1)) // Right mouse button for aiming
         {
             CameraManager.Instance.ToggleAim(true);
+            AudioManager.Instance.PlaySound(aimSound, this.transform.position);
         }
         else if (Input.GetMouseButtonUp(1)) // Release to stop aiming
         {
@@ -112,7 +123,7 @@ public class CharacterActions : MonoBehaviour
     {
         // Feedback
         muzzleFlash.Play();
-        weaponSound.Play();
+        AudioManager.Instance.PlaySound(shootSound, this.transform.position);
         CameraManager.Instance.ImpactShake();
 
         if (crosshair != null)
@@ -135,12 +146,14 @@ public class CharacterActions : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
         {
+            TrailRenderer trail = Instantiate(bulletTracer, tracerLocation.transform.position, Quaternion.identity);
+
+            StartCoroutine(SpawnTrail(trail, hit));
             // Check for hitbox first
             HitBox hitbox = hit.transform.GetComponent<HitBox>();
             if (hitbox != null)
             {
-                // Pass damage through the hitbox to the main target
-                hitbox.TakeDamage(damage, hit.point);
+                StartCoroutine(DelayedDamage(hitbox, damage, hit.point));
             }
             else
             {
@@ -148,14 +161,47 @@ public class CharacterActions : MonoBehaviour
                 Target target = hit.transform.GetComponent<Target>();
                 if (target != null)
                 {
-                    target.TakeDamage(damage, hit.point, false);
+                   // target.TakeDamage(damage, hit.point, false);
+                    
+                    StartCoroutine(DelayedDamage(target, damage, hit.point));
+
                 }
             }
 
-            // Create impact effect
-            GameObject impactOB = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
-            Destroy(impactOB, 2f);
         }
+    }
+    
+    // Coroutine to delay damage
+    IEnumerator DelayedDamage(Target target, float damage, Vector3 hitPoint)
+    {
+        yield return new WaitForSeconds(0.2f); // 50 milliseconds
+        target.TakeDamage(damage, hitPoint, false);
+    }
+
+    IEnumerator DelayedDamage(HitBox hitbox, float damage, Vector3 hitPoint)
+    {
+        yield return new WaitForSeconds(0.2f); // 50 milliseconds
+        hitbox.TakeDamage(damage, hitPoint);
+    }
+    
+    private IEnumerator SpawnTrail(TrailRenderer trail, RaycastHit hit)
+    {
+
+        float time = 0;
+        Vector3 startPos = trail.transform.position;
+
+        while (time < 1)
+        {
+            trail.transform.position = Vector3.Lerp(startPos, hit.point, time);
+            time += Time.deltaTime / trail.time;
+
+            yield return null;
+        }
+
+        trail.transform.position = hit.point;
+        Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
+        
+        Destroy(trail.gameObject, trail.time);
     }
 
     // Update the ammo UI text
@@ -185,7 +231,7 @@ public class CharacterActions : MonoBehaviour
     IEnumerator Reload()
     {
         // Disable switching during reload
-        reloadSound.Play();
+        AudioManager.Instance.PlaySound(reloadSound, this.transform.position);
 
         // Set reloading flag
         isReloading = true;

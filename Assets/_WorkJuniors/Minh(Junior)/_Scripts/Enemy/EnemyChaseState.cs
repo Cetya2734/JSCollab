@@ -7,11 +7,16 @@ public class EnemyChaseState : EnemyBaseState
 {
     private readonly NavMeshAgent agent;
     private readonly Transform player;
+    private readonly AudioClip chargingSound; // Store the sound
+    private readonly AudioClip detectedSound; // Store the sound
+    private bool hasPlayedJumpscare = false;
 
-    public EnemyChaseState(Enemy enemy, Animator animator, NavMeshAgent agent, Transform player ) : base(enemy, animator)
+    public EnemyChaseState(Enemy enemy, Animator animator, NavMeshAgent agent, Transform player, AudioClip detectedSound, AudioClip chargingSound ) : base(enemy, animator)
     {
         this.agent = agent ;
         this.player = player;
+        this.chargingSound = chargingSound;
+        this.detectedSound = detectedSound;
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
@@ -19,6 +24,14 @@ public class EnemyChaseState : EnemyBaseState
     {
         agent.speed = 4f;
         animator.CrossFade(ChargingHash, crossFadeDuration);
+        
+        if (!hasPlayedJumpscare && detectedSound != null)
+        {
+            AudioManager.Instance.PlaySound(detectedSound, enemy.transform.position);
+            hasPlayedJumpscare = true;
+        }
+        
+        AudioManager.Instance.PlaySound(chargingSound, enemy.transform.position);
     }
 
     public override void Update()

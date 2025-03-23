@@ -18,9 +18,11 @@ public class Target : MonoBehaviour
     private Color originalColor;
 
     [SerializeField, Child] GameObject lightBulbObject; // Assign the light bulb GameObject in the inspector
-
-    [SerializeField] private AudioSource burstSound;
-    [SerializeField] private AudioSource hitSound;
+    
+    [SerializeField] private AudioClip burstSound;
+    [SerializeField] private AudioClip hitSound;
+    [SerializeField] private AudioClip metallicHitSound;
+    [SerializeField] private AudioClip monsterGruntSound;
 
     private Enemy enemy; // Reference to the Enemy script
 
@@ -68,15 +70,20 @@ public class Target : MonoBehaviour
                 isLightBulbDestroyed = true;
                 if (lightBulbObject != null)
                     lightBulbObject.SetActive(false); // Disable the light bulb
+                
                 ParticleSpawnManager.Instance.SpawnParticle(ParticleSpawnManager.ParticleType.Explosion, hitPos);
-                burstSound.Play();
+                AudioManager.Instance.PlaySound(burstSound, hitPos);
+                AudioManager.Instance.PlaySound(monsterGruntSound, hitPos);
             }
         }
         else
         {
             float damage = amount * (isLightBulbDestroyed ? vulnerableDamageMultiplier : 1f);
             health -= damage;
-            hitSound.Play();
+            
+            AudioManager.Instance.PlaySound(monsterGruntSound, hitPos);
+            AudioManager.Instance.PlaySound(hitSound, hitPos);
+            AudioManager.Instance.PlaySound(metallicHitSound, hitPos);
         }
 
         // Trigger stagger if the enemy script is present

@@ -5,7 +5,7 @@ using Utilities;
 public class EnemyStaggerState : EnemyBaseState
 {
     private readonly NavMeshAgent agent;
-    private readonly float staggerDuration = 1f;
+    private readonly float staggerDuration = 0.5f;
     private readonly float knockbackDuration = 0.2f;
     private CountdownTimer staggerTimer;
     private CountdownTimer knockbackTimer;
