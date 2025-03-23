@@ -233,29 +233,6 @@ public class CharacterActions : MonoBehaviour
         yield return new WaitForSeconds(1f);
         isRecoilPlaying = false;
     }
-
-    // Coroutine for reloading
-    // IEnumerator Reload()
-    // {
-    //     // Disable switching during reload
-    //     AudioManager.Instance.PlaySound(reloadSound, this.transform.position);
-    //
-    //     // Set reloading flag
-    //     isReloading = true;
-    //     yield return new WaitForSeconds(reloadTime - 0.25f);
-    //
-    //     // Reset ammo
-    //     maxAmmo -= 6;
-    //     currentAmmo = 6;
-    //
-    //     if (maxAmmo < 0) // Ensure maxAmmo doesn't go below 0
-    //         maxAmmo = 0;
-    //
-    //     UpdateAmmoText();
-    //
-    //     // Reset reloading flag
-    //     isReloading = false;
-    // }
     
     IEnumerator Reload()
     {
