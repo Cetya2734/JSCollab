@@ -44,8 +44,9 @@ public class CharacterActions : MonoBehaviour
     [Space(10)]
     public TextMeshProUGUI ammoText;
     private CrosshairFeedback crosshair;
-
-
+    [Space(10)]
+    public GameObject muzzleFlashes;
+    public GameObject muzzleFlashesLight;
     void Start()
     {
         currentAmmo = maxAmmo;
@@ -57,6 +58,7 @@ public class CharacterActions : MonoBehaviour
         }
 
         ToggleAmmoText(true);
+        muzzleFlashes.SetActive(false);
     }
 
     void OnEnable()
@@ -130,7 +132,8 @@ public class CharacterActions : MonoBehaviour
     {
         // Feedback
         muzzleFlash.Play();
-        AudioManager.Instance.PlaySound(shootSound, this.transform.position);
+        StartCoroutine(MuzzleFlash());
+       AudioManager.Instance.PlaySound(shootSound, this.transform.position);
         CameraManager.Instance.ImpactShake();
 
         if (crosshair != null)
@@ -263,5 +266,16 @@ public class CharacterActions : MonoBehaviour
         // Reset reloading flag and animation layer weight
         isReloading = false;
         animator.SetLayerWeight(3, 0);
+    }
+    IEnumerator MuzzleFlash()
+    {       
+        muzzleFlashes.SetActive(true);
+        muzzleFlashesLight.SetActive(true);
+
+        yield return new WaitForSeconds(0.03f);
+        muzzleFlashes.SetActive(false);
+
+        yield return new WaitForSeconds(0.06f);
+        muzzleFlashesLight.SetActive(false);
     }
 }
