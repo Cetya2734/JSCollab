@@ -14809,6 +14809,10 @@ PrefabInstance:
       propertyPath: ammoText
       value: 
       objectReference: {fileID: 1641934446199774503}
+    - target: {fileID: 2908036434966685056, guid: 0d24108c113d528479415158c410ded0, type: 3}
+      propertyPath: muzzleFlashes
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3196030422679189799, guid: 0d24108c113d528479415158c410ded0, type: 3}
       propertyPath: m_Name
       value: Player
