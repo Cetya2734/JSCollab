@@ -78,11 +78,15 @@ public class CharacterActions : MonoBehaviour
         // Handle character movement and animations
         if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
         {
-            animator.SetTrigger("walking");
+            animator.SetBool("IsWalking", true);
             if (Input.GetKey(KeyCode.LeftShift))
             {
                 animator.SetTrigger("running");
             }
+        }
+        else
+        {
+            animator.SetBool("IsWalking", false);
         }
 
         // Handle shooting input
