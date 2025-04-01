@@ -38,7 +38,8 @@ public class CharacterActions : MonoBehaviour
     [FormerlySerializedAs("hitSound")] public AudioClip shootSound;             
     public AudioClip noAmmoSound;             
     public AudioClip reloadSound;             
-    public AudioClip aimSound;             
+    public AudioClip aimSound;
+    public AudioClip breathingSound;
 
     private float nextTimeToFire = 0f;
     [Space(10)]
@@ -82,6 +83,11 @@ public class CharacterActions : MonoBehaviour
             if (Input.GetKey(KeyCode.LeftShift))
             {
                 animator.SetTrigger("running");
+                AudioManager.Instance.PlayLoopingSound( "breathingSound", breathingSound, this.transform.position, 1f);
+            }
+            else
+            {
+                AudioManager.Instance.StopLoopingSound("breathingSound");
             }
         }
         else
