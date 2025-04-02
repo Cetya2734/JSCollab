@@ -156,7 +156,7 @@ public class AudioManager : MonoBehaviour
 
         audioSource.clip = clip;
         audioSource.volume = volume;
-        audioSource.spatialBlend = 1f;
+        // audioSource.spatialBlend = 1f;
         audioSource.loop = true;
         audioSource.Play();
 
