@@ -8,7 +8,7 @@ public class CharacterActions : MonoBehaviour
 {
     // Character movement and animation
     [SerializeField] private Animator animator;
-
+    [SerializeField] private Animator camAnimator;
     // Revolver attributes
     public float damage = 10f;
     public float range = 100f;
@@ -80,6 +80,7 @@ public class CharacterActions : MonoBehaviour
         if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
         {
             animator.SetBool("IsWalking", true);
+            camAnimator.SetBool("IsWalking", true);
             if (Input.GetKey(KeyCode.LeftShift))
             {
                 animator.SetTrigger("running");
@@ -93,6 +94,7 @@ public class CharacterActions : MonoBehaviour
         else
         {
             animator.SetBool("IsWalking", false);
+            camAnimator.SetBool("IsWalking", false);
         }
 
         // Handle shooting input
@@ -106,7 +108,7 @@ public class CharacterActions : MonoBehaviour
             nextTimeToFire = Time.time + 1f / fireRate;
             StartCoroutine(Recoil());
             animator.SetTrigger("Shoot");
-            
+            camAnimator.SetTrigger("Shoot");
             Shoot();
 
         }
@@ -123,6 +125,7 @@ public class CharacterActions : MonoBehaviour
         {
             StartCoroutine(Reload());
             animator.SetTrigger("reload");
+            camAnimator.SetTrigger("reload");
             animator.SetLayerWeight(3, 1);
         }
         
@@ -144,7 +147,7 @@ public class CharacterActions : MonoBehaviour
         muzzleFlash.Play();
         StartCoroutine(MuzzleFlash());
        AudioManager.Instance.PlaySound(shootSound, this.transform.position);
-        CameraManager.Instance.ImpactShake();
+       // CameraManager.Instance.ImpactShake();
 
         if (crosshair != null)
         {

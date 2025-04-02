@@ -15,8 +15,8 @@ public class FPSController : MonoBehaviour
     
     [SerializeField] private MouseLook mouseLook;
 
-    private Camera playerCamera;
-    public GameObject cameraArmature;
+    
+    public GameObject playerArms;
 
 
     private Vector2 input;
@@ -36,9 +36,12 @@ public class FPSController : MonoBehaviour
         canMove = true;
 
         characterController = GetComponent<CharacterController>();
-        playerCamera = Camera.main;
+
+        
+
         audioSource = GetComponent<AudioSource>();
-        mouseLook.Init(transform, playerCamera.transform);
+
+        mouseLook.Init(transform, playerArms.transform);
     }
 
     // Subscribe to and unsubscribe from inventory events
@@ -132,6 +135,6 @@ public class FPSController : MonoBehaviour
     private void RotateView()
     {
         if (canMove == false) return;
-        mouseLook.LookRotation(transform, cameraArmature.transform);
+        mouseLook.LookRotation(transform, playerArms.transform);
     }
 }
