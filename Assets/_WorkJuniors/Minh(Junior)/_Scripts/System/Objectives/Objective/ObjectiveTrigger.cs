@@ -20,20 +20,20 @@ public class ObjectiveTrigger : MonoBehaviour
         if (!_triggered && other.CompareTag("Player"))
         {
             _triggered = true;
-            // Create and add the objective
-            var objective = new Objective(eventTrigger, statusText, maxValue);
-            GameManager.Instance.Objectives.AddObjective(objective);
+            // // Create and add the objective
+            // var objective = new Objective(eventTrigger, statusText, maxValue);
+            // GameManager.Instance.Objectives.AddObjective(objective);
             
             
-            // EventBus.Instance.CreateObjective(
-            //     "ReachedDestination", 
-            //     "Reach the marked area", 
-            //     1 // Required progress
-            // );
+            EventBus.Instance.CreateObjective(
+                eventTrigger, 
+                statusText, 
+                1 // Required progress
+            );
             
-            // Complete immediately if no event trigger
-            if (string.IsNullOrEmpty(eventTrigger))
-                objective.AddProgress(maxValue);
+           // Complete immediately if no event trigger
+            // if (string.IsNullOrEmpty(eventTrigger))
+            //     objective.AddProgress(maxValue);
             
             GetComponent<Collider>().enabled = false; // Disable trigger
         }
