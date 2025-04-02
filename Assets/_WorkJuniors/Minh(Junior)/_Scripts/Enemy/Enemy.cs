@@ -32,7 +32,6 @@ public class Enemy : MonoBehaviour
     private bool shouldStagger;
     
     public Vector3 LastDamageSource { get; private set; } // Store the last damage source position
-
     
     private void OnValidate() => this.ValidateRefs();
 

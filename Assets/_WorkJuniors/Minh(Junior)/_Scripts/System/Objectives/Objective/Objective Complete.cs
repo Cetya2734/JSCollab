@@ -6,12 +6,14 @@ using UnityEngine;
 
 public class ObjectiveComplete : MonoBehaviour
 {
-    [SerializeField] private string eventTrigger = "TutorialTaskDone"; // Must match ObjectiveTrigger's event
+    [SerializeField] private string eventTrigger = "TutorialTaskDone"; 
     
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
+            //EventBus.Instance.AddObjectiveProgress(eventTrigger, 1);
+
             // Verify the objective exists first
             if (GameManager.Instance.Objectives.Objectives.Exists(o => o.EventTrigger == eventTrigger))
             {

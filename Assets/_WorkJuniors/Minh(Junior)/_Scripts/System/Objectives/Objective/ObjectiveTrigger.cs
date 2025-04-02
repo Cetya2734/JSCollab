@@ -24,6 +24,13 @@ public class ObjectiveTrigger : MonoBehaviour
             var objective = new Objective(eventTrigger, statusText, maxValue);
             GameManager.Instance.Objectives.AddObjective(objective);
             
+            
+            // EventBus.Instance.CreateObjective(
+            //     "ReachedDestination", 
+            //     "Reach the marked area", 
+            //     1 // Required progress
+            // );
+            
             // Complete immediately if no event trigger
             if (string.IsNullOrEmpty(eventTrigger))
                 objective.AddProgress(maxValue);

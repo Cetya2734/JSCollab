@@ -20,10 +20,6 @@ public class EventBus
         }
     }
     
-    public event Action onOpenInventory;
-
-    public event Action onCloseInventory;
-
     public event Action<ItemData, GameObject> onPickUpItem;
 
     public event Action onGameplayPaused;
@@ -31,25 +27,30 @@ public class EventBus
     public event Action onGameplayResumed;
 
     public event Action<ItemData> onItemUsed;
+    public event Action<string, int> OnObjectiveProgress; // EventName, ProgressValue
+    public event Action<string, string, int> OnObjectiveCreated; // EventName, StatusText, MaxValue
     
-
-    // Method to invoke the onOpenInventory event
-    public void OpenInventory()
+    
+    private void Awake()
     {
-        onOpenInventory?.Invoke();
+        instance = this;
     }
-
-    public void CloseInventory()
-    {
-        onCloseInventory?.Invoke();
-    }
-
+    
+    #region Inventory
     // Method to invoke the onPickUpItem event, providing ItemData
     public void PickUpItem(ItemData itemData, GameObject equippedObject)
     {
         onPickUpItem?.Invoke(itemData, equippedObject);
     }
+    
+    public void UseItem(ItemData item)
+    {
+        onItemUsed?.Invoke(item);
+    }
+    
+    #endregion
 
+    #region Gameplay
     public void PauseGameplay()
     {
         onGameplayPaused?.Invoke();
@@ -60,13 +61,18 @@ public class EventBus
         onGameplayResumed?.Invoke();
     }
 
-    private void Awake()
+    #endregion
+    
+    
+    #region Objective
+    public void AddObjectiveProgress(string eventName, int value)
     {
-        instance = this;
+        OnObjectiveProgress?.Invoke(eventName, value);
     }
 
-    public void UseItem(ItemData item)
+    public void CreateObjective(string eventName, string statusText, int maxValue)
     {
-        onItemUsed?.Invoke(item);
+        OnObjectiveCreated?.Invoke(eventName, statusText, maxValue);
     }
+    #endregion
 }

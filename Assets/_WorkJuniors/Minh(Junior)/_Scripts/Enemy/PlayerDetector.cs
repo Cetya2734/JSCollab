@@ -21,7 +21,18 @@ public class PlayerDetector : MonoBehaviour
     void Start()
     {
         detectionTimer = new CountdownTimer(detectionCooldown);
-        Player = GameObject.FindGameObjectWithTag("Player").transform;
+
+        if (FPSController.Instance != null)
+        {
+            Player = FPSController.Instance.transform;
+        }
+        else
+        {
+            Debug.LogError("FPSController not found");
+            enabled = false;
+            return;
+        }
+        
         detectionStrategy = new ConeDetectionStrategy(detectionAngle, detectionRadius, innerDetectionRadius);
     }
 

@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        Objectives = new ObjectiveManager(); // Add this line
+        Objectives = new ObjectiveManager();
     }
     void Start() => ChangeState(GameState.Starting);
 
@@ -77,13 +77,28 @@ public enum GameState
 public class ObjectiveManager
 {
     public Action<Objective> OnObjectiveAdded;
-
     public List<Objective> Objectives { get; } = new();
     private readonly Dictionary<string, List<Objective>> _objectiveMap = new();
         
     // Adds an objective to the objective manager. 
     // If the objective has an EventTrigger, it's progress will be incremented by AddProgress when the event is triggered.
     // Multiple objectives can have the same EventTrigger (i.e. MobKilled, ItemCollected, etc)
+
+    private void Start()
+    {
+        EventBus.Instance.OnObjectiveProgress += AddProgress;
+        EventBus.Instance.OnObjectiveCreated += (eventName, text, max) => 
+        {
+            AddObjective(new Objective(eventName, text, max));
+        };
+    }
+    
+    private void OnDestroy()
+    {
+        // Clean up subscriptions
+        EventBus.Instance.OnObjectiveProgress -= AddProgress;
+    }
+    
     public void AddObjective(Objective objective)
     {
         Objectives.Add(objective);
@@ -108,5 +123,6 @@ public class ObjectiveManager
             objective.AddProgress(value);
         }
     }
+
 }
 }
