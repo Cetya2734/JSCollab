@@ -17,7 +17,7 @@ public class FPSController : MonoBehaviour
 
     
     public GameObject playerArms;
-
+    public CharacterActions characterActions;   
 
     private Vector2 input;
     private Vector3 moveDirection = Vector3.zero;

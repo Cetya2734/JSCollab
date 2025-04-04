@@ -9,6 +9,9 @@ public class CharacterActions : MonoBehaviour
     // Character movement and animation
     [SerializeField] private Animator animator;
     [SerializeField] private Animator camAnimator;
+    public bool IsRunning;
+    public bool canRun = true;
+
     // Revolver attributes
     public float damage = 10f;
     public float range = 100f;
@@ -81,14 +84,21 @@ public class CharacterActions : MonoBehaviour
         {
             animator.SetBool("IsWalking", true);
             camAnimator.SetBool("IsWalking", true);
-            if (Input.GetKey(KeyCode.LeftShift))
+            if (Input.GetKey(KeyCode.LeftShift) && canRun == true)
             {
-                animator.SetTrigger("running");
+                animator.SetBool("IsRunning", true);
                 AudioManager.Instance.PlayLoopingSound( "breathingSound", breathingSound, this.transform.position, 1f);
+                IsRunning = true;
+                animator.SetBool("IsWalking", false);
+                camAnimator.SetBool("IsRunning", true);
             }
             else
             {
+                IsRunning = false;
                 AudioManager.Instance.StopLoopingSound("breathingSound");
+
+                camAnimator.SetBool("IsRunning", false);
+                animator.SetBool("IsRunning", false);
             }
         }
         else
@@ -98,7 +108,7 @@ public class CharacterActions : MonoBehaviour
         }
 
         // Handle shooting input
-        if (!isReloading && Input.GetMouseButtonDown(0) && Time.time >= nextTimeToFire && !isRecoilPlaying)
+        if (!isReloading && Input.GetMouseButtonDown(0) && Time.time >= nextTimeToFire && !isRecoilPlaying && !IsRunning)
         {
             if (currentAmmo == 0)
             {
@@ -110,6 +120,9 @@ public class CharacterActions : MonoBehaviour
             animator.SetTrigger("Shoot");
             camAnimator.SetTrigger("Shoot");
             Shoot();
+
+           
+           
 
         }
 
@@ -132,17 +145,20 @@ public class CharacterActions : MonoBehaviour
         if (Input.GetMouseButtonDown(1)) // Right mouse button for aiming
         {
             CameraManager.Instance.ToggleAim(true);
+            canRun = false;
             AudioManager.Instance.PlaySound(aimSound, this.transform.position);
         }
         else if (Input.GetMouseButtonUp(1)) // Release to stop aiming
         {
             CameraManager.Instance.ToggleAim(false);
+            canRun = true;
         }
     }
 
     // Logic for shooting
     void Shoot()
     {
+        canRun = false;
         // Feedback
         muzzleFlash.Play();
         StartCoroutine(MuzzleFlash());
@@ -254,7 +270,7 @@ public class CharacterActions : MonoBehaviour
     {
         // Disable switching during reload
         AudioManager.Instance.PlaySound(reloadSound, this.transform.position);
-
+        canRun = false;
         // Set reloading flag
         isReloading = true;
         yield return new WaitForSeconds(reloadTime - 0.25f);
@@ -290,5 +306,18 @@ public class CharacterActions : MonoBehaviour
 
         yield return new WaitForSeconds(0.06f);
         muzzleFlashesLight.SetActive(false);
+    }
+    // for animation to call
+    public void SetRun(int run)
+    {
+        switch (run)
+        {
+            case 0:  
+                canRun = false; 
+                break;
+            case 1:
+                canRun = true;
+                break;
+        }
     }
 }
