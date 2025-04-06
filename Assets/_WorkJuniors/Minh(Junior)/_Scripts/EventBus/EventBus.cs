@@ -72,7 +72,6 @@ public class EventBus
 
     public void CreateObjective(string eventName, string statusText, int maxValue)
     {
-        Debug.Log(OnObjectiveCreated);
         OnObjectiveCreated?.Invoke(eventName, statusText, maxValue);
     }
     #endregion

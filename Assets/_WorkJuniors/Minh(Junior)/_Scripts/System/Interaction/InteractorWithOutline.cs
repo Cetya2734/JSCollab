@@ -84,6 +84,7 @@ public class InteractorWithOutline : MonoBehaviour
 
                 if (Input.GetButtonDown("Interact"))
                 {
+                    Debug.Log("Interacted with: " + hitInfo.collider.gameObject.name);
                     interactObj.Interact();
                 }
 

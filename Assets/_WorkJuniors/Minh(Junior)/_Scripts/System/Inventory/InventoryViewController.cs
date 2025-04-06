@@ -311,4 +311,16 @@ public class InventoryViewController : MonoBehaviour
     {
         currentSlot.ClearItemData();
     }
+    
+    public bool HasItem(ItemData item)
+    {
+        foreach (var slot in slots)
+        {
+            if (slot.itemData == item)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }
