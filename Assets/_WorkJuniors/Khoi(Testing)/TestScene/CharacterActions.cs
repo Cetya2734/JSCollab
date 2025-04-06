@@ -120,19 +120,7 @@ public class CharacterActions : MonoBehaviour
             animator.SetTrigger("Shoot");
             camAnimator.SetTrigger("Shoot");
             Shoot();
-
-           
-           
-
         }
-
-        // // Handle reload input
-        // if (Input.GetKeyDown(KeyCode.R) && currentAmmo == 0 && maxAmmo >= 6 && !isReloading)
-        // {
-        //     StartCoroutine(Reload());
-        //     animator.SetTrigger("reload");
-        //     animator.SetLayerWeight(3, 1);
-        // }
         
         if (Input.GetKeyDown(KeyCode.R) && currentAmmo < maxAmmo && !isReloading && maxAmmo > 0)
         {
@@ -163,7 +151,6 @@ public class CharacterActions : MonoBehaviour
         muzzleFlash.Play();
         StartCoroutine(MuzzleFlash());
        AudioManager.Instance.PlaySound(shootSound, this.transform.position);
-       // CameraManager.Instance.ImpactShake();
 
         if (crosshair != null)
         {
@@ -296,6 +283,7 @@ public class CharacterActions : MonoBehaviour
         isReloading = false;
         animator.SetLayerWeight(3, 0);
     }
+    
     IEnumerator MuzzleFlash()
     {       
         muzzleFlashes.SetActive(true);

@@ -1,94 +1,73 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(CharacterController))]
 public class LadderSystem : MonoBehaviour
 {
-    public float climbSpeed = 3f;  // Speed of climbing
-    public AudioSource climbSound; // Âm thanh khi leo thang
+    [Header("Settings")]
+    public float climbSpeed = 4f;
+    public string ladderTag = "Ladder";
 
+    [Header("References")]
+    public MonoBehaviour playerMovementScript; // Assign your movement script here
+
+    private CharacterController controller;
     private bool isClimbing = false;
-    private Rigidbody playerRb;
-    private Transform playerTransform;
+    private Transform currentLadder;
+
+    void Start()
+    {
+        controller = GetComponent<CharacterController>();
+        
+        if (playerMovementScript == null)
+            Debug.LogError("Assign your movement script in the inspector!");
+    }
+
+    void Update()
+    {
+        if (isClimbing)
+        {
+            HandleClimbingMovement();
+        }
+    }
+
+    void HandleClimbingMovement()
+    {
+        float verticalInput = Input.GetAxis("Vertical");
+        Vector3 climbDirection = currentLadder.up * verticalInput;
+        controller.Move(climbDirection * climbSpeed * Time.deltaTime);
+    }
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag(ladderTag))
         {
-            Debug.Log("Player touched ladder.");
-
-            playerTransform = other.transform;
-            playerRb = playerTransform.GetComponent<Rigidbody>();
-
-            if (playerRb != null)
-            {
-                playerRb.useGravity = false; // Disable gravity while climbing
-                playerRb.velocity = Vector3.zero; // Stop any existing movement
-            }
-
-            isClimbing = true;
-
-            // Bắt đầu phát âm thanh nếu có AudioSource
-            if (climbSound != null && !climbSound.isPlaying)
-            {
-                climbSound.Play();
-            }
+            StartClimbing(other.transform);
         }
     }
 
     void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag(ladderTag))
         {
-            Debug.Log("Player left ladder.");
             StopClimbing();
         }
     }
 
-    void FixedUpdate()
+    void StartClimbing(Transform ladderTransform)
     {
-        if (isClimbing)
-        {
-            float verticalInput = 0f;
-
-            if (Input.GetKey(KeyCode.W))
-            {
-                verticalInput = 1f;  // Move UP
-            }
-            else if (Input.GetKey(KeyCode.S))
-            {
-                verticalInput = -1f; // Move DOWN
-            }
-
-            // Nếu không bấm phím thì tắt âm thanh
-            if (verticalInput == 0 && climbSound.isPlaying)
-            {
-                climbSound.Stop();
-            }
-            else if (verticalInput != 0 && !climbSound.isPlaying)
-            {
-                climbSound.Play();
-            }
-
-            // Apply Rigidbody movement
-            playerRb.velocity = new Vector3(0, verticalInput * climbSpeed, 0);
-        }
+        isClimbing = true;
+        currentLadder = ladderTransform;
+        
+        if (playerMovementScript != null)
+            playerMovementScript.enabled = false;
     }
 
-    private void StopClimbing()
+    void StopClimbing()
     {
         isClimbing = false;
-
-        if (playerRb != null)
-        {
-            playerRb.useGravity = true; // Re-enable gravity
-            playerRb.velocity = Vector3.zero; // Stop movement when leaving the ladder
-        }
-
-        // Dừng âm thanh khi ngừng leo
-        if (climbSound != null && climbSound.isPlaying)
-        {
-            climbSound.Stop();
-        }
-
-        Debug.Log("Stopped climbing.");
+        currentLadder = null;
+        
+        if (playerMovementScript != null)
+            playerMovementScript.enabled = true;
     }
 }

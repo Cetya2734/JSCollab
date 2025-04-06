@@ -29,7 +29,6 @@ public class LockedDoor : MonoBehaviour, IInteractable
     void Start()
     {
         inventory = FindObjectOfType<InventoryViewController>();
-        Debug.Log("Inventory found: " + (inventory != null));
         
         if (doorMesh == null)
             doorMesh = transform; // Dùng chính đối tượng này nếu quên gán
@@ -46,8 +45,6 @@ public class LockedDoor : MonoBehaviour, IInteractable
         bool hasKey = inventory != null && inventory.HasItem(requiredKey);
         if (requiredKey != null && !inventory.HasItem(requiredKey))
         {
-            // Show error message
-            Debug.Log("No Key!");
             if (errorCoroutine != null) StopCoroutine(errorCoroutine);
             errorCoroutine = StartCoroutine(ShowErrorMessage());
             return;

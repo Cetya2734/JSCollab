@@ -693,7 +693,8 @@ GameObject:
   - component: {fileID: 4451226495750824777}
   - component: {fileID: 5949123570477696322}
   - component: {fileID: 2184563869715245900}
-  m_Layer: 0
+  - component: {fileID: 9120707566342914088}
+  m_Layer: 8
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -739,7 +740,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.3
-  m_Height: 2.5
+  m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: -0.049497604, z: 0}
 --- !u!143 &8636770535087681076
@@ -761,7 +762,7 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 2.5
+  m_Height: 2
   m_Radius: 0.3
   m_SlopeLimit: 50
   m_StepOffset: 0.3
@@ -786,8 +787,8 @@ MonoBehaviour:
   characterRigidbody: {fileID: 0}
   characterController: {fileID: 8636770535087681076}
   audioSource: {fileID: 5987151429172717385}
-  minVolume: 0.1
-  maxVolume: 0.2
+  minVolume: 0.5
+  maxVolume: 0.7
   debugMode: 1
   groundCheckHeight: -0.7
   groundCheckRadius: 0.5
@@ -810,9 +811,9 @@ MonoBehaviour:
   canMove: 0
   isWalking: 0
   walkSpeed: 2.5
-  runSpeed: 3.5
+  runSpeed: 4
   gravity: 1
-  descentMultiplier: 10
+  descentMultiplier: 3
   mouseLook:
     XSensitivity: 1.5
     YSensitivity: 1.5
@@ -862,6 +863,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 1000
+--- !u!114 &9120707566342914088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1466681360385196299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23ed645c58a69a24591d60391947b7a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  climbSpeed: 4
+  ladderTag: Ladder
+  playerMovementScript: {fileID: 5047993773695784016}
 --- !u!1 &1489954183105995303
 GameObject:
   m_ObjectHideFlags: 0
@@ -3287,7 +3303,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6493564765045608124}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.055, z: 0}
+  m_LocalPosition: {x: 0, y: 0.978, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4463,14 +4479,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8552311113848574965}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.03373, y: -0.02987, z: 0.0232}
+  m_LocalRotation: {x: 0.00000011920932, y: -0.00000017881396, z: 0.41781104, w: 0.908534}
+  m_LocalPosition: {x: 0.03052, y: -0.02994, z: 0.03868}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6170796817340985726}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 49.393}
 --- !u!1 &8626401548095516614
 GameObject:
   m_ObjectHideFlags: 0
