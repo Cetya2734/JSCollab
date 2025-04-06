@@ -52,6 +52,7 @@ namespace Core.Gameplay.Objectives
         public string GetStatusText()
         {
             return string.Format(_statusText, CurrentValue, MaxValue);
+           // return $"{_statusText} ({CurrentValue}/{MaxValue})";
         }
     }
 }
