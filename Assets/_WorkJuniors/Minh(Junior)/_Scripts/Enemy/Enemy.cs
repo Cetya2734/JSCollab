@@ -78,7 +78,7 @@ public class Enemy : MonoBehaviour
     
     public void OnTakeDamage(Vector3 damageSource)
     {
-        CameraManager.Instance.ShakeCamera();
+        //CameraManager.Instance.ShakeCamera();
         LastDamageSource = damageSource; 
         shouldStagger = true;
         
