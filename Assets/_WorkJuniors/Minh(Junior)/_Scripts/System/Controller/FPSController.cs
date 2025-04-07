@@ -36,9 +36,7 @@ public class FPSController : MonoBehaviour
         canMove = true;
 
         characterController = GetComponent<CharacterController>();
-
         
-
         audioSource = GetComponent<AudioSource>();
 
         mouseLook.Init(transform, playerArms.transform);

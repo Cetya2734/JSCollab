@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DoorController : MonoBehaviour
+public class DoorController : MonoBehaviour, IInteractable
 {
     public Transform doorMesh; // GameObject chứa Mesh của cửa
     public AudioSource doorSound; // Âm thanh cửa
@@ -13,6 +13,8 @@ public class DoorController : MonoBehaviour
     private bool isOpen = false;
     private Quaternion closedRotation;
     private Quaternion openRotation;
+    
+    [SerializeField] private GameObject interactionText; 
 
     void Start()
     {
@@ -26,7 +28,6 @@ public class DoorController : MonoBehaviour
     public void ToggleDoor()
     {
         isOpen = !isOpen;
-        Debug.Log("Cửa đang " + (isOpen ? "MỞ" : "ĐÓNG"));
 
         // Phát âm thanh nếu có gán AudioSource
         if (doorSound != null)
@@ -56,5 +57,15 @@ public class DoorController : MonoBehaviour
     void Update()
     {
         doorMesh.localRotation = Quaternion.Slerp(doorMesh.localRotation, isOpen ? openRotation : closedRotation, Time.deltaTime * openSpeed);
+    }
+
+    public void Interact()
+    {
+        ToggleDoor();
+    }
+
+    public GameObject InteractionText()
+    {
+        return interactionText;
     }
 }

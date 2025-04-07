@@ -12,6 +12,7 @@ TagManager:
   - Ground
   - Interactable
   - SafeRoom
+  - Ladder
   layers:
   - Default
   - TransparentFX

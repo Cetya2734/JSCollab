@@ -120,6 +120,7 @@ namespace Footsteps {
 		}
 
 		void PlayLandSound() {
+			//Debug.Log("Landing sound");
 			audioSource.PlayOneShot(SurfaceManager.singleton.GetFootstep(currentGroundInfo.collider, currentGroundInfo.point));
 		}
 
