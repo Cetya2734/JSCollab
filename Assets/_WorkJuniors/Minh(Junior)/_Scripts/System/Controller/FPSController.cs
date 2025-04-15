@@ -135,4 +135,23 @@ public class FPSController : MonoBehaviour
         if (canMove == false) return;
         mouseLook.LookRotation(transform, playerArms.transform);
     }
+
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        Rigidbody rb = hit.collider.attachedRigidbody;
+
+        if (rb != null && !rb.isKinematic)
+        {
+            Vector3 pushDir = hit.moveDirection;
+
+            // Ignore downward pushing (like stepping on it)
+            if (pushDir.y < -0.3f)
+                return;
+
+            float forceAmount = 3f; // tweak this if needed
+
+            // Apply force AT the contact point instead of center
+            rb.AddForceAtPosition(pushDir * forceAmount, hit.point, ForceMode.Impulse);
+        }
+    }
 }
