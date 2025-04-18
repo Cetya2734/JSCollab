@@ -60,8 +60,14 @@ public class Turrets : MonoBehaviour
             rb.velocity = bulletSpawn.forward * bulletSpeed;
         }
         Destroy(bullet, 5f);
-
-        // Apply recoil (move gun back)
+        
         gun.localPosition -= gun.forward * recoilAmount;
     }
+    
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, detectionRange);
+    }
+
 }

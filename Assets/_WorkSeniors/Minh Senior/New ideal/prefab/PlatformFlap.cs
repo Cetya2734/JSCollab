@@ -50,7 +50,7 @@ public class PlatformFlap : MonoBehaviour
             isOpen = true;
             if (doorSound != null) doorSound.Play();
 
-            yield return new WaitForSeconds(1f); // Time it stays open
+            yield return new WaitForSeconds(2f); // Time it stays open
 
             // Close
             isOpen = false;
