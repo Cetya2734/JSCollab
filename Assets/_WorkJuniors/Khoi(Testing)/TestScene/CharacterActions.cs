@@ -183,12 +183,9 @@ public class CharacterActions : MonoBehaviour
             }
             else
             {
-                // Fallback for direct target hits (if needed)
                 Target target = hit.transform.GetComponent<Target>();
                 if (target != null)
                 {
-                   // target.TakeDamage(damage, hit.point, false);
-                    
                     StartCoroutine(DelayedDamage(target, damage, hit.point));
 
                 }
