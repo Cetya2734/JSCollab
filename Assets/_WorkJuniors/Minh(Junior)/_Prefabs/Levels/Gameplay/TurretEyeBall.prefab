@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 2123962224321906935}
   - component: {fileID: 1110586024145513857}
   - component: {fileID: 6248967195830431824}
-  - component: {fileID: 8503946330712474510}
   m_Layer: 0
   m_Name: eyeBallR (3)
   m_TagString: Untagged
@@ -123,33 +122,9 @@ MonoBehaviour:
   rotationSpeed: 5
   fireRate: 0.5
   bulletSpeed: 5
-  detectionRange: 5
+  detectionRange: 7
   recoilAmount: 0
   recoilRecoverySpeed: 0
---- !u!114 &8503946330712474510
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5739585716615583048}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7582e699019d9ae4d90de32b1ef42aab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 150
-  lightBulbHealth: 40
-  lightBulbDamageMultiplier: 2
-  vulnerableDamageMultiplier: 1.5
-  blinkIntensity: 20
-  blinkDuration: 0.5
-  skinnedMesh: {fileID: 0}
-  lightBulbObject: {fileID: 0}
-  burstSound: {fileID: 8300000, guid: b6839c7eff1dcb34094feed233c3f3bb, type: 3}
-  hitSound: {fileID: 8300000, guid: 713993e2713788848bebab2ee2ffbc60, type: 3}
-  metallicHitSound: {fileID: 8300000, guid: c679e632368a88545bdbada997332fb7, type: 3}
-  monsterGruntSound: {fileID: 8300000, guid: 96aff2f0dd8a61344913d79bde98bfc5, type: 3}
 --- !u!1 &5884684605765987682
 GameObject:
   m_ObjectHideFlags: 0
@@ -326,7 +301,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 9750f12897ab2074c9e1d89c4b4d224a, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9750f12897ab2074c9e1d89c4b4d224a, type: 3}
       propertyPath: m_LocalScale.x
