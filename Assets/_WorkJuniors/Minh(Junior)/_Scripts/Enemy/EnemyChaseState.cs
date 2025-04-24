@@ -10,19 +10,22 @@ public class EnemyChaseState : EnemyBaseState
     private readonly AudioClip chargingSound; // Store the sound
     private readonly AudioClip detectedSound; // Store the sound
     private bool hasPlayedJumpscare = false;
+    private readonly float chaseSpeed;
 
-    public EnemyChaseState(Enemy enemy, Animator animator, NavMeshAgent agent, Transform player, AudioClip detectedSound, AudioClip chargingSound ) : base(enemy, animator)
+
+    public EnemyChaseState(Enemy enemy, Animator animator, NavMeshAgent agent, Transform player, AudioClip detectedSound, AudioClip chargingSound, float speed ) : base(enemy, animator)
     {
         this.agent = agent ;
         this.player = player;
         this.chargingSound = chargingSound;
         this.detectedSound = detectedSound;
+        this.chaseSpeed = speed;
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
     public override void OnEnter()
     {
-        agent.speed = 4f;
+        agent.speed = chaseSpeed;
         animator.CrossFade(ChargingHash, crossFadeDuration);
         
         if (!hasPlayedJumpscare && detectedSound != null)
@@ -30,7 +33,6 @@ public class EnemyChaseState : EnemyBaseState
             AudioManager.Instance.PlaySound(detectedSound, enemy.transform.position);
             hasPlayedJumpscare = true;
         }
-        
         AudioManager.Instance.PlaySound(chargingSound, enemy.transform.position);
     }
 

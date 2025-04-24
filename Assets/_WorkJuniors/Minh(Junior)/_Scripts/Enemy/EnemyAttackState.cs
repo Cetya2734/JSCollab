@@ -13,14 +13,21 @@ public class EnemyAttackState : EnemyBaseState
     private float attackRadius = 2f; // Radius of the SphereCast
     private float attackRange = 2f; // Range of the SphereCast
     private int attackDamage = 20; // Damage dealt by the attack
+    
+    private readonly float postAttackSpeed;
+    private readonly float minPostAttackDistance;
+    private readonly float maxPostAttackDistance;
 
     private readonly AudioClip attackSound;
 
-    public EnemyAttackState(Enemy enemy, Animator animator, NavMeshAgent agent, Transform player, AudioClip attackSound) : base(enemy, animator)
+    public EnemyAttackState(Enemy enemy, Animator animator, NavMeshAgent agent, Transform player, AudioClip attackSound, float speed, float minDistance, float maxDistance) : base(enemy, animator)
     {
         this.agent = agent;
         this.player = player;
         this.attackSound = attackSound;
+        this.postAttackSpeed = speed;
+        this.minPostAttackDistance = minDistance;
+        this.maxPostAttackDistance = maxDistance;
     }
 
     public override void OnEnter()
@@ -132,13 +139,9 @@ public class EnemyAttackState : EnemyBaseState
     {
         yield return new WaitForSeconds(delay);
     
-        agent.speed = 3f; // Set a higher speed for the agent
-
+        agent.speed = postAttackSpeed;
         animator.CrossFade(ChargingHash, crossFadeDuration);
-
-        float minDistance = 4f; // Minimum distance from the player
-        float maxDistance = 6f; // Maximum distance from the player
-
+        
         Vector3 randomDirection;
         Vector3 newDestination;
         bool validPositionFound = false;
@@ -148,18 +151,19 @@ public class EnemyAttackState : EnemyBaseState
         // Try to find a valid position within the min and max distance
         do
         {
-            randomDirection = Random.insideUnitSphere * maxDistance;
+            randomDirection = Random.insideUnitSphere * maxPostAttackDistance;
             randomDirection += player.position;
 
-            if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, maxDistance, NavMesh.AllAreas))
+            if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, maxPostAttackDistance, NavMesh.AllAreas))
             {
                 newDestination = hit.position;
                 float distanceToPlayer = Vector3.Distance(newDestination, player.position);
 
                 // Check if the new destination is within the desired range
-                if (distanceToPlayer >= minDistance && distanceToPlayer <= maxDistance)
+                if (distanceToPlayer >= minPostAttackDistance && distanceToPlayer <= maxPostAttackDistance)
                 {
                     agent.SetDestination(newDestination);
+                    Debug.Log("Set new distance");
                     validPositionFound = true;
                     break;
                 }

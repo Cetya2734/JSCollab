@@ -7,6 +7,17 @@ using Utilities;
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(PlayerDetector))]
 
+[System.Serializable]
+public class EnemySpeedSettings
+{
+    public float wanderSpeed = 2f;
+    public float chaseSpeed = 4f;
+    public float attackSpeed = 3f;
+    public float investigateSpeed = 3f;
+    public float staggerSpeed = 1f;
+    public float minDistance = 4f;
+    public float maxDistance = 6f;
+}
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private Transform player;  // Assign player in Inspector
@@ -25,6 +36,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private AudioClip chargingSound;
     [SerializeField] private AudioClip detectedSound;
     [SerializeField] private AudioClip attackSound;
+    [SerializeField] private EnemySpeedSettings speedSettings;
     
     private StateMachine stateMachine;
 
@@ -41,9 +53,9 @@ public class Enemy : MonoBehaviour
         investigationTimer = new CountdownTimer(investigationDuration);
         stateMachine = new StateMachine();
         
-        var wanderState = new EnemyWanderState(this, animator, agent, wanderRadius);
-        var chaseState = new EnemyChaseState(this, animator, agent, playerDetector.Player, detectedSound, chargingSound);
-        var attackState = new EnemyAttackState(this, animator, agent, playerDetector.Player, attackSound);
+        var wanderState = new EnemyWanderState(this, animator, agent, wanderRadius, speedSettings.wanderSpeed);
+        var chaseState = new EnemyChaseState(this, animator, agent, playerDetector.Player, detectedSound, chargingSound,speedSettings.chaseSpeed );
+        var attackState = new EnemyAttackState(this, animator, agent, playerDetector.Player, attackSound, speedSettings.attackSpeed, speedSettings.minDistance, speedSettings.maxDistance);
         var staggerState = new EnemyStaggerState(this, animator, agent);
         var investigateState = new EnemyInvestigateState(this, animator, agent);
 
@@ -93,7 +105,7 @@ public class Enemy : MonoBehaviour
     
     public void OnInvestigationComplete()
     {
-        stateMachine.SetState(new EnemyWanderState(this, animator, agent, wanderRadius));
+        stateMachine.SetState(new EnemyWanderState(this, animator, agent, wanderRadius, speedSettings.wanderSpeed));
     }
 
     private void FixedUpdate()
@@ -105,6 +117,5 @@ public class Enemy : MonoBehaviour
     {
         if (attackTimer.IsRunning) return;
         attackTimer.Start();
-        
     }
 }

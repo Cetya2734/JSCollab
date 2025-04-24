@@ -6,17 +6,19 @@ public class EnemyWanderState : EnemyBaseState
     private readonly NavMeshAgent agent;
     private readonly Vector3 startPoint;
     private readonly float wanderRadius;
+    private readonly float patrolSpeed;
 
-    public EnemyWanderState(Enemy enemy, Animator animator, NavMeshAgent agent, float wanderRadius) : base(enemy, animator)
+    public EnemyWanderState(Enemy enemy, Animator animator, NavMeshAgent agent, float wanderRadius, float speed) : base(enemy, animator)
     {
         this.agent = agent;
         this.startPoint = enemy.transform.position;
         this.wanderRadius = wanderRadius;
+        this.patrolSpeed = speed;
     }
 
     public override void OnEnter()
     {
-        // Debug.Log("Wandering");
+       // agent.speed = patrolSpeed;
         animator.CrossFade(SwimmingHash, crossFadeDuration);
     }
 
