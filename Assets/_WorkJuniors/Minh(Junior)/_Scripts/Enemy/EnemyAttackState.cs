@@ -163,7 +163,6 @@ public class EnemyAttackState : EnemyBaseState
                 if (distanceToPlayer >= minPostAttackDistance && distanceToPlayer <= maxPostAttackDistance)
                 {
                     agent.SetDestination(newDestination);
-                    Debug.Log("Set new distance");
                     validPositionFound = true;
                     break;
                 }
