@@ -14,10 +14,10 @@ public class Target : MonoBehaviour
     [SerializeField] private float blinkIntensity = 2f;
     [SerializeField] private float blinkDuration = 0.5f;
     private float blinkTimer;
-    [SerializeField, Child] SkinnedMeshRenderer skinnedMesh;
+    [SerializeField] SkinnedMeshRenderer skinnedMesh;
     private Color originalColor;
 
-    [SerializeField, Child] GameObject lightBulbObject; // Assign the light bulb GameObject in the inspector
+    [SerializeField] GameObject lightBulbObject; // Assign the light bulb GameObject in the inspector
     
     [SerializeField] private AudioClip burstSound;
     [SerializeField] private AudioClip hitSound;

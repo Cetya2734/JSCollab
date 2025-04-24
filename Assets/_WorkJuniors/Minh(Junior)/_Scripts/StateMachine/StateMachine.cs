@@ -17,8 +17,6 @@ public class StateMachine
             ChangeState(transitions.To);
         }
         current.State?.Update();
-        
-        //Debug.Log(current.State);
     }
 
     public void FixedUpdate()
