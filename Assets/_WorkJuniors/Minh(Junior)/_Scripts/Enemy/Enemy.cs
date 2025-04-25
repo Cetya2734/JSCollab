@@ -17,6 +17,10 @@ public class EnemySpeedSettings
     public float staggerSpeed = 1f;
     public float minDistance = 4f;
     public float maxDistance = 6f;
+    public float attackDistance = 2f;
+    public float attackRadius = 2f;
+    public float knockbackForce = 45f;
+    public float knockbackDuration = 0.5f;
 }
 public class Enemy : MonoBehaviour
 {
@@ -55,8 +59,15 @@ public class Enemy : MonoBehaviour
         
         var wanderState = new EnemyWanderState(this, animator, agent, wanderRadius, speedSettings.wanderSpeed);
         var chaseState = new EnemyChaseState(this, animator, agent, playerDetector.Player, detectedSound, chargingSound,speedSettings.chaseSpeed );
-        var attackState = new EnemyAttackState(this, animator, agent, playerDetector.Player, attackSound, speedSettings.attackSpeed, speedSettings.minDistance, speedSettings.maxDistance);
-        var staggerState = new EnemyStaggerState(this, animator, agent);
+        var attackState = new EnemyAttackState(this, animator, agent, playerDetector.Player,
+            attackSound,
+            speedSettings.attackSpeed,
+            speedSettings.minDistance, 
+            speedSettings.maxDistance, 
+            speedSettings.attackRadius, 
+            speedSettings.attackDistance);
+        
+        var staggerState = new EnemyStaggerState(this, animator, agent, speedSettings.knockbackForce, speedSettings.knockbackDuration);
         var investigateState = new EnemyInvestigateState(this, animator, agent);
 
         At(investigateState, wanderState, new FuncPredicate(() => !playerDetector.CanDetectPlayer()));
@@ -117,5 +128,26 @@ public class Enemy : MonoBehaviour
     {
         if (attackTimer.IsRunning) return;
         attackTimer.Start();
+    }
+    
+    // Add this to your Enemy.cs script
+    private void OnDrawGizmosSelected()
+    {
+        if (!playerDetector || playerDetector.Player == null) return;
+
+        // Draw attack range (distance where enemy can attack)
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, speedSettings.attackDistance);
+
+        // Draw spherecast visualization
+        Vector3 directionToPlayer = (playerDetector.Player.position - transform.position).normalized;
+    
+        // Draw the sphere at the end of the attack range
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position + directionToPlayer * speedSettings.attackDistance, speedSettings.attackRadius);
+    
+        // Draw a line showing the attack direction
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(transform.position, transform.position + directionToPlayer * speedSettings.attackDistance);
     }
 }

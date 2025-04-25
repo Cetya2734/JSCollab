@@ -6,17 +6,22 @@ public class EnemyStaggerState : EnemyBaseState
 {
     private readonly NavMeshAgent agent;
     private readonly float staggerDuration = 0.5f;
-    private readonly float knockbackDuration = 0.2f;
+    private readonly float knockbackDuration;
+    private readonly float knockbackForce;
+    
     private CountdownTimer staggerTimer;
     private CountdownTimer knockbackTimer;
+    
     private Quaternion initialRotation;
     private Quaternion targetRotation;
     private Vector3 knockbackDirection;
-    private float knockbackForce;
+    //private float knockbackForce;
 
-    public EnemyStaggerState(Enemy enemy, Animator animator, NavMeshAgent agent) : base(enemy, animator)
+    public EnemyStaggerState(Enemy enemy, Animator animator, NavMeshAgent agent, float knockbackForce, float knockbackDuration) : base(enemy, animator)
     {
         this.agent = agent;
+        this.knockbackForce = knockbackForce;
+        this.knockbackDuration = knockbackDuration;
     }
 
     public override void OnEnter()
@@ -35,10 +40,9 @@ public class EnemyStaggerState : EnemyBaseState
 
         staggerTimer.Start();
         knockbackTimer.Start();
-        
-                // Calculate knockback direction and force
+
+        // Calculate knockback direction and force
         knockbackDirection = (enemy.transform.position - enemy.LastDamageSource).normalized;
-        knockbackForce = 25f; // Adjust knockback force as needed
     }
 
     public override void Update()

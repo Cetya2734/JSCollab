@@ -9,18 +9,22 @@ public class EnemyAttackState : EnemyBaseState
     private readonly Transform player;
     private bool hasReachedDestination;
     
-    // SphereCast parameters
-    private float attackRadius = 2f; // Radius of the SphereCast
-    private float attackRange = 2f; // Range of the SphereCast
+    // // SphereCast parameters
+    // private float attackRadius = 2f; // Radius of the SphereCast
+    // private float attackRange = 2f; // Range of the SphereCast
     private int attackDamage = 20; // Damage dealt by the attack
     
     private readonly float postAttackSpeed;
     private readonly float minPostAttackDistance;
     private readonly float maxPostAttackDistance;
+    private readonly float attackRadius;
+    private readonly float attackRange;
 
     private readonly AudioClip attackSound;
+    
+    
 
-    public EnemyAttackState(Enemy enemy, Animator animator, NavMeshAgent agent, Transform player, AudioClip attackSound, float speed, float minDistance, float maxDistance) : base(enemy, animator)
+    public EnemyAttackState(Enemy enemy, Animator animator, NavMeshAgent agent, Transform player, AudioClip attackSound, float speed, float minDistance, float maxDistance, float attackRadius, float attackRange) : base(enemy, animator)
     {
         this.agent = agent;
         this.player = player;
@@ -28,6 +32,8 @@ public class EnemyAttackState : EnemyBaseState
         this.postAttackSpeed = speed;
         this.minPostAttackDistance = minDistance;
         this.maxPostAttackDistance = maxDistance;
+        this.attackRadius = attackRadius;
+        this.attackRange = attackRange;
     }
 
     public override void OnEnter()
@@ -45,51 +51,6 @@ public class EnemyAttackState : EnemyBaseState
         // Ensure the agent is not stopped
         agent.isStopped = false;
     }
-    public void PerformAttack()
-    {
-        // Calculate the direction to the player
-        Vector3 directionToPlayer = (player.position - enemy.transform.position).normalized;
-        
-        // Perform the SphereCast
-        if (Physics.SphereCast(enemy.transform.position, attackRadius, directionToPlayer, out RaycastHit hit, attackRange))
-        {
-            //Debug.DrawLine(enemy.transform.position, enemy.transform.position + directionToPlayer * attackRange, Color.red, 5f);
-            
-            Debug.DrawRay(enemy.transform.position, directionToPlayer * attackRange, Color.blue, 3f);
-            // Check if the hit object is the player
-            if (hit.transform == player)
-            {
-                // Apply damage to the player
-                PlayerHealth playerHealth = hit.transform.GetComponent<PlayerHealth>();
-                if (playerHealth != null)
-                {
-                    playerHealth.TakeDamage(attackDamage);
-                }
-            }
-        }
-    }
-    
-    private void OnDrawGizmosSelected()
-    {
-        if (enemy == null || player == null) return;
-
-        // Draw sphere at enemy position (attack starting point)
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(enemy.transform.position, attackRadius);
-
-        // Calculate direction to player
-        Vector3 directionToPlayer = (player.position - enemy.transform.position).normalized;
-    
-        // Draw attack range (SphereCast path)
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(enemy.transform.position + directionToPlayer * attackRange, attackRadius);
-
-        // Draw a line from enemy to attack end position
-        Gizmos.color = Color.green;
-        Gizmos.DrawLine(enemy.transform.position, enemy.transform.position + directionToPlayer * attackRange);
-    }
-
-
     public override void Update()
     {
         // Check if the enemy has reached the new destination
@@ -109,32 +70,69 @@ public class EnemyAttackState : EnemyBaseState
     {
         enemy.StartCoroutine(PerformDelayedAttack(0.5f));
     }
+    //
+    // private IEnumerator PerformDelayedAttack(float delay)
+    // {
+    //     yield return new WaitForSeconds(delay);
+    //     
+    //     // Calculate the direction to the player
+    //     Vector3 directionToPlayer = (player.position - enemy.transform.position).normalized;
+    //     
+    //     // Perform the SphereCast
+    //     if (Physics.SphereCast(enemy.transform.position, attackRadius, directionToPlayer, out RaycastHit hit, attackRange))
+    //     {
+    //         // Check if the hit object is the player
+    //         if (hit.transform == player)
+    //         {
+    //             // Apply damage to the player
+    //             PlayerHealth playerHealth = hit.transform.GetComponent<PlayerHealth>();
+    //             if (playerHealth != null)
+    //             {
+    //                 playerHealth.TakeDamage(attackDamage);
+    //             }
+    //         }
+    //     }
+    // }
     
     private IEnumerator PerformDelayedAttack(float delay)
     {
         yield return new WaitForSeconds(delay);
-        
-        // Calculate the direction to the player
-        Vector3 directionToPlayer = (player.position - enemy.transform.position).normalized;
-        
-        // Perform the SphereCast
-        if (Physics.SphereCast(enemy.transform.position, attackRadius, directionToPlayer, out RaycastHit hit, attackRange))
+
+        // Define the duration of the attack "hit window" (adjust based on animation)
+        float attackDuration = 0.3f; // Time window for the attack to register
+        float elapsed = 0f;
+
+        // Layer mask for the player (ensure the player is on a specific layer, e.g., "Player")
+        int playerLayerMask = 1 << LayerMask.NameToLayer("Player");
+
+        while (elapsed < attackDuration)
         {
-            //Debug.DrawLine(enemy.transform.position, enemy.transform.position + directionToPlayer * attackRange, Color.red, 5f);
-            
-            Debug.DrawRay(enemy.transform.position, directionToPlayer * attackRange, Color.blue, 3f);
-            // Check if the hit object is the player
-            if (hit.transform == player)
+            // Check for player within a sphere around the enemy's attack point
+            Collider[] hits = Physics.OverlapSphere(
+                enemy.transform.position + Vector3.up * 0.2f, // Adjust for enemy height
+                attackRadius,
+                playerLayerMask
+            );
+
+            foreach (Collider hit in hits)
             {
-                // Apply damage to the player
-                PlayerHealth playerHealth = hit.transform.GetComponent<PlayerHealth>();
-                if (playerHealth != null)
+                // Ensure the hit is the player
+                if (hit.transform == player)
                 {
-                    playerHealth.TakeDamage(attackDamage);
+                    PlayerHealth playerHealth = hit.GetComponent<PlayerHealth>();
+                    if (playerHealth != null)
+                    {
+                        playerHealth.TakeDamage(attackDamage);
+                        yield break; // Exit after hitting the player
+                    }
                 }
             }
+
+            elapsed += Time.deltaTime;
+            yield return null; // Wait for the next frame
         }
     }
+    
     private IEnumerator MoveAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
