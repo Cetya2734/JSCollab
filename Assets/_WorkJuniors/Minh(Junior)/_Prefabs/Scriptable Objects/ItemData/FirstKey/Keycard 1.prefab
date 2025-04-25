@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 1569800157326419890}
   - component: {fileID: 3725443830797031490}
   - component: {fileID: 6121356055911443517}
+  - component: {fileID: 8104955353995134530}
+  - component: {fileID: 3278896396336997926}
   m_Layer: 9
   m_Name: Keycard 1
   m_TagString: Interactable
@@ -27,13 +29,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1869840361525550022}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 11.46, y: 0.034289, z: -42.431}
   m_LocalScale: {x: 0.319175, y: 0.0291401, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &853794524076712720
 MeshFilter:
@@ -122,3 +124,47 @@ MonoBehaviour:
   equippedObject: {fileID: 0}
   pickUpText: {fileID: 0}
   EPrompt: {fileID: 0}
+--- !u!54 &8104955353995134530
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1869840361525550022}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &3278896396336997926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1869840361525550022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a4b3e43d4f5fdb4691644a38d5664e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  driftStrength: 6
+  driftSpeed: 9
+  waterDrag: 3
+  angularDrag: 1.5
+  mass: 2
