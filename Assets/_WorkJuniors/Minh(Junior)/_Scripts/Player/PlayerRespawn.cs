@@ -33,7 +33,6 @@ public class PlayerRespawn : MonoBehaviour
 
         controller.enabled = true;
         ScreenFader.Instance.FadeFromBlack(0.5f, null);
-        Debug.Log("Respawned to: " + lastSafePosition);
     }
 
     private void OnTriggerEnter(Collider other)

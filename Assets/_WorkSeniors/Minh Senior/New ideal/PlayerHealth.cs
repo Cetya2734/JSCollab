@@ -13,6 +13,7 @@ public class PlayerHealth : MonoBehaviour
     public void TakeDamage(float amount)
     {
         currentHealth -= amount;
+        ScreenDamage.Instance.ShowDamage();
         Debug.Log("Player took damage! Current health: " + currentHealth);
 
         if (currentHealth <= 0)
@@ -24,6 +25,5 @@ public class PlayerHealth : MonoBehaviour
     void Die()
     {
         Debug.Log("Player died!");
-        Destroy(gameObject); // Destroy the player when health reaches 0
     }
 }
