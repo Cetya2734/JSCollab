@@ -210,4 +210,11 @@ public class PlayerHealth : MonoBehaviour
         // Apply the new color
         heartRateImage.color = newColor;
     }
+    
+    public void RestoreHealth(float amount)
+    {
+        currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
+        UpdateHeartRateColor(); // Update UI
+        Debug.Log($"Health restored! Current: {currentHealth}/{maxHealth}");
+    }
 }

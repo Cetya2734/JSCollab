@@ -305,4 +305,11 @@ public class CharacterActions : MonoBehaviour
                 break;
         }
     }
+    
+    public void AddAmmo(int amount)
+    {
+        maxAmmo += amount;
+        UpdateAmmoText();
+        Debug.Log($"Ammo added! Total: {maxAmmo}");
+    }
 }

@@ -22,9 +22,7 @@ public class InventoryViewController : MonoBehaviour
     [FormerlySerializedAs("_itemNameText")] [SerializeField] private TMP_Text itemNameText;
 
     [FormerlySerializedAs("_itemDescriptionText")] [SerializeField] private TMP_Text itemDescriptionText;
-
-   // [SerializeField] private FPSController _characterController;
-
+    
     [FormerlySerializedAs("_slots")] [SerializeField] private List<ItemSlot> slots;
 
     [FormerlySerializedAs("_currentSlot")] [SerializeField] private ItemSlot currentSlot;

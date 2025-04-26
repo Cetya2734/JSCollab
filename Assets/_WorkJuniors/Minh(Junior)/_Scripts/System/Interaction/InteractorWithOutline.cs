@@ -14,6 +14,7 @@ public class InteractorWithOutline : MonoBehaviour
     public GameObject ePrompt; // UI prompt for interaction (e.g., "Press E to interact")
     public LayerMask interactableLayer; // Layer for interactable objects
 
+    public AudioClip interactionSound; // Sound to play on interaction
     private GameObject currentInteractable; // Currently focused interactable object
     private Transform highlight; // Currently highlighted object
     private Transform selection; // Currently selected object
@@ -85,6 +86,7 @@ public class InteractorWithOutline : MonoBehaviour
                 if (Input.GetButtonDown("Interact"))
                 {
                     interactObj.Interact();
+                    AudioManager.Instance.PlaySound(interactionSound, hitInfo.point);
                 }
 
                 currentInteractable = hitInfo.collider.gameObject;

@@ -10,7 +10,7 @@ public class ObjectiveNote : MonoBehaviour, IInteractable
     [Header("New Objective")]
     [SerializeField] private string newEvent = "NextObjective";
     [SerializeField] private string statusText = "Proceed to the next area";
-    [SerializeField] private int maxValue = 1; // Required progress for the new objective
+    [SerializeField] private int maxValue = 1; 
 
     [Header("Timing")]
     [SerializeField] private float delayDuration = 1f; // Delay before creating new objective
@@ -23,15 +23,14 @@ public class ObjectiveNote : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        
+        if (_objectiveTriggered) return;
+ 
         // Show the note UI
         if (notePanel != null)
         {
             notePanel.SetActive(true);
             _isNoteOpen = true;
         }
-        
-        if (_objectiveTriggered) return;
         
         // Complete the current objective
         EventBus.Instance.AddObjectiveProgress(lastEvent, progressValue);

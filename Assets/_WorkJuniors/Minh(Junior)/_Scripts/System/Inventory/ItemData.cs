@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 [CreateAssetMenu(menuName = "Inventory/Item")]
 
+
 public class ItemData : ScriptableObject
 {
     // Accessor for the item name
@@ -30,4 +31,16 @@ public class ItemData : ScriptableObject
     [SerializeField] private bool _isEquippable = false;
 
     [SerializeField] private bool _isConsumable = false;
+    
+    [SerializeField] public ItemType Type; // Assign this in Inspector
+    
+    [SerializeField] public float Potency; // Healing amount or ammo count
+}
+
+public enum ItemType
+{
+    Medkit,
+    AmmoPack,
+    Key,
+    // Add more as needed
 }
