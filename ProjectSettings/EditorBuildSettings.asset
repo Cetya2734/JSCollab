@@ -5,6 +5,12 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
+  - enabled: 1
+    path: Assets/_WorkJuniors/Khoi(Testing)/MainMenu/MainMenu.unity
+    guid: 1aab923c1d6ae4b419623b4ed95dc02b
+  - enabled: 1
+    path: Assets/_WorkJuniors/Khoi(Testing)/MainMenu/ExitConfirm.unity
+    guid: 26da06fe85b87cf44a23e792bd8093ce
   - enabled: 0
     path: Assets/_MAIN GAME FOLDER/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
