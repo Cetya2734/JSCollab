@@ -15,7 +15,7 @@ MonoBehaviour:
   _name: FirstKey
   _description:
   - It's a keycard
-  _sprite: {fileID: 4953079976122286035, guid: bc57af6e9ce31e44eaf038c08b8789cd, type: 3}
+  _sprite: {fileID: 2796425642479656157, guid: ecb378a969e032f4ca6ad52a0be635d7, type: 3}
   _isEquippable: 0
   _isConsumable: 0
   Type: 2

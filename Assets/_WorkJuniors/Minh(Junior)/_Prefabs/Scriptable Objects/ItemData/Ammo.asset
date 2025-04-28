@@ -15,7 +15,7 @@ MonoBehaviour:
   _name: Handgun Ammo
   _description:
   - Use the pack to refill your ammo
-  _sprite: {fileID: 8683724565479181102, guid: 705fd314a8165044fb5a207bd2ee5e3c, type: 3}
+  _sprite: {fileID: 7307587199473394073, guid: f87f1deb50bfa774ab38f5d44ab83355, type: 3}
   _isEquippable: 0
   _isConsumable: 1
   Type: 1

@@ -15,7 +15,7 @@ MonoBehaviour:
   _name: Fuel
   _description:
   - Use this to fuel the elevator
-  _sprite: {fileID: 4953079976122286035, guid: bc57af6e9ce31e44eaf038c08b8789cd, type: 3}
+  _sprite: {fileID: 682396051997561633, guid: 1ab7db61e1d6d6843a8cb01d9b49d555, type: 3}
   _isEquippable: 0
   _isConsumable: 0
   Type: 2

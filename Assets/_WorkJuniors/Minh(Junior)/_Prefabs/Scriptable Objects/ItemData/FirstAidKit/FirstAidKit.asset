@@ -15,7 +15,7 @@ MonoBehaviour:
   _name: Med Kit
   _description:
   - Patch yourself up with this
-  _sprite: {fileID: 8683724565479181102, guid: 705fd314a8165044fb5a207bd2ee5e3c, type: 3}
+  _sprite: {fileID: 3045145838853405245, guid: 6ccf61c420cdea64d9df5b4bb30a95c7, type: 3}
   _isEquippable: 0
   _isConsumable: 1
   Type: 0
