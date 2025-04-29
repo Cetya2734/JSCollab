@@ -2,13 +2,18 @@ using UnityEngine;
 
 public class PlayerRespawn : MonoBehaviour
 {
+    public static PlayerRespawn Instance;
     private Vector3 lastSafePosition;
     private CharacterController controller;
 
     void Start()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
         controller = GetComponent<CharacterController>();
-        lastSafePosition = transform.position; // initial safe point
+        lastSafePosition = transform.position; 
     }
 
     public void UpdateSafePosition(Vector3 newPosition)

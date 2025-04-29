@@ -15,7 +15,6 @@ public class EnemyStaggerState : EnemyBaseState
     private Quaternion initialRotation;
     private Quaternion targetRotation;
     private Vector3 knockbackDirection;
-    //private float knockbackForce;
 
     public EnemyStaggerState(Enemy enemy, Animator animator, NavMeshAgent agent, float knockbackForce, float knockbackDuration) : base(enemy, animator)
     {
