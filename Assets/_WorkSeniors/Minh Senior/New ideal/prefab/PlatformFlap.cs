@@ -4,7 +4,9 @@ using System.Collections;
 public class PlatformFlap : MonoBehaviour
 {
     public Transform doorMesh;
-    public AudioSource doorSound;
+    public AudioSource openSound;
+    public AudioSource closeSound;
+
     public float openAngle = 90f;
     public float openSpeed = 2f;
     public float flapInterval = 5f;
@@ -46,20 +48,21 @@ public class PlatformFlap : MonoBehaviour
             SetPlatformColor(dangerColor);
             yield return new WaitForSeconds(0.5f);
 
-            // Collapse
+            // Collapse / Open
             isOpen = true;
-            if (doorSound != null) doorSound.Play();
+            if (openSound != null) openSound.Play();
 
             yield return new WaitForSeconds(2f); // Time it stays open
 
             // Close
             isOpen = false;
-            if (doorSound != null) doorSound.Play();
+            if (closeSound != null) closeSound.Play();
 
             SetPlatformColor(normalColor);
             yield return new WaitForSeconds(flapInterval);
         }
     }
+
 
     void Update()
     {
