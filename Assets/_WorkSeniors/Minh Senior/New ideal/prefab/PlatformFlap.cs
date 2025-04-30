@@ -4,14 +4,15 @@ using System.Collections;
 public class PlatformFlap : MonoBehaviour
 {
     public Transform doorMesh;
-    public AudioSource openSound;
-    public AudioSource closeSound;
+    public AudioSource audioSource;
+    public AudioClip openClip;
+    public AudioClip closeClip;
 
     public float openAngle = 90f;
     public float openSpeed = 2f;
     public float flapInterval = 5f;
 
-    public MeshRenderer meshRenderer; // To change color as warning
+    public MeshRenderer meshRenderer;
     public Color normalColor = Color.white;
     public Color warningColor = Color.yellow;
     public Color dangerColor = Color.red;
@@ -31,6 +32,9 @@ public class PlatformFlap : MonoBehaviour
         if (meshRenderer == null)
             meshRenderer = GetComponent<MeshRenderer>();
 
+        if (audioSource == null)
+            audioSource = GetComponent<AudioSource>();
+
         SetPlatformColor(normalColor);
         StartCoroutine(AutoFlapLoop());
     }
@@ -39,7 +43,7 @@ public class PlatformFlap : MonoBehaviour
     {
         while (true)
         {
-            // Warning phase
+            // Warning
             SetPlatformColor(warningColor);
             yield return new WaitForSeconds(1f);
 
@@ -48,24 +52,31 @@ public class PlatformFlap : MonoBehaviour
             SetPlatformColor(dangerColor);
             yield return new WaitForSeconds(0.5f);
 
-            // Collapse / Open
+            // Open
             isOpen = true;
-            if (openSound != null) openSound.Play();
+            PlaySound(openClip);
 
-            yield return new WaitForSeconds(2f); // Time it stays open
+            yield return new WaitForSeconds(2f); // Stay open
 
             // Close
             isOpen = false;
-            if (closeSound != null) closeSound.Play();
+            PlaySound(closeClip);
 
             SetPlatformColor(normalColor);
             yield return new WaitForSeconds(flapInterval);
         }
     }
 
-
     void Update()
     {
+        float distance = Vector3.Distance(Camera.main.transform.position, transform.position);
+        float maxDistance = 25f;
+
+        if (audioSource != null)
+        {
+            audioSource.enabled = distance <= maxDistance;
+        }
+
         doorMesh.localRotation = Quaternion.Slerp(
             doorMesh.localRotation,
             isOpen ? openRotation : closedRotation,
@@ -76,11 +87,9 @@ public class PlatformFlap : MonoBehaviour
     private void SetPlatformColor(Color color)
     {
         if (meshRenderer != null)
-        {
             meshRenderer.material.color = color;
-        }
     }
-    
+
     IEnumerator ShakePlatform(float duration, float strength)
     {
         float time = 0f;
@@ -94,4 +103,12 @@ public class PlatformFlap : MonoBehaviour
         doorMesh.localRotation = closedRotation;
     }
 
+    private void PlaySound(AudioClip clip)
+    {
+        if (audioSource != null && clip != null)
+        {
+            audioSource.clip = clip;
+            audioSource.Play();
+        }
+    }
 }
