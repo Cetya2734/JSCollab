@@ -122,7 +122,7 @@ public class CharacterActions : MonoBehaviour
             Shoot();
         }
         
-        if (Input.GetKeyDown(KeyCode.R) && currentAmmo < maxAmmo && !isReloading && maxAmmo > 0)
+        if (Input.GetKeyDown(KeyCode.R) && currentAmmo < 6 && !isReloading && maxAmmo > 0)
         {
             StartCoroutine(Reload());
             animator.SetTrigger("reload");
